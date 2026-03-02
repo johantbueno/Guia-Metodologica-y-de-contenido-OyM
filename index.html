@@ -1,0 +1,895 @@
+<style>
+/* ==========================================================================
+   VARIABLES Y DISEÑO BASE (Estilo Documentación Moderna tipo Notion/Tailwind)
+   ========================================================================== */
+:root {
+  /* Paleta Corporativa Refinada */
+  --o-m-blue: #003865;
+  --o-m-gold: #D4AF37;
+  
+  /* Colores UI Modernos */
+  --primary: #0f172a;        /* Texto principal muy oscuro */
+  --secondary: #334155;      /* Texto secundario */
+  --muted: #64748b;          /* Texto apagado */
+  --bg-body: #f8fafc;        /* Fondo general suave */
+  --bg-card: #ffffff;        /* Fondo de tarjetas/secciones */
+  --border-light: #e2e8f0;
+  --border-dark: #cbd5e1;
+  
+  /* Acentos para Alertas */
+  --accent-blue-bg: #eff6ff;
+  --accent-blue-border: #3b82f6;
+  --accent-gold-bg: #fffbeb;
+  --accent-gold-border: #f59e0b;
+  --accent-green-bg: #f0fdf4;
+  --accent-green-border: #22c55e;
+  --accent-red-bg: #fef2f2;
+  --accent-red-border: #ef4444;
+
+  /* Efectos y Tamaños */
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --sidebar-width: 300px;
+}
+
+.tfg-wrapper {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--secondary);
+  background-color: var(--bg-body);
+  line-height: 1.8;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0 auto;
+  font-size: 16px;
+}
+
+@media (min-width: 1024px) {
+  .tfg-wrapper {
+    flex-direction: row;
+    align-items: flex-start;
+    max-width: 1440px;
+    padding: 0 1rem;
+  }
+}
+
+/* ==========================================================================
+   BARRA LATERAL (Navegación Sticky y Elegante)
+   ========================================================================== */
+.tfg-sidebar {
+  background: var(--bg-card);
+  padding: 2rem 1.5rem;
+  border-bottom: 1px solid var(--border-light);
+  z-index: 10;
+}
+
+@media (min-width: 1024px) {
+  .tfg-sidebar {
+    width: var(--sidebar-width);
+    flex-shrink: 0;
+    position: sticky;
+    top: 2rem;
+    height: calc(100vh - 4rem);
+    overflow-y: auto;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-md);
+    margin: 2rem 0;
+  }
+  
+  /* Scrollbar estético para sidebar */
+  .tfg-sidebar::-webkit-scrollbar { width: 6px; }
+  .tfg-sidebar::-webkit-scrollbar-track { background: transparent; }
+  .tfg-sidebar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+  .tfg-sidebar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+}
+
+.tfg-sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.tfg-sidebar-title {
+  color: var(--primary);
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.tfg-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tfg-nav a {
+  text-decoration: none;
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 500;
+  display: block;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.tfg-nav a:hover {
+  background: var(--bg-body);
+  color: var(--o-m-blue);
+  transform: translateX(4px);
+}
+
+/* ==========================================================================
+   CONTENIDO PRINCIPAL
+   ========================================================================== */
+.tfg-main {
+  flex: 1;
+  padding: 2rem 1rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+@media (min-width: 1024px) {
+  .tfg-main { padding: 2rem 3rem; }
+}
+
+/* Tipografía del Documento */
+.tfg-main h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: -0.025em;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.tfg-main h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--o-m-blue);
+  margin: 3rem 0 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.tfg-main h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin: 2rem 0 1rem;
+}
+
+.tfg-main p { margin-bottom: 1.5rem; }
+
+/* Contenedores de Sección (Efecto Papel/Card) */
+.tfg-section {
+  background: var(--bg-card);
+  padding: 2.5rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  margin-bottom: 2.5rem;
+  transition: box-shadow 0.3s ease;
+}
+
+.tfg-section:hover { box-shadow: var(--shadow-md); }
+
+@media (max-width: 640px) {
+  .tfg-section { padding: 1.5rem; }
+}
+
+/* ==========================================================================
+   PORTADA ACADÉMICA (Elegante)
+   ========================================================================== */
+.tfg-cover {
+  text-align: center;
+  padding: 5rem 3rem;
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.tfg-cover::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 12px;
+  background: linear-gradient(90deg, var(--o-m-blue) 0%, var(--o-m-gold) 100%);
+}
+
+.tfg-cover-logo {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--o-m-blue);
+  margin-bottom: 0.5rem;
+  letter-spacing: 1px;
+}
+
+.tfg-cover-subtitle {
+  font-size: 1.1rem;
+  color: var(--muted);
+  font-weight: 500;
+  margin-bottom: 3rem;
+  letter-spacing: 2px;
+}
+
+.tfg-cover-department {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--primary);
+  line-height: 1.6;
+  margin-bottom: 4rem;
+}
+
+.tfg-cover-title {
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--primary);
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 3rem;
+}
+
+/* ==========================================================================
+   COMPONENTES UI (Alertas, Badges, Tablas, Listas)
+   ========================================================================== */
+
+/* Alertas estilo Callout moderno */
+.callout {
+  padding: 1.5rem;
+  margin: 2rem 0;
+  border-radius: var(--radius-md);
+  border-left: 4px solid;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.callout strong { color: var(--primary); font-size: 1.05rem; }
+
+.callout.info { background: var(--accent-blue-bg); border-left-color: var(--accent-blue-border); }
+.callout.warning { background: var(--accent-red-bg); border-left-color: var(--accent-red-border); }
+.callout.success { background: var(--accent-green-bg); border-left-color: var(--accent-green-border); }
+.callout.gold { background: var(--accent-gold-bg); border-left-color: var(--accent-gold-border); }
+
+/* Etiquetas / Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-gold { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+.badge-blue { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+
+/* Tablas Modernas */
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  margin: 2.5rem 0;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+}
+
+.tfg-main table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  background: var(--bg-card);
+  min-width: 600px;
+}
+
+.tfg-main th {
+  background: #f8fafc;
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1rem 1.5rem;
+  border-bottom: 2px solid var(--border-light);
+}
+
+.tfg-main td {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--secondary);
+  vertical-align: top;
+}
+
+.tfg-main tr:last-child td { border-bottom: none; }
+.tfg-main tr:hover td { background-color: #f8fafc; }
+
+/* Listas de Verificación Estilizadas */
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.feature-list li {
+  position: relative;
+  padding-left: 2.5rem;
+  background: var(--bg-card);
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-right: 1.5rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.feature-list li:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.feature-list li::before {
+  content: '✓';
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: #dcfce7;
+  color: #16a34a;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+/* Grillas de Tarjetas (Recursos/Herramientas) */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.info-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.info-card:hover {
+  border-color: var(--border-dark);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+}
+
+.info-card h4 {
+  color: var(--primary);
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Timeline */
+.process-timeline {
+  position: relative;
+  border-left: 2px solid var(--border-light);
+  margin: 2.5rem 0 2.5rem 1rem;
+  padding-left: 2rem;
+}
+
+.timeline-step {
+  position: relative;
+  margin-bottom: 2.5rem;
+}
+
+.timeline-step:last-child { margin-bottom: 0; }
+
+.timeline-step::before {
+  content: '';
+  position: absolute;
+  left: -2.4rem;
+  top: 0.25rem;
+  width: 12px;
+  height: 12px;
+  background: var(--bg-card);
+  border: 3px solid var(--o-m-blue);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px var(--bg-card);
+}
+
+/* Botón de Impresión */
+.print-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  text-decoration: none;
+}
+
+.print-action:hover { background: var(--secondary); }
+
+/* Formato de Impresión Fiel */
+@media print {
+  .tfg-sidebar, .print-action { display: none !important; }
+  .tfg-wrapper { display: block; background: white; }
+  .tfg-main { width: 100%; max-width: none; padding: 0; margin: 0; }
+  .tfg-section { box-shadow: none; border: none; padding: 1rem 0; page-break-inside: avoid; }
+  .tfg-cover { border: none; box-shadow: none; padding: 0; page-break-after: always; }
+  .tfg-cover::before { display: none; }
+  h1, h2 { page-break-after: avoid; }
+  body { background: white; }
+}
+
+html { scroll-behavior: smooth; }
+</style>
+
+<div class="tfg-wrapper">
+  
+  <!-- BARRA LATERAL -->
+  <aside class="tfg-sidebar">
+    <div class="tfg-sidebar-header">
+      <span style="font-size: 1.5rem;">📘</span>
+      <h3 class="tfg-sidebar-title">Índice TFG</h3>
+    </div>
+    <nav class="tfg-nav">
+      <ul>
+        <li><a href="#portada">Portada y Preliminares</a></li>
+        <li><a href="#intro">Introducción</a></li>
+        <li><a href="#cap1">Capítulo I: Aspectos Introductorios</a></li>
+        <li><a href="#cap2">Capítulo II: Marco Teórico</a></li>
+        <li><a href="#cap3">Capítulo III: Marco Metodológico</a></li>
+        <li><a href="#cap4">Capítulo IV: Resultados</a></li>
+        <li><a href="#cap5">Capítulo V: Propuesta Técnica</a></li>
+        <li><a href="#conclusiones">Conclusiones y Recomendaciones</a></li>
+        <li><a href="#calidad">Criterios de Calidad (Checklist)</a></li>
+        <li><a href="#plagio-ia">Guía Anti-Plagio e IA Ética</a></li>
+        <li><a href="#recursos">Recursos y Herramientas</a></li>
+      </ul>
+    </nav>
+    <div style="margin-top: 2.5rem;">
+      <button class="print-action" onclick="window.print()">🖨️ Imprimir Guía</button>
+    </div>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="tfg-main">
+    
+    <!-- PORTADA -->
+    <section id="portada" class="tfg-cover">
+      <div class="tfg-cover-logo">UNIVERSIDAD DOMINICANA O&M</div>
+      <div class="tfg-cover-subtitle">FUNDADA EL 12 DE ENERO DE 1966</div>
+      
+      <div class="tfg-cover-department">
+        ÁREA DE INGENIERÍA Y TECNOLOGÍA<br>
+        ESCUELA DE INGENIERÍA<br>
+        DIRECCIÓN DE TRABAJO FINAL DE GRADO
+      </div>
+      
+      <div class="tfg-cover-title">
+        Trabajo Final de Grado para optar por el título de:<br>
+        <span style="color: var(--o-m-blue);">Ingeniero en Sistemas y Computación</span>
+      </div>
+      
+      <div class="callout gold" style="text-align: left; margin: 3rem auto; max-width: 650px; background: #fffcf2;">
+        <div><span class="badge badge-gold">FÓRMULA DEL TÍTULO</span></div>
+        <p style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 1.05rem; color: #1e293b; margin: 0.5rem 0; padding: 1rem; background: white; border-radius: 6px; border: 1px dashed #cbd5e1;">
+          [ACCIÓN] de [SISTEMA/SOLUCIÓN] [TÉCNICA] para[EMPRESA/INSTITUCIÓN] en [UBICACIÓN], durante [PERÍODO]
+        </p>
+        <ul style="color: #475569; font-size: 0.95rem; margin-top: 10px; padding-left: 1.2rem;">
+          <li>Debe contener entre 15 y 25 palabras.</li>
+          <li>Incluye la acción técnica específica y el beneficiario real.</li>
+        </ul>
+      </div>
+      
+      <p style="color: var(--muted); font-size: 0.95rem; letter-spacing: 0.5px; text-transform: uppercase;">EN SAN ISIDRO, SANTO DOMINGO, RD, DURANTE EL PRIMER CUATRIMESTRE DEL AÑO 2025.</p>
+    </section>
+
+    <!-- INTRODUCCIÓN -->
+    <section id="intro" class="tfg-section">
+      <h1>Introducción</h1>
+      <p>La introducción debe enganchar al lector y dar un panorama completo pero resumido del trabajo. Utiliza esta estructura metodológica de 4 párrafos:</p>
+      
+      <div class="callout info">
+        <strong>Estructura de la Introducción</strong>
+        <p><strong>Párrafo 1: Contextualización tecnológica.</strong> "En la actualidad,[tu área técnica] son fundamentales para que las empresas puedan [beneficio general]. Según se ha demostrado, contar con[tipo de solución] ayuda a [beneficios]..."</p>
+        <p><strong>Párrafo 2: Problema específico.</strong> "El presente trabajo surge como respuesta a las necesidades detectadas en [empresa], donde se evidencian [problemas]. Esta situación afecta [impacto operativo y estratégico]..."</p>
+        <p><strong>Párrafo 3: Propuesta académica.</strong> "A través de este estudio se propone[tu solución] que incluye [componentes]. Este proyecto tiene como objetivo aplicar los conocimientos adquiridos en la carrera..."</p>
+        <p><strong>Párrafo 4: Palabras clave.</strong> Incluir una lista de 5 a 7 términos técnicos centrales de tu proyecto.</p>
+      </div>
+    </section>
+
+    <!-- CAPÍTULO 1 -->
+    <section id="cap1" class="tfg-section">
+      <h1>Capítulo I: Aspectos Introductorios</h1>
+      
+      <h2>1.1 Antecedentes de la Investigación</h2>
+      <p>Redacta utilizando una estructura obligatoria de 4 párrafos que van de lo general a lo particular (método de embudo):</p>
+      <ul class="feature-list" style="margin-bottom: 2rem;">
+        <li><strong>Párrafo 1:</strong> Importancia global del tema y del sector tecnológico.</li>
+        <li><strong>Párrafo 2:</strong> Contexto nacional y regional (Situación en República Dominicana).</li>
+        <li><strong>Párrafo 3:</strong> Aspecto técnico específico (crítico para la solución propuesta).</li>
+        <li><strong>Párrafo 4:</strong> Aplicación directa y requerimientos del caso específico de la empresa.</li>
+      </ul>
+      
+      <div class="callout warning">
+        <strong>Requisitos mínimos de antecedentes:</strong>
+        <ul style="margin-top: 0.5rem; padding-left: 1.2rem; color: #7f1d1d;">
+          <li>4 a 10 referencias bibliográficas recientes (2020-2025).</li>
+          <li>Al menos 1 referencia de nivel internacional.</li>
+          <li>Extensión mínima de 800 palabras en esta subsección.</li>
+        </ul>
+      </div>
+
+      <h2>1.2 Planteamiento del Problema</h2>
+      <p>Redacta 4 párrafos enfocados secuencialmente en: Marco teórico del problema, Enfoque específico de la investigación, Problemática principal (causas evidentes), y Consecuencias directas (impacto en stakeholders operacionales y estratégicos).</p>
+
+      <!-- PREGUNTAS DE INVESTIGACIÓN -->
+      <div class="callout info" style="margin-top: 2.5rem;">
+        <h3 style="margin-top: 0; font-size: 1.15rem;">1.2.1 Formulación y Sistematización del Problema</h3>
+        <p>Todo proyecto de ingeniería nace de una <strong>Gran Pregunta</strong> (Formulación) que luego se desglosa en <strong>Preguntas Específicas</strong> (Sistematización). Existe una alineación directa, lógica y obligatoria entre estas preguntas y tus objetivos de investigación.</p>
+        
+        <div class="table-container" style="box-shadow: none; border-color: #bfdbfe; margin-top: 1.5rem;">
+          <table style="background: transparent;">
+            <thead>
+              <tr>
+                <th style="background: #eff6ff; color: #1e3a8a;">Preguntas de Investigación</th>
+                <th style="background: #eff6ff; color: #1e3a8a;">Objetivos Correspondientes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Gran Pregunta:</strong><br>¿Cómo [solucionar el problema principal] en [empresa] mediante el diseño de [tu tecnología/sistema]?</td>
+                <td><span class="badge badge-gold">Objetivo General</span><br>Diseñar / Implementar [Solución Integral]...</td>
+              </tr>
+              <tr>
+                <td><strong>Pregunta 1:</strong><br>¿Cuál es el estado actual de la infraestructura tecnológica o de los procesos en [empresa]?</td>
+                <td><span class="badge badge-blue">Objetivo Esp. 1</span><br>Diagnosticar el estado actual...</td>
+              </tr>
+              <tr>
+                <td><strong>Pregunta 2:</strong><br>¿Qué metodologías, tecnologías o equipos son los más adecuados para los requerimientos detectados?</td>
+                <td><span class="badge badge-blue">Objetivo Esp. 2</span><br>Seleccionar las metodologías/equipos...</td>
+              </tr>
+              <tr>
+                <td><strong>Pregunta 3:</strong><br>¿Es técnica, operativa y económicamente viable la implementación de esta solución?</td>
+                <td><span class="badge badge-blue">Objetivo Esp. 3</span><br>Realizar estudios de factibilidad...</td>
+              </tr>
+              <tr>
+                <td><strong>Pregunta 4:</strong><br>¿Cómo debe estructurarse el diseño de la propuesta para garantizar su correcto funcionamiento e integración?</td>
+                <td><span class="badge badge-blue">Objetivo Esp. 4</span><br>Diseñar [la solución específica]...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <h2>1.3 Justificación</h2>
+      <p>Debe responder por qué y para qué se hace el trabajo abarcando 4 dimensiones esenciales:</p>
+      <ol style="padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.5rem;">
+        <li><strong>Justificación técnica:</strong> Exigencias y necesidades operativas actuales de la empresa.</li>
+        <li><strong>Perspectiva técnica:</strong> Por qué el rediseño es fundamental tecnológicamente hablando.</li>
+        <li><strong>Justificación académica:</strong> Aplicación práctica de las competencias de tu carrera.</li>
+        <li><strong>Impacto social/económico:</strong> Beneficios comprobables y medibles a nivel local u operativo.</li>
+      </ol>
+
+      <h2>1.4 Objetivos de la Investigación</h2>
+      <div class="callout gold">
+        <strong>Fórmula del Objetivo General:</strong><br>
+        <span style="font-family: monospace; display: block; margin-top: 0.5rem; color: #92400e;">[VERBO DE ACCIÓN] una[SOLUCIÓN INTEGRAL] de [COMPONENTES TÉCNICOS] en [EMPRESA], que permita[BENEFICIOS] durante [PERÍODO].</span>
+        <em style="display: block; margin-top: 0.5rem; font-size: 0.9rem;">Verbos recomendados: Diseñar, Desarrollar, Implementar, Optimizar, Crear.</em>
+      </div>
+      <h3 style="font-size: 1.1rem; margin-top: 2rem;">Objetivos Específicos (Deben ser 4 correlativos a las preguntas):</h3>
+      <ul class="feature-list">
+        <li><strong>Diagnóstico:</strong> Diagnosticar el estado actual de [sistemas relevantes] en [empresa].</li>
+        <li><strong>Selección técnica:</strong> Seleccionar[metodologías/equipos] más adecuados para [propósito].</li>
+        <li><strong>Factibilidad:</strong> Realizar estudios de factibilidad técnica, operativa y económica.</li>
+        <li><strong>Diseño:</strong> Diseñar[solución específica] junto con [componente complementario].</li>
+      </ul>
+    </section>
+
+    <!-- CAPÍTULO 2 -->
+    <section id="cap2" class="tfg-section">
+      <h1>Capítulo II: Marco Teórico</h1>
+      <p>El marco teórico fundamenta tu proyecto. Debe contener entre <strong>15 y 20 secciones técnicas</strong> estructuradas lógicamente de la siguiente manera:</p>
+      
+      <div class="card-grid">
+        <div class="info-card">
+          <h4>📌 1. Conceptos Fundamentales</h4>
+          <p>Definiciones principales, terminología básica, importancia en las organizaciones y clasificaciones técnicas generales (Secciones 2.1 a 2.5).</p>
+        </div>
+        <div class="info-card">
+          <h4>⚙️ 2. Aspectos Técnicos Específicos</h4>
+          <p>Tecnologías involucradas, estándares (Ej: IEEE, ISO 27001), metodologías de implementación y hardware/software específico (Secciones 2.6 a 2.12).</p>
+        </div>
+        <div class="info-card">
+          <h4>🚀 3. Aplicaciones y Casos</h4>
+          <p>Análisis de casos de éxito similares, mejores prácticas de la industria, seguridad, y marco regulatorio o legal (Secciones 2.13 a 2.18).</p>
+        </div>
+      </div>
+
+      <div class="callout info">
+        <strong>Fórmula para redactar cada sección (<code>## 2.X Título de la Sección</code>):</strong>
+        <div style="margin-top: 1rem; padding-left: 1rem; border-left: 2px solid var(--border-dark);">
+          <p style="margin-bottom: 0.5rem;"><strong>Párrafo 1:</strong> Definición según autor reconocido + breve explicación tuya.</p>
+          <p style="margin-bottom: 0.5rem;"><strong>Párrafo 2:</strong> Complemento o contraste con un segundo autor que abarque elementos adicionales.</p>
+          <p style="margin-bottom: 0;"><strong>Párrafo 3:</strong> Aplicación práctica o características relevantes vinculadas directamente a tu proyecto.</p>
+        </div>
+        <p style="margin-top: 1rem; font-size: 0.9rem;"><em>* Requiere mínimo 2 referencias por sección y una extensión de entre 200 y 400 palabras por tema.</em></p>
+      </div>
+    </section>
+
+    <!-- CAPÍTULO 3 -->
+    <section id="cap3" class="tfg-section">
+      <h1>Capítulo III: Marco Metodológico</h1>
+      <p>Este capítulo detalla el <em>cómo</em> de la investigación. Usa esta estructura pre-aprobada para proyectos de diseño en ingeniería técnica:</p>
+
+      <ul class="feature-list" style="margin-top: 2rem;">
+        <li><strong>Diseño de Investigación:</strong> No experimental y transeccional (los datos se levantan en un solo momento de tiempo sin alterar variables).</li>
+        <li><strong>Enfoque:</strong> Mixto (Combina lo cualitativo para interpretar percepciones operativas, y cuantitativo para medir variables y deficiencias técnicas).</li>
+        <li><strong>Tipo de Investigación:</strong> Descriptivo (Levanta las características exactas del problema actual).</li>
+        <li><strong>Técnicas de Recolección (Las 4 son obligatorias):</strong>
+          <ul style="margin-top: 0.5rem; padding-left: 1.5rem; list-style-type: disc; color: var(--muted);">
+            <li><strong>Observación Directa:</strong> Uso de listas de verificación técnica in-situ.</li>
+            <li><strong>Entrevistas Estructuradas:</strong> Guía de preguntas al personal gerencial o técnico clave.</li>
+            <li><strong>Revisión Documental:</strong> Análisis de planos, inventarios, manuales o reportes previos.</li>
+            <li><strong>Encuesta:</strong> Cuestionario digital (Google Forms) aplicado a los usuarios del sistema.</li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <!-- CAPÍTULO 4 -->
+    <section id="cap4" class="tfg-section">
+      <h1>Capítulo IV: Presentación y Análisis de Resultados</h1>
+      <p>Debes presentar un mínimo de <strong>10 a 12 preguntas</strong> derivadas de tu encuesta bajo este formato estricto y secuencial:</p>
+
+      <div class="callout info">
+        <strong>Estructura obligatoria por cada pregunta:</strong>
+        <ol style="margin-top: 0.5rem; padding-left: 1.5rem;">
+          <li>Tabla de Frecuencias formateada (Estilo APA).</li>
+          <li>Gráfico correspondiente (Barras o Pastel, bien etiquetado).</li>
+          <li>Interpretación inmediata descriptiva de los porcentajes más relevantes.</li>
+        </ol>
+      </div>
+
+      <h3 style="margin-top: 3rem;">Ejemplo Profesional de Presentación:</h3>
+      <p style="font-weight: 600; color: var(--primary);">Tabla 1. Cumplimiento de los objetivos del programa de mantenimiento</p>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Indicador</th>
+              <th>Frecuencia</th>
+              <th>Porcentaje</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Deficiente</td><td>0</td><td>0.0%</td></tr>
+            <tr><td>Regular</td><td>0</td><td>0.0%</td></tr>
+            <tr><td>Bueno</td><td>1</td><td>20.0%</td></tr>
+            <tr><td>Muy bueno</td><td>4</td><td>80.0%</td></tr>
+            <tr style="background: var(--bg-body); font-weight: 600;"><td>Total</td><td>5</td><td>100.0%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size: 0.9rem; color: var(--muted); margin-top: -1.5rem;"><em>Fuente: Encuesta aplicada al personal operativo de [Empresa], [Mes y Año].</em></p>
+      
+      <div style="border-left: 3px solid var(--border-dark); padding-left: 1rem; margin-top: 1.5rem;">
+        <p><strong>Interpretación:</strong> <em>"En la tabla y gráfico precedentes se puede observar que de la población total encuestada, el 80% considera el cumplimiento de los objetivos como 'Muy bueno', mientras que un 20% lo valora como 'Bueno', evidenciando una percepción general positiva frente a..."</em></p>
+      </div>
+
+      <h2 style="margin-top: 3rem;">4.2 Discusión de Resultados</h2>
+      <p>No basta con mostrar gráficos. Debes <strong>cruzar tus hallazgos de campo con el marco teórico</strong>. Desarrolla al menos 6 párrafos donde cites autores que respalden o contrasten tus resultados.</p>
+      <p><em>Ejemplo: "El 73% de latencia reportada en la encuesta confirma las deficiencias del cableado UTP categoría 5. Tal y como señala Stallings (2022), infraestructuras obsoletas en entornos de alta demanda generan cuellos de botella que impactan la operatividad..."</em></p>
+    </section>
+
+    <!-- CAPÍTULO 5 -->
+    <section id="cap5" class="tfg-section">
+      <h1>Capítulo V: Propuesta de Implementación</h1>
+      <p>Esta es la sección <strong>NÚCLEO Y MÁS IMPORTANTE</strong> de tu TFG. Aquí demuestras tu nivel como ingeniero. Personalízala completamente según tu especialidad técnica.</p>
+
+      <div class="card-grid">
+        <div class="info-card">
+          <h4>💻 Para Sistemas / Software</h4>
+          <ul style="padding-left: 1.2rem; color: var(--muted); font-size: 0.95rem;">
+            <li>Diagramas de arquitectura del sistema.</li>
+            <li>Esquema Relacional de Base de Datos (DER).</li>
+            <li>Mockups e Interfaces de Usuario (UI/UX).</li>
+            <li>Topologías de red y protocolos de ciberseguridad.</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h4>🏗️ Para Industrial / Civil</h4>
+          <ul style="padding-left: 1.2rem; color: var(--muted); font-size: 0.95rem;">
+            <li>Layouts de planta y planos arquitectónicos.</li>
+            <li>Diagramas de flujo de procesos / materiales.</li>
+            <li>Especificaciones técnicas de maquinaria.</li>
+            <li>Cálculos estructurales de carga y resistencia.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h2>5.5 Especificación de Componentes Detallados</h2>
+      <p>Para cada equipo físico, módulo de software o servidor propuesto en tu diseño, debes incluir una tabla técnica estricta y un párrafo de <strong>Justificativa</strong> (por qué elegiste exactamente esa marca, modelo o framework y cómo resuelve el problema diagnosticado).</p>
+
+      <h2>5.6 Análisis de Presupuesto Detallado</h2>
+      <p>Todo diseño de ingeniería debe ser económicamente viable. Desglosa los costos de implementación:</p>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Componente / Servicio Técnico</th>
+              <th>Cant.</th>
+              <th>Precio Unit. (RD$)</th>
+              <th>Total (RD$)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Servidor Dell PowerEdge R440 Rack</td><td>1</td><td>$150,000.00</td><td>$150,000.00</td></tr>
+            <tr><td>Licencia Anual Software VMS Enterprise</td><td>1</td><td>$45,000.00</td><td>$45,000.00</td></tr>
+            <tr><td>Switch Cisco Catalyst 24 Puertos PoE</td><td>2</td><td>$32,000.00</td><td>$64,000.00</td></tr>
+            <tr><td>Mano de obra (Configuración e Instalación)</td><td>1</td><td>$30,000.00</td><td>$30,000.00</td></tr>
+            <tr style="background: var(--primary); color: white; font-weight: 700;">
+              <td colspan="3" style="text-align: right; color: white;">TOTAL INVERSIÓN ESTIMADA:</td>
+              <td style="color: white;">$289,000.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- CONCLUSIONES Y RECOMENDACIONES -->
+    <section id="conclusiones" class="tfg-section">
+      <h1>Conclusiones y Recomendaciones</h1>
+      
+      <h2>Estructura de la Conclusión (8 Párrafos)</h2>
+      <div class="process-timeline">
+        <div class="timeline-step">
+          <strong>1. Problema y contexto:</strong> Resumen del riesgo actual y vulnerabilidades de la empresa.
+        </div>
+        <div class="timeline-step">
+          <strong>2. Enfoque de solución:</strong> Qué se hizo metodológicamente para abordar la crisis.
+        </div>
+        <div class="timeline-step">
+          <strong>3. Justificación técnica:</strong> Razones científicas de la arquitectura o diseño elegido.
+        </div>
+        <div class="timeline-step">
+          <strong>4. Adecuación:</strong> Por qué la solución propuesta es escalable en el tiempo.
+        </div>
+        <div class="timeline-step">
+          <strong>5. Validación con usuarios:</strong> Resumen de la percepción del personal según encuestas.
+        </div>
+        <div class="timeline-step">
+          <strong>6. Hallazgos del diagnóstico:</strong> Problemas ocultos que fueron descubiertos en la investigación.
+        </div>
+        <div class="timeline-step">
+          <strong>7. Proceso metodológico:</strong> Datos estadísticos determinantes encontrados en el análisis.
+        </div>
+        <div class="timeline-step">
+          <strong>8. Impacto y proyección:</strong> Cómo la propuesta resuelve el problema de fondo definitivamente.
+        </div>
+      </div>
+
+      <h2>Recomendaciones por Stakeholder</h2>
+      <p>Un ingeniero propone soluciones accionables. Divide tus recomendaciones de forma jerárquica:</p>
+      <ul class="feature-list">
+        <li><strong>Nivel Gerencial/Directivo:</strong> Priorizar planes de inversión, establecer políticas de uso aceptable, asignar presupuestos anuales de mantenimiento.</li>
+        <li><strong>Nivel Técnico/Soporte:</strong> Realizar rutinas de pruebas de contingencia, documentar el código/topologías, ejecutar cronogramas de actualización de parches.</li>
+        <li><strong>Nivel Operativo/Empleados:</strong> Cumplir con lineamientos de uso, reportar incidentes de inmediato, participar en capacitaciones tecnológicas.</li>
+      </ul>
+    </section>
+
+    <!-- CHECKLIST DE CALIDAD -->
+    <section id="calidad" class="tfg-section">
+      <h1>Criterios de Calidad Final (Checklist)</h1>
+      <p>Antes de imprimir o someter tu documento a evaluación, verifica rigurosamente:</p>
+      
+      <div class="callout success">
+        <ul class="checklist" style="margin-top: 0;">
+          <li style="background: transparent; border: none; padding-top: 0.2rem; padding-bottom: 0.2rem; box-shadow: none;"><strong>Estructura Base:</strong> Portada oficial (15-25 palabras), Índice automático, Introducción (4 párrafos).</li>
+          <li style="background: transparent; border: none; padding-top: 0.2rem; padding-bottom: 0.2rem; box-shadow: none;"><strong>Capítulo I:</strong> Antecedentes (5+ ref.), Planteamiento claro, Preguntas Sistematizadas alineadas 1:1 con los 4 Objetivos Específicos.</li>
+          <li style="background: transparent; border: none; padding-top: 0.2rem; padding-bottom: 0.2rem; box-shadow: none;"><strong>Capítulo II:</strong> 15-20 subsecciones técnicas, más de 30 referencias bibliográficas (Mínimo 50% de los años 2020-2025).</li>
+          <li style="background: transparent; border: none; padding-top: 0.2rem; padding-bottom: 0.2rem; box-shadow: none;"><strong>Capítulo III:</strong> Metodología de enfoque mixto justificada, con las 4 técnicas de recolección aplicadas.</li>
+          <li style="background: transparent; border: none; padding-top: 0.2rem; padding-bottom: 0.2rem; box-shadow: none;"><strong>Capítulo IV:</strong> Mínimo 10 tablas y gráficos tabulados + Discusión robusta contrastada con el marco teórico.</li>
+          <li style="background: transparent; border: none; padding-top: 0.2rem; padding-bottom: 0.2rem; box-shadow: none;"><strong>Capítulo V:</strong> Planos o diagramas técnicos propios, componentes estrictamente justificados y presupuesto total.</li>
+          <li style="background: transparent; border: none; padding-top: 0.2rem; padding-bottom: 0.2rem; box-shadow: none;"><strong>Formato General:</strong> Mínimo 45 páginas de contenido, Normas APA 7ma Edición, tipografía Arial/Times 12pt, interlineado 1.5.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- PLAGIO E IA -->
+    <section id="plagio-ia" class="tfg-section">
+      <h1>Prevención de Plagio y Uso Ético de IA</h1>
+      
+      <div class="callout warning">
+        <h3 style="margin-top: 0; color: #7f1d1d;">🚨 Uso Categórico y Ético de IA (ChatGPT, Claude)</h3>
+        <p>La Inteligencia Artificial es una herramienta válida de apoyo (lluvia de ideas, revisión de ortografía, estructuración), <strong>NUNCA un sustituto de tu pensamiento crítico, análisis de ingeniería personal o redacción de resultados.</strong></p>
+        <p style="margin-bottom: 0;">Si la usas, asume la responsabilidad de editar el texto. Los detectores universitarios (Turnitin, GPTZero) penalizan: patrones gramaticales repetitivos, vocabulario "excesivamente perfecto" o genérico, y la ausencia de una voz académica personal.</p>
+      </div>
+
+      <h3 style="margin-top: 2.5rem;">Cómo Humanizar y Elevar tu Texto:</h3>
+      <div class="card-grid" style="grid-template-columns: 1fr; margin-top: 1rem;">
+        <div class="info-card">
+          <p style="color: #ef4444;">❌ <strong>TEXTO TIPO IA (Plano y Genérico):</strong><br> "La tecnología es importante para las empresas modernas. Permite mejorar la eficiencia y reducir costos. Las bases de datos ayudan a organizar información."</p>
+          <hr style="border:0; border-top:1px dashed var(--border-dark); margin:15px 0;">
+          <p style="color: #16a34a;">✅ <strong>TEXTO HUMANO (Analítico y Contextualizado):</strong><br> "A través del levantamiento de información en el almacén MSC, se constató cómo la intermitencia de la red generaba latencias críticas en el control de inventario. Esta vulnerabilidad operativa evidencia que una infraestructura tecnológica deficiente trasciende el hardware e impacta directamente los costos logísticos..."</p>
+        </div>
+      </div>
+      
+      <h3 style="margin-top: 2.5rem;">Uso Correcto de Citas APA (7ma Edición)</h3>
+      <ul class="feature-list">
+        <li><strong>Parafraseo:</strong> "Según García (2024), la conectividad es el pilar de la industria moderna." <em>(Recomendado: demuestra que leíste y entendiste).</em></li>
+        <li><strong>Cita Corta (&lt; 40 palabras):</strong> Dentro del párrafo entre comillas. <em>Ej: Como afirma Rodríguez (2024), "la red es la clave del éxito" (p. 45).</em></li>
+        <li><strong>Cita Larga (&gt; 40 palabras):</strong> En bloque separado, con sangría de 1.27 cm, sin comillas.</li>
+      </ul>
+    </section>
+
+    <!-- RECURSOS Y HERRAMIENTAS -->
+    <section id="recursos" class="tfg-section">
+      <h1>Recursos y Herramientas Recomendadas</h1>
+      
+      <div class="process-timeline">
+        <div class="timeline-step">
+          <h4 style="margin: 0 0 0.5rem; color: var(--primary);">Gestores Bibliográficos</h4>
+          <p style="margin-bottom: 0.5rem; font-size: 0.95rem;">Automatiza tus citas y bibliografía APA 7ma Edición usando plugins directos para Word.</p>
+          <span class="badge badge-blue">Mendeley</span> <span class="badge badge-blue">Zotero</span>
+        </div>
+        <div class="timeline-step">
+          <h4 style="margin: 0 0 0.5rem; color: var(--primary);">Bases de Datos Académicas Gratuitas</h4>
+          <p style="margin-bottom: 0.5rem; font-size: 0.95rem;">Prohibido el uso de Wikipedia, Rincón del Vago o blogs no verificados. Usa repositorios indexados.</p>
+          <span class="badge badge-gold">Google Scholar</span> <span class="badge badge-gold">IEEE Xplore</span> <span class="badge badge-gold">Redalyc</span> <span class="badge badge-gold">SciELO</span>
+        </div>
+        <div class="timeline-step">
+          <h4 style="margin: 0 0 0.5rem; color: var(--primary);">Herramientas de Diseño, Modelado y UX</h4>
+          <p style="margin-bottom: 0.5rem; font-size: 0.95rem;">Fundamentales para crear la planimetría y arquitectura del Capítulo V.</p>
+          <span class="badge badge-blue">AutoCAD</span> <span class="badge badge-blue">Draw.io / Diagrams.net</span> <span class="badge badge-blue">Figma / Balsamiq</span> <span class="badge badge-blue">Lucidchart</span>
+        </div>
+        <div class="timeline-step">
+          <h4 style="margin: 0 0 0.5rem; color: var(--primary);">Control de Calidad y Verificación de Texto</h4>
+          <p style="margin-bottom: 0.5rem; font-size: 0.95rem;">Pasa tus capítulos por estas herramientas antes de enviar a revisión para evitar rechazos por plagio o estructura pobre.</p>
+          <span class="badge badge-gold">Grammarly (Inglés)</span> <span class="badge badge-gold">LanguageTool (Español)</span> <span class="badge badge-gold">Turnitin Draft Coach</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
