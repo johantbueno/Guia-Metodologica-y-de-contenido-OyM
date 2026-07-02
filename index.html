@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Guía Metodológica del TFG — Ingeniería | Universidad Dominicana O&amp;M</title>
-<meta name="description" content="Guía interactiva paso a paso para elaborar el Trabajo Final de Grado (TFG) de Ingeniería: estructura, generador de fórmulas de redacción, plantillas copiables, checklist de progreso, cronograma de entregas y uso ético de la IA.">
+<meta name="description" content="Guía interactiva y autocalificable para elaborar el Trabajo Final de Grado (TFG) de Ingeniería: generador de fórmulas, autoevaluación por sección, Asesor Virtual automático, checklist de progreso y uso ético de la IA.">
 <meta name="author" content="Johan Tapia, PhD">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%98%3C/text%3E%3C/svg%3E">
@@ -218,7 +218,7 @@ input:focus-visible,
 .tfg-icon-btn:hover { background: var(--bg-body); border-color: var(--border-dark); }
 .tfg-nav-toggle { display: none; }
 
-/* Resumen de progreso del estudiante */
+/* Resumen de progreso del estudiante (autocalificación) */
 .tfg-progress-summary { margin-bottom: 1.25rem; }
 .tfg-progress-summary-row {
   display: flex;
@@ -245,6 +245,7 @@ input:focus-visible,
   transition: width .3s ease;
 }
 .tfg-progress-summary-fill.complete { background: linear-gradient(90deg, #16a34a, #22c55e); }
+.tfg-progress-summary-note { margin: 0.5rem 0 0; font-size: 0.72rem; color: var(--muted); }
 
 .tfg-search { margin-bottom: 1.25rem; }
 .tfg-search input {
@@ -311,6 +312,9 @@ input:focus-visible,
   margin-top: 1.5rem;
   padding-top: 1.5rem;
   border-top: 1px solid var(--border-light);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
 }
 
 @media (max-width: 1023px) {
@@ -380,31 +384,66 @@ input:focus-visible,
   .tfg-section { padding: 1.5rem; }
 }
 
-/* Barra de herramientas por sección (marcar como completado) */
-.tfg-section-toolbar {
+/* Panel de autoevaluación por sección (sistema autocalificable) */
+.tfg-check-panel {
+  margin-top: 2.5rem;
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  background: var(--bg-body);
+}
+.tfg-check-header {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
   margin-bottom: 1rem;
 }
-.tfg-complete-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.45rem 0.95rem;
-  border-radius: 9999px;
-  border: 1px solid var(--border-dark);
-  background: var(--bg-body);
-  color: var(--muted);
-  font-size: 0.8rem;
+.tfg-check-title { font-weight: 700; color: var(--primary); font-size: 0.95rem; }
+.tfg-check-status {
+  font-size: 0.78rem;
   font-weight: 700;
-  cursor: pointer;
-  transition: all .2s ease;
-  font-family: inherit;
+  padding: 0.25rem 0.7rem;
+  border-radius: 9999px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-dark);
+  color: var(--muted);
+  white-space: nowrap;
 }
-.tfg-complete-btn:hover { border-color: var(--o-m-blue); color: var(--o-m-blue); }
-.tfg-complete-btn[aria-pressed="true"] { background: #dcfce7; border-color: #16a34a; color: #15803d; }
-[data-theme="dark"] .tfg-complete-btn[aria-pressed="true"] { background: #0c2417; border-color: #22c55e; color: #4ade80; }
-.tfg-complete-icon { font-size: 0.9rem; line-height: 1; }
+.tfg-check-status.complete { background: #dcfce7; border-color: #16a34a; color: #15803d; }
+[data-theme="dark"] .tfg-check-status.complete { background: #0c2417; border-color: #22c55e; color: #4ade80; }
+
+.tfg-check-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+.tfg-check-list label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--secondary);
+  line-height: 1.5;
+}
+.tfg-check-list input[type="checkbox"] {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  margin-top: 0.15rem;
+  accent-color: var(--o-m-blue);
+  cursor: pointer;
+}
+.tfg-check-result {
+  display: none;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  background: #dcfce7;
+  border: 1px solid #16a34a;
+  color: #15803d;
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+.tfg-check-result.show { display: block; }
+[data-theme="dark"] .tfg-check-result { background: #0c2417; border-color: #22c55e; color: #4ade80; }
 
 /* ==========================================================================
    PORTADA ACADÉMICA (Elegante)
@@ -760,6 +799,111 @@ input:focus-visible,
 #tfg-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
 #tfg-top:hover { background: var(--o-m-blue); }
 
+/* ==========================================================================
+   ASESOR VIRTUAL (asistente automático basado en el contenido de la guía)
+   ========================================================================== */
+.tfg-advisor-fab {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, var(--o-m-blue), #0a5a94);
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .2s ease;
+}
+.tfg-advisor-fab:hover { transform: scale(1.06); }
+
+.tfg-advisor-panel {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  width: min(370px, calc(100vw - 3rem));
+  max-height: min(560px, calc(100vh - 3rem));
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.tfg-advisor-panel[hidden] { display: none; }
+
+.tfg-advisor-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 1rem 1.1rem;
+  background: var(--o-m-blue);
+  color: #fff;
+  flex-shrink: 0;
+}
+.tfg-advisor-title { margin: 0; font-weight: 700; font-size: 0.95rem; }
+.tfg-advisor-subtitle { margin: 0.15rem 0 0; font-size: 0.75rem; opacity: 0.85; }
+.tfg-advisor-header .tfg-icon-btn { border-color: rgba(255,255,255,0.4); color: #fff; }
+.tfg-advisor-header .tfg-icon-btn:hover { background: rgba(255,255,255,0.15); }
+
+.tfg-advisor-log {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  min-height: 160px;
+}
+.tfg-advisor-msg { padding: 0.6rem 0.85rem; border-radius: 12px; line-height: 1.5; max-width: 92%; }
+.tfg-advisor-msg-bot { background: var(--bg-body); color: var(--secondary); border: 1px solid var(--border-light); align-self: flex-start; border-bottom-left-radius: 4px; }
+.tfg-advisor-msg-user { background: var(--o-m-blue); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+.tfg-advisor-msg a { color: inherit; font-weight: 700; text-decoration: underline; }
+
+.tfg-advisor-quick { display: flex; flex-wrap: wrap; gap: 0.4rem; padding: 0 1rem 0.75rem; flex-shrink: 0; }
+.tfg-advisor-chip {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.3rem 0.65rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border-dark);
+  background: var(--bg-body);
+  color: var(--secondary);
+  cursor: pointer;
+  font-family: inherit;
+}
+.tfg-advisor-chip:hover { border-color: var(--o-m-blue); color: var(--o-m-blue); }
+
+.tfg-advisor-form { display: flex; gap: 0.5rem; padding: 0.85rem; border-top: 1px solid var(--border-light); flex-shrink: 0; }
+.tfg-advisor-form input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.55rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-light);
+  background: var(--bg-body);
+  color: var(--primary);
+  font-family: inherit;
+  font-size: 0.85rem;
+}
+.tfg-advisor-form input:focus-visible { outline: 2px solid var(--o-m-blue); outline-offset: 1px; }
+.tfg-advisor-form button { flex-shrink: 0; border-color: var(--border-dark); }
+
+@media (max-width: 640px) {
+  .tfg-advisor-fab { bottom: 1rem; left: 1rem; width: 50px; height: 50px; font-size: 1.3rem; }
+  .tfg-advisor-panel { left: 0.75rem; right: 0.75rem; bottom: 0.75rem; width: auto; }
+}
+
 /* Pie de página con autoría */
 .tfg-footer {
   border-top: 1px solid var(--border-light);
@@ -788,7 +932,8 @@ input:focus-visible,
 
 /* Formato de Impresión Fiel */
 @media print {
-  .tfg-sidebar, .print-action, #tfg-top, #tfg-progress-wrap, .tfg-section-toolbar, .tfg-skip-link { display: none !important; }
+  .tfg-sidebar, .print-action, #tfg-top, #tfg-progress-wrap, .tfg-check-panel, .tfg-skip-link,
+  .tfg-advisor-fab, .tfg-advisor-panel { display: none !important; }
   .tfg-wrapper { display: block; background: white; }
   .tfg-main { width: 100%; max-width: none; padding: 0; margin: 0; }
   .tfg-section { box-shadow: none; border: none; padding: 1rem 0; page-break-inside: avoid; }
@@ -820,12 +965,13 @@ input:focus-visible,
 
     <div class="tfg-progress-summary">
       <div class="tfg-progress-summary-row">
-        <span>Tu progreso</span>
-        <span id="tfg-progress-count">0 / 13</span>
+        <span>Requisitos cumplidos</span>
+        <span id="tfg-progress-count">0 / 0</span>
       </div>
       <div class="tfg-progress-summary-track">
         <div id="tfg-progress-summary-bar" class="tfg-progress-summary-fill"></div>
       </div>
+      <p class="tfg-progress-summary-note" id="tfg-progress-note">Marca cada requisito al final de una sección para autoevaluarte.</p>
     </div>
 
     <div id="tfg-sidebar-menu" class="tfg-sidebar-collapsible">
@@ -878,7 +1024,12 @@ input:focus-visible,
         <span style="color: var(--o-m-blue);">Ingeniero en Sistemas y Computación</span>
       </div>
 
-      <div class="callout gold" style="text-align: left; margin: 3rem auto; max-width: 650px;">
+      <div class="callout success" style="text-align: left; margin: 0 auto 2.5rem; max-width: 650px;">
+        <strong>🎓 Esta guía es interactiva y autocalificable</strong>
+        <p style="margin: 0;">Al final de cada sección encontrarás una <strong>autoevaluación</strong>: marca los requisitos que ya cumples y el sistema te dirá si esa parte está completa. Si tienes dudas, pregúntale al <strong>Asesor Virtual</strong> (botón 🎓 abajo a la izquierda) — responde automáticamente según esta guía.</p>
+      </div>
+
+      <div class="callout gold" style="text-align: left; margin: 0 auto 3rem; max-width: 650px;">
         <div><span class="badge badge-gold">FÓRMULA DEL TÍTULO</span></div>
         <p style="margin: 0.75rem 0 0; font-size: 0.9rem;">Completa cada campo y observa cómo se arma tu título en tiempo real. El conteo de palabras te avisa si estás dentro del rango permitido.</p>
 
@@ -904,13 +1055,7 @@ input:focus-visible,
     </section>
 
     <!-- DEDICATORIA Y AGRADECIMIENTOS -->
-    <section id="dedicatoria" class="tfg-section" data-completable="true">
-      <div class="tfg-section-toolbar">
-        <button class="tfg-complete-btn" data-section="dedicatoria" type="button" aria-pressed="false">
-          <span class="tfg-complete-icon" aria-hidden="true">○</span>
-          <span class="tfg-complete-label">Marcar como completado</span>
-        </button>
-      </div>
+    <section id="dedicatoria" class="tfg-section">
       <h1>Dedicatoria y Agradecimientos</h1>
       <p>Son de las primeras páginas que leerá el jurado. Aunque son de carácter personal, deben conservar un tono formal, específico y agradecido: evita frases genéricas como "gracias a todos los que me apoyaron" y nombra contribuciones concretas.</p>
 
@@ -935,16 +1080,23 @@ input:focus-visible,
         <strong>Tono recomendado:</strong>
         <p style="margin: 0;">Formal, específico y agradecido. Menciona contribuciones concretas de cada persona o institución en lugar de agradecimientos genéricos.</p>
       </div>
+
+      <div class="tfg-check-panel" data-section="dedicatoria">
+        <div class="tfg-check-header">
+          <span class="tfg-check-title">📋 Autoevaluación de esta sección</span>
+          <span class="tfg-check-status">0 / 3</span>
+        </div>
+        <ul class="tfg-check-list">
+          <li><label><input type="checkbox" data-criterion="dedicatoria-1"> Mi dedicatoria no excede 1 página y menciona personas específicas.</label></li>
+          <li><label><input type="checkbox" data-criterion="dedicatoria-2"> Mis agradecimientos siguen el orden obligatorio (Dios/Fe, Universidad, Asesor, Profesores, Empresa, Personal, Compañeros).</label></li>
+          <li><label><input type="checkbox" data-criterion="dedicatoria-3"> Usé un tono formal y agradecí contribuciones concretas, no frases genéricas.</label></li>
+        </ul>
+        <div class="tfg-check-result"></div>
+      </div>
     </section>
 
     <!-- INTRODUCCIÓN -->
-    <section id="intro" class="tfg-section" data-completable="true">
-      <div class="tfg-section-toolbar">
-        <button class="tfg-complete-btn" data-section="intro" type="button" aria-pressed="false">
-          <span class="tfg-complete-icon" aria-hidden="true">○</span>
-          <span class="tfg-complete-label">Marcar como completado</span>
-        </button>
-      </div>
+    <section id="intro" class="tfg-section">
       <h1>Introducción</h1>
       <p>La introducción debe enganchar al lector y dar un panorama completo pero resumido del trabajo. Utiliza esta estructura metodológica de 4 párrafos:</p>
 
@@ -955,16 +1107,24 @@ input:focus-visible,
         <p><strong>Párrafo 3: Propuesta académica.</strong> "A través de este estudio se propone[tu solución] que incluye [componentes]. Este proyecto tiene como objetivo aplicar los conocimientos adquiridos en la carrera..."</p>
         <p><strong>Párrafo 4: Palabras clave.</strong> Incluir una lista de 5 a 7 términos técnicos centrales de tu proyecto.</p>
       </div>
+
+      <div class="tfg-check-panel" data-section="intro">
+        <div class="tfg-check-header">
+          <span class="tfg-check-title">📋 Autoevaluación de esta sección</span>
+          <span class="tfg-check-status">0 / 4</span>
+        </div>
+        <ul class="tfg-check-list">
+          <li><label><input type="checkbox" data-criterion="intro-1"> Escribí el párrafo de contextualización tecnológica.</label></li>
+          <li><label><input type="checkbox" data-criterion="intro-2"> Escribí el párrafo del problema específico detectado en la empresa/institución.</label></li>
+          <li><label><input type="checkbox" data-criterion="intro-3"> Escribí el párrafo de propuesta académica.</label></li>
+          <li><label><input type="checkbox" data-criterion="intro-4"> Incluí una lista de 5 a 7 palabras clave.</label></li>
+        </ul>
+        <div class="tfg-check-result"></div>
+      </div>
     </section>
 
     <!-- CAPÍTULO 1 -->
-    <section id="cap1" class="tfg-section" data-completable="true">
-      <div class="tfg-section-toolbar">
-        <button class="tfg-complete-btn" data-section="cap1" type="button" aria-pressed="false">
-          <span class="tfg-complete-icon" aria-hidden="true">○</span>
-          <span class="tfg-complete-label">Marcar como completado</span>
-        </button>
-      </div>
+    <section id="cap1" class="tfg-section">
       <h1>Capítulo I: Aspectos Introductorios</h1>
 
       <h2>1.1 Antecedentes de la Investigación</h2>
@@ -1054,16 +1214,27 @@ input:focus-visible,
         <li><strong>Factibilidad:</strong> Realizar estudios de factibilidad técnica, operativa y económica.</li>
         <li><strong>Diseño:</strong> Diseñar[solución específica] junto con [componente complementario].</li>
       </ul>
+
+      <div class="tfg-check-panel" data-section="cap1">
+        <div class="tfg-check-header">
+          <span class="tfg-check-title">📋 Autoevaluación de esta sección</span>
+          <span class="tfg-check-status">0 / 7</span>
+        </div>
+        <ul class="tfg-check-list">
+          <li><label><input type="checkbox" data-criterion="cap1-1"> Mis antecedentes tienen 4 párrafos, de lo general a lo particular.</label></li>
+          <li><label><input type="checkbox" data-criterion="cap1-2"> Incluí entre 4 y 10 referencias (2020-2025), con al menos 1 internacional.</label></li>
+          <li><label><input type="checkbox" data-criterion="cap1-3"> Mi planteamiento del problema tiene 4 párrafos.</label></li>
+          <li><label><input type="checkbox" data-criterion="cap1-4"> Formulé la Gran Pregunta y 4 preguntas específicas alineadas 1:1 con mis objetivos.</label></li>
+          <li><label><input type="checkbox" data-criterion="cap1-5"> Mi justificación cubre las 4 dimensiones (técnica, perspectiva técnica, académica, impacto).</label></li>
+          <li><label><input type="checkbox" data-criterion="cap1-6"> Mi objetivo general sigue la fórmula, con un verbo de acción claro.</label></li>
+          <li><label><input type="checkbox" data-criterion="cap1-7"> Tengo 4 objetivos específicos correlativos a mis preguntas.</label></li>
+        </ul>
+        <div class="tfg-check-result"></div>
+      </div>
     </section>
 
     <!-- CAPÍTULO 2 -->
-    <section id="cap2" class="tfg-section" data-completable="true">
-      <div class="tfg-section-toolbar">
-        <button class="tfg-complete-btn" data-section="cap2" type="button" aria-pressed="false">
-          <span class="tfg-complete-icon" aria-hidden="true">○</span>
-          <span class="tfg-complete-label">Marcar como completado</span>
-        </button>
-      </div>
+    <section id="cap2" class="tfg-section">
       <h1>Capítulo II: Marco Teórico</h1>
       <p>El marco teórico fundamenta tu proyecto. Debe contener entre <strong>15 y 20 secciones técnicas</strong> estructuradas lógicamente de la siguiente manera:</p>
 
@@ -1091,16 +1262,24 @@ input:focus-visible,
         </div>
         <p style="margin-top: 1rem; font-size: 0.9rem;"><em>* Requiere mínimo 2 referencias por sección y una extensión de entre 200 y 400 palabras por tema.</em></p>
       </div>
+
+      <div class="tfg-check-panel" data-section="cap2">
+        <div class="tfg-check-header">
+          <span class="tfg-check-title">📋 Autoevaluación de esta sección</span>
+          <span class="tfg-check-status">0 / 4</span>
+        </div>
+        <ul class="tfg-check-list">
+          <li><label><input type="checkbox" data-criterion="cap2-1"> Mi marco teórico tiene entre 15 y 20 secciones técnicas.</label></li>
+          <li><label><input type="checkbox" data-criterion="cap2-2"> Cada sección tiene mínimo 2 referencias y 200-400 palabras.</label></li>
+          <li><label><input type="checkbox" data-criterion="cap2-3"> Tengo más de 30 referencias bibliográficas en total.</label></li>
+          <li><label><input type="checkbox" data-criterion="cap2-4"> Al menos el 50% de mis referencias son de 2020-2025.</label></li>
+        </ul>
+        <div class="tfg-check-result"></div>
+      </div>
     </section>
 
     <!-- CAPÍTULO 3 -->
-    <section id="cap3" class="tfg-section" data-completable="true">
-      <div class="tfg-section-toolbar">
-        <button class="tfg-complete-btn" data-section="cap3" type="button" aria-pressed="false">
-          <span class="tfg-complete-icon" aria-hidden="true">○</span>
-          <span class="tfg-complete-label">Marcar como completado</span>
-        </button>
-      </div>
+    <section id="cap3" class="tfg-section">
       <h1>Capítulo III: Marco Metodológico</h1>
       <p>Este capítulo detalla el <em>cómo</em> de la investigación. Comienza siempre con un párrafo introductorio y luego desarrolla cada componente metodológico con su propia plantilla de redacción.</p>
 
@@ -1146,16 +1325,27 @@ La muestra estuvo conformada por un total de [número] participantes, distribuid
 
       <h2>3.7 Validez y Confiabilidad</h2>
       <div class="tpl-box">La validez se aseguró mediante la triangulación de fuentes, es decir, el cruce de información proveniente de distintos actores y documentos. La confiabilidad se garantizó a través del uso sistemático de instrumentos validados, el registro ordenado de los datos y la revisión constante del proceso investigativo.</div>
+
+      <div class="tfg-check-panel" data-section="cap3">
+        <div class="tfg-check-header">
+          <span class="tfg-check-title">📋 Autoevaluación de esta sección</span>
+          <span class="tfg-check-status">0 / 7</span>
+        </div>
+        <ul class="tfg-check-list">
+          <li><label><input type="checkbox" data-criterion="cap3-1"> Escribí el párrafo introductorio del marco metodológico.</label></li>
+          <li><label><input type="checkbox" data-criterion="cap3-2"> Justifiqué el diseño no experimental y transeccional.</label></li>
+          <li><label><input type="checkbox" data-criterion="cap3-3"> Justifiqué el enfoque mixto.</label></li>
+          <li><label><input type="checkbox" data-criterion="cap3-4"> Justifiqué el tipo de investigación descriptivo.</label></li>
+          <li><label><input type="checkbox" data-criterion="cap3-5"> Definí población y muestra.</label></li>
+          <li><label><input type="checkbox" data-criterion="cap3-6"> Apliqué las 4 técnicas de recolección (observación, entrevistas, revisión documental, encuesta).</label></li>
+          <li><label><input type="checkbox" data-criterion="cap3-7"> Describí los procedimientos de análisis y la validez/confiabilidad.</label></li>
+        </ul>
+        <div class="tfg-check-result"></div>
+      </div>
     </section>
 
     <!-- CAPÍTULO 4 -->
-    <section id="cap4" class="tfg-section" data-completable="true">
-      <div class="tfg-section-toolbar">
-        <button class="tfg-complete-btn" data-section="cap4" type="button" aria-pressed="false">
-          <span class="tfg-complete-icon" aria-hidden="true">○</span>
-          <span class="tfg-complete-label">Marcar como completado</span>
-        </button>
-      </div>
+    <section id="cap4" class="tfg-section">
       <h1>Capítulo IV: Presentación y Análisis de Resultados</h1>
       <p>Debes presentar un mínimo de <strong>10 a 12 preguntas</strong> derivadas de tu encuesta bajo este formato estricto y secuencial:</p>
 
@@ -1201,16 +1391,23 @@ La muestra estuvo conformada por un total de [número] participantes, distribuid
 En la Tabla X se muestra que el [porcentaje]% de [población] [resultado específico]. Este dato es [preocupante/positivo/revelador] porque [explicación del impacto]. Tal y como señala [Autor] (año), "[cita que respalde tu interpretación]", lo cual refuerza [conexión con tus resultados].
 
 A través de este análisis, se evidencia que la situación [caracterización general], pero también [oportunidades identificadas]. Los resultados no solo señalan problemas, sino que también muestran [aspectos positivos o disposición al cambio encontrados].</div>
+
+      <div class="tfg-check-panel" data-section="cap4">
+        <div class="tfg-check-header">
+          <span class="tfg-check-title">📋 Autoevaluación de esta sección</span>
+          <span class="tfg-check-status">0 / 3</span>
+        </div>
+        <ul class="tfg-check-list">
+          <li><label><input type="checkbox" data-criterion="cap4-1"> Presenté entre 10 y 12 preguntas de mi encuesta.</label></li>
+          <li><label><input type="checkbox" data-criterion="cap4-2"> Cada pregunta tiene tabla + gráfico + interpretación.</label></li>
+          <li><label><input type="checkbox" data-criterion="cap4-3"> Mi discusión tiene al menos 6 párrafos que cruzan hallazgos con el marco teórico.</label></li>
+        </ul>
+        <div class="tfg-check-result"></div>
+      </div>
     </section>
 
     <!-- CAPÍTULO 5 -->
-    <section id="cap5" class="tfg-section" data-completable="true">
-      <div class="tfg-section-toolbar">
-        <button class="tfg-complete-btn" data-section="cap5" type="button" aria-pressed="false">
-          <span class="tfg-complete-icon" aria-hidden="true">○</span>
-          <span class="tfg-complete-label">Marcar como completado</span>
-        </button>
-      </div>
+    <section id="cap5" class="tfg-section">
       <h1>Capítulo V: Propuesta de Implementación</h1>
       <p>Esta es la sección <strong>NÚCLEO Y MÁS IMPORTANTE</strong> de tu TFG. Aquí demuestras tu nivel como ingeniero. Personalízala completamente según tu especialidad técnica.</p>
 
@@ -1272,16 +1469,23 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
         </table>
       </div>
       <p style="font-size: 0.85rem; color: var(--muted); margin-top: -1.5rem;"><em>Incluye la tasa de cambio de referencia usada y su fecha de consulta.</em></p>
+
+      <div class="tfg-check-panel" data-section="cap5">
+        <div class="tfg-check-header">
+          <span class="tfg-check-title">📋 Autoevaluación de esta sección</span>
+          <span class="tfg-check-status">0 / 3</span>
+        </div>
+        <ul class="tfg-check-list">
+          <li><label><input type="checkbox" data-criterion="cap5-1"> Incluí planos, diagramas o mockups propios de mi solución.</label></li>
+          <li><label><input type="checkbox" data-criterion="cap5-2"> Cada componente tiene tabla de especificaciones + párrafo de Justificativa.</label></li>
+          <li><label><input type="checkbox" data-criterion="cap5-3"> Incluí un presupuesto detallado con el total de inversión.</label></li>
+        </ul>
+        <div class="tfg-check-result"></div>
+      </div>
     </section>
 
     <!-- CONCLUSIONES Y RECOMENDACIONES -->
-    <section id="conclusiones" class="tfg-section" data-completable="true">
-      <div class="tfg-section-toolbar">
-        <button class="tfg-complete-btn" data-section="conclusiones" type="button" aria-pressed="false">
-          <span class="tfg-complete-icon" aria-hidden="true">○</span>
-          <span class="tfg-complete-label">Marcar como completado</span>
-        </button>
-      </div>
+    <section id="conclusiones" class="tfg-section">
       <h1>Conclusiones y Recomendaciones</h1>
 
       <h2>Estructura de la Conclusión (8 Párrafos)</h2>
@@ -1319,16 +1523,22 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
         <li><strong>Nivel Técnico/Soporte:</strong> Realizar rutinas de pruebas de contingencia, documentar el código/topologías, ejecutar cronogramas de actualización de parches.</li>
         <li><strong>Nivel Operativo/Empleados:</strong> Cumplir con lineamientos de uso, reportar incidentes de inmediato, participar en capacitaciones tecnológicas.</li>
       </ul>
+
+      <div class="tfg-check-panel" data-section="conclusiones">
+        <div class="tfg-check-header">
+          <span class="tfg-check-title">📋 Autoevaluación de esta sección</span>
+          <span class="tfg-check-status">0 / 2</span>
+        </div>
+        <ul class="tfg-check-list">
+          <li><label><input type="checkbox" data-criterion="conclusiones-1"> Mi conclusión tiene 8 párrafos siguiendo la estructura obligatoria.</label></li>
+          <li><label><input type="checkbox" data-criterion="conclusiones-2"> Escribí recomendaciones para los 3 niveles de stakeholders.</label></li>
+        </ul>
+        <div class="tfg-check-result"></div>
+      </div>
     </section>
 
     <!-- ANEXOS, GLOSARIO Y REFERENCIAS -->
-    <section id="anexos" class="tfg-section" data-completable="true">
-      <div class="tfg-section-toolbar">
-        <button class="tfg-complete-btn" data-section="anexos" type="button" aria-pressed="false">
-          <span class="tfg-complete-icon" aria-hidden="true">○</span>
-          <span class="tfg-complete-label">Marcar como completado</span>
-        </button>
-      </div>
+    <section id="anexos" class="tfg-section">
       <h1>Anexos, Glosario y Referencias</h1>
       <p>El cierre documental de tu TFG demuestra el rigor de tu investigación. Estas tres secciones son obligatorias y suelen restar puntos importantes cuando se entregan incompletas.</p>
 
@@ -1365,16 +1575,24 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
           <div class="tpl-box" style="margin: 0;">Apellido, N. o Nombre de la organización. (Año, mes día). Título de la página. Nombre del sitio. URL</div>
         </div>
       </div>
+
+      <div class="tfg-check-panel" data-section="anexos">
+        <div class="tfg-check-header">
+          <span class="tfg-check-title">📋 Autoevaluación de esta sección</span>
+          <span class="tfg-check-status">0 / 4</span>
+        </div>
+        <ul class="tfg-check-list">
+          <li><label><input type="checkbox" data-criterion="anexos-1"> Incluí el instrumento de encuesta completo.</label></li>
+          <li><label><input type="checkbox" data-criterion="anexos-2"> Incluí el guion de entrevista y evidencia fotográfica.</label></li>
+          <li><label><input type="checkbox" data-criterion="anexos-3"> Mi glosario está en orden alfabético con definiciones breves.</label></li>
+          <li><label><input type="checkbox" data-criterion="anexos-4"> Mis referencias están en formato APA 7ma edición y ordenadas alfabéticamente.</label></li>
+        </ul>
+        <div class="tfg-check-result"></div>
+      </div>
     </section>
 
     <!-- CHECKLIST DE CALIDAD -->
-    <section id="calidad" class="tfg-section" data-completable="true">
-      <div class="tfg-section-toolbar">
-        <button class="tfg-complete-btn" data-section="calidad" type="button" aria-pressed="false">
-          <span class="tfg-complete-icon" aria-hidden="true">○</span>
-          <span class="tfg-complete-label">Marcar como completado</span>
-        </button>
-      </div>
+    <section id="calidad" class="tfg-section">
       <h1>Criterios de Calidad Final (Checklist)</h1>
       <p>Antes de imprimir o someter tu documento a evaluación, verifica rigurosamente:</p>
 
@@ -1390,16 +1608,23 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
           <li style="background: transparent; border: none; padding-top: 0.2rem; padding-bottom: 0.2rem; box-shadow: none;"><strong>Formato General:</strong> Mínimo 45 páginas de contenido, Normas APA 7ma Edición, tipografía Arial/Times 12pt, interlineado 1.5, márgenes de 2.54 cm.</li>
         </ul>
       </div>
+
+      <div class="tfg-check-panel" data-section="calidad">
+        <div class="tfg-check-header">
+          <span class="tfg-check-title">📋 Autoevaluación de esta sección</span>
+          <span class="tfg-check-status">0 / 3</span>
+        </div>
+        <ul class="tfg-check-list">
+          <li><label><input type="checkbox" data-criterion="calidad-1"> Mi documento tiene mínimo 45 páginas de contenido.</label></li>
+          <li><label><input type="checkbox" data-criterion="calidad-2"> Usé Arial/Times 12pt, interlineado 1.5 y márgenes de 2.54 cm.</label></li>
+          <li><label><input type="checkbox" data-criterion="calidad-3"> Verifiqué que mi índice automático está actualizado.</label></li>
+        </ul>
+        <div class="tfg-check-result"></div>
+      </div>
     </section>
 
     <!-- PLAGIO E IA -->
-    <section id="plagio-ia" class="tfg-section" data-completable="true">
-      <div class="tfg-section-toolbar">
-        <button class="tfg-complete-btn" data-section="plagio-ia" type="button" aria-pressed="false">
-          <span class="tfg-complete-icon" aria-hidden="true">○</span>
-          <span class="tfg-complete-label">Marcar como completado</span>
-        </button>
-      </div>
+    <section id="plagio-ia" class="tfg-section">
       <h1>Prevención de Plagio y Uso Ético de IA</h1>
 
       <div class="callout warning">
@@ -1440,16 +1665,23 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
           <strong>Paso 4 — Entrega oficial:</strong> una vez aprobadas las verificaciones digitales, se procede con la entrega formal ante la Dirección de Trabajo Final de Grado, según el formato indicado por tu asesor (impreso, USB y/o PDF).
         </div>
       </div>
+
+      <div class="tfg-check-panel" data-section="plagio-ia">
+        <div class="tfg-check-header">
+          <span class="tfg-check-title">📋 Autoevaluación de esta sección</span>
+          <span class="tfg-check-status">0 / 3</span>
+        </div>
+        <ul class="tfg-check-list">
+          <li><label><input type="checkbox" data-criterion="plagio-1"> Pasé mi documento por software antiplagio (menos de 20% de similitud).</label></li>
+          <li><label><input type="checkbox" data-criterion="plagio-2"> Pasé mi documento por un detector de IA y humanicé el texto donde fue necesario.</label></li>
+          <li><label><input type="checkbox" data-criterion="plagio-3"> Revisé que todas mis citas tengan su referencia correspondiente.</label></li>
+        </ul>
+        <div class="tfg-check-result"></div>
+      </div>
     </section>
 
     <!-- CRONOGRAMA Y EVALUACIÓN -->
-    <section id="cronograma" class="tfg-section" data-completable="true">
-      <div class="tfg-section-toolbar">
-        <button class="tfg-complete-btn" data-section="cronograma" type="button" aria-pressed="false">
-          <span class="tfg-complete-icon" aria-hidden="true">○</span>
-          <span class="tfg-complete-label">Marcar como completado</span>
-        </button>
-      </div>
+    <section id="cronograma" class="tfg-section">
       <h1>Cronograma de Trabajo y Criterios de Evaluación</h1>
       <p>El desarrollo del TFG se organiza en 3 módulos secuenciales. Las fechas exactas de cada corte las define tu asesor(a) al inicio del curso; usa esta estructura como plantilla de planificación.</p>
 
@@ -1514,16 +1746,22 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
           <li>Grupos de máximo 3 participantes.</li>
         </ul>
       </div>
+
+      <div class="tfg-check-panel" data-section="cronograma">
+        <div class="tfg-check-header">
+          <span class="tfg-check-title">📋 Autoevaluación de esta sección</span>
+          <span class="tfg-check-status">0 / 2</span>
+        </div>
+        <ul class="tfg-check-list">
+          <li><label><input type="checkbox" data-criterion="cronograma-1"> Completé todas las entregas críticas de mi módulo actual.</label></li>
+          <li><label><input type="checkbox" data-criterion="cronograma-2"> Verifiqué que cumplo los requisitos técnicos obligatorios (páginas, formato, originalidad).</label></li>
+        </ul>
+        <div class="tfg-check-result"></div>
+      </div>
     </section>
 
     <!-- RECURSOS Y HERRAMIENTAS -->
-    <section id="recursos" class="tfg-section" data-completable="true">
-      <div class="tfg-section-toolbar">
-        <button class="tfg-complete-btn" data-section="recursos" type="button" aria-pressed="false">
-          <span class="tfg-complete-icon" aria-hidden="true">○</span>
-          <span class="tfg-complete-label">Marcar como completado</span>
-        </button>
-      </div>
+    <section id="recursos" class="tfg-section">
       <h1>Recursos y Herramientas Recomendadas</h1>
 
       <div class="process-timeline">
@@ -1548,6 +1786,18 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
           <span class="badge badge-gold">Grammarly (Inglés)</span> <span class="badge badge-gold">LanguageTool (Español)</span> <span class="badge badge-gold">Turnitin Draft Coach</span>
         </div>
       </div>
+
+      <div class="tfg-check-panel" data-section="recursos">
+        <div class="tfg-check-header">
+          <span class="tfg-check-title">📋 Autoevaluación de esta sección</span>
+          <span class="tfg-check-status">0 / 2</span>
+        </div>
+        <ul class="tfg-check-list">
+          <li><label><input type="checkbox" data-criterion="recursos-1"> Utilicé al menos un gestor bibliográfico (Mendeley/Zotero).</label></li>
+          <li><label><input type="checkbox" data-criterion="recursos-2"> Revisé mi texto con una herramienta de control de calidad (Grammarly/LanguageTool).</label></li>
+        </ul>
+        <div class="tfg-check-result"></div>
+      </div>
     </section>
 
   </main>
@@ -1562,6 +1812,31 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
     <p class="tfg-footer-year">© <span id="tfg-year"></span> Johan Tapia, PhD. Todos los derechos reservados.</p>
   </div>
 </footer>
+
+<!-- ASESOR VIRTUAL -->
+<button id="tfg-advisor-toggle" class="tfg-advisor-fab" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="tfg-advisor-panel" title="Abrir Asesor Virtual">
+  <span aria-hidden="true">🎓</span>
+  <span class="tfg-visually-hidden">Abrir Asesor Virtual</span>
+</button>
+
+<div id="tfg-advisor-panel" class="tfg-advisor-panel" role="dialog" aria-modal="false" aria-labelledby="tfg-advisor-title" hidden>
+  <div class="tfg-advisor-header">
+    <div>
+      <p id="tfg-advisor-title" class="tfg-advisor-title">🎓 Asesor Virtual</p>
+      <p class="tfg-advisor-subtitle">Responde automáticamente según esta guía</p>
+    </div>
+    <button id="tfg-advisor-close" class="tfg-icon-btn" type="button" aria-label="Cerrar Asesor Virtual">✕</button>
+  </div>
+  <div id="tfg-advisor-log" class="tfg-advisor-log" aria-live="polite">
+    <div class="tfg-advisor-msg tfg-advisor-msg-bot">¡Hola! Soy el Asesor Virtual de esta guía. Pregúntame sobre requisitos de cada capítulo, fórmulas, formato APA, plagio e IA, o el cronograma. Para dudas específicas de tu proyecto, consulta a tu asesor académico.</div>
+  </div>
+  <div class="tfg-advisor-quick" id="tfg-advisor-quick"></div>
+  <form id="tfg-advisor-form" class="tfg-advisor-form">
+    <label for="tfg-advisor-input" class="tfg-visually-hidden">Escribe tu pregunta</label>
+    <input type="text" id="tfg-advisor-input" placeholder="Escribe tu pregunta…" autocomplete="off">
+    <button type="submit" class="tfg-icon-btn" aria-label="Enviar pregunta">➤</button>
+  </form>
+</div>
 
 <button id="tfg-top" type="button" aria-label="Volver arriba" title="Volver arriba">↑</button>
 
@@ -1726,54 +2001,77 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
     render();
   });
 
-  /* Checklist de progreso por sección con persistencia (localStorage) */
-  var PROGRESS_KEY = 'tfg-progress-v1';
-  var completableSections = Array.prototype.slice.call(document.querySelectorAll('section[data-completable="true"]'));
-  var trackableIds = completableSections.map(function (s) { return s.id; });
+  /* Sistema autocalificable: checklist de requisitos por sección con persistencia */
+  var CRITERIA_KEY = 'tfg-criteria-v1';
+  var checkPanels = Array.prototype.slice.call(document.querySelectorAll('.tfg-check-panel'));
+  var allCriteriaBoxes = Array.prototype.slice.call(document.querySelectorAll('.tfg-check-list input[type="checkbox"]'));
   var progressCountEl = document.getElementById('tfg-progress-count');
   var progressBarEl = document.getElementById('tfg-progress-summary-bar');
+  var progressNoteEl = document.getElementById('tfg-progress-note');
 
-  function loadProgress() {
-    try { return JSON.parse(localStorage.getItem(PROGRESS_KEY)) || {}; } catch (e) { return {}; }
+  function loadCriteria() {
+    try { return JSON.parse(localStorage.getItem(CRITERIA_KEY)) || {}; } catch (e) { return {}; }
   }
-  function saveProgress(p) {
-    try { localStorage.setItem(PROGRESS_KEY, JSON.stringify(p)); } catch (e) {}
+  function saveCriteria(c) {
+    try { localStorage.setItem(CRITERIA_KEY, JSON.stringify(c)); } catch (e) {}
   }
-  var progressState = loadProgress();
+  var criteriaState = loadCriteria();
 
-  function refreshProgressUI() {
-    var total = trackableIds.length;
-    var done = trackableIds.filter(function (id) { return !!progressState[id]; }).length;
+  allCriteriaBoxes.forEach(function (cb) {
+    var id = cb.getAttribute('data-criterion');
+    if (criteriaState[id]) cb.checked = true;
+  });
+
+  function refreshPanel(panel) {
+    var sectionId = panel.getAttribute('data-section');
+    var boxes = panel.querySelectorAll('input[type="checkbox"]');
+    var total = boxes.length;
+    var done = Array.prototype.filter.call(boxes, function (b) { return b.checked; }).length;
+    var statusEl = panel.querySelector('.tfg-check-status');
+    var resultEl = panel.querySelector('.tfg-check-result');
+    if (statusEl) {
+      statusEl.textContent = done + ' / ' + total;
+      statusEl.classList.toggle('complete', total > 0 && done === total);
+    }
+    if (resultEl) {
+      var isComplete = total > 0 && done === total;
+      resultEl.classList.toggle('show', isComplete);
+      if (isComplete) resultEl.textContent = '✅ ¡Cumples todos los requisitos mínimos de esta sección!';
+    }
+    var link = linkFor(sectionId);
+    if (link) link.classList.toggle('done', total > 0 && done === total);
+  }
+
+  function refreshGlobalProgress() {
+    var total = allCriteriaBoxes.length;
+    var done = allCriteriaBoxes.filter(function (b) { return b.checked; }).length;
     if (progressCountEl) progressCountEl.textContent = done + ' / ' + total;
     if (progressBarEl) {
-      progressBarEl.style.width = (total ? (done / total * 100) : 0) + '%';
-      progressBarEl.classList.toggle('complete', total > 0 && done === total);
-    }
-    trackableIds.forEach(function (id) {
-      var isDone = !!progressState[id];
-      var link = linkFor(id);
-      if (link) link.classList.toggle('done', isDone);
-      var btn = document.querySelector('.tfg-complete-btn[data-section="' + id + '"]');
-      if (btn) {
-        btn.setAttribute('aria-pressed', isDone ? 'true' : 'false');
-        var icon = btn.querySelector('.tfg-complete-icon');
-        var label = btn.querySelector('.tfg-complete-label');
-        if (icon) icon.textContent = isDone ? '✓' : '○';
-        if (label) label.textContent = isDone ? 'Completado' : 'Marcar como completado';
+      var pct = total ? (done / total * 100) : 0;
+      progressBarEl.style.width = pct + '%';
+      var complete = total > 0 && done === total;
+      progressBarEl.classList.toggle('complete', complete);
+      if (progressNoteEl) {
+        progressNoteEl.textContent = complete
+          ? '🎉 ¡Cumples todos los requisitos mínimos de la guía!'
+          : 'Marca cada requisito al final de una sección para autoevaluarte.';
       }
-    });
+    }
   }
 
-  document.querySelectorAll('.tfg-complete-btn').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var id = btn.getAttribute('data-section');
-      progressState[id] = !progressState[id];
-      saveProgress(progressState);
-      refreshProgressUI();
+  allCriteriaBoxes.forEach(function (cb) {
+    cb.addEventListener('change', function () {
+      var id = cb.getAttribute('data-criterion');
+      criteriaState[id] = cb.checked;
+      saveCriteria(criteriaState);
+      var panel = cb.closest('.tfg-check-panel');
+      if (panel) refreshPanel(panel);
+      refreshGlobalProgress();
     });
   });
 
-  refreshProgressUI();
+  checkPanels.forEach(refreshPanel);
+  refreshGlobalProgress();
 
   /* Botones de "Copiar" en cada plantilla de redacción (Clipboard API con respaldo) */
   document.querySelectorAll('.tpl-box').forEach(function (box) {
@@ -1816,6 +2114,210 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
       }
     });
   });
+
+  /* ================================================================
+     ASESOR VIRTUAL — asistente automático basado en reglas (sin costo,
+     sin backend). Empareja la pregunta del estudiante con una base de
+     preguntas frecuentes construida a partir de esta misma guía.
+     ================================================================ */
+  var TFG_FAQ = [
+    { keywords: ['palabras titulo', 'cuantas palabras', 'titulo palabras', '15 25 palabras'], section: 'portada',
+      a: 'El título debe tener entre 15 y 25 palabras, incluir la acción técnica específica y mencionar al beneficiario real (empresa o institución), siguiendo la fórmula: [ACCIÓN] de [SISTEMA/SOLUCIÓN] [TÉCNICA] para [EMPRESA] en [UBICACIÓN], durante [PERÍODO].' },
+    { keywords: ['formula del titulo', 'como escribo el titulo', 'generador de titulo'], section: 'portada',
+      a: 'Usa el generador interactivo en la Portada: llena cada campo entre corchetes y verás tu título armarse en tiempo real, con un contador que te avisa si estás dentro del rango de palabras correcto.' },
+    { keywords: ['referencias antecedentes', 'cuantas referencias en antecedentes', '800 palabras'], section: 'cap1',
+      a: 'En los Antecedentes (Capítulo I) necesitas entre 4 y 10 referencias bibliográficas de 2020-2025, con al menos 1 de nivel internacional, y una extensión mínima de 800 palabras.' },
+    { keywords: ['orden agradecimientos', 'a quien agradezco primero', 'como escribo los agradecimientos'], section: 'dedicatoria',
+      a: 'El orden obligatorio es: 1) Dios/Fe (si aplica), 2) Universidad Dominicana O&M, 3) Asesor académico, 4) Profesores, 5) Empresa/institución, 6) Personal que te apoyó, 7) Compañeros de equipo.' },
+    { keywords: ['parrafos introduccion', 'cuantos parrafos tiene la introduccion', 'palabras clave'], section: 'intro',
+      a: 'La Introducción se redacta en 4 párrafos: contextualización tecnológica, problema específico, propuesta académica, y una lista de 5 a 7 palabras clave.' },
+    { keywords: ['objetivos especificos', 'cuantos objetivos especificos', 'objetivo general formula'], section: 'cap1',
+      a: 'Debes tener exactamente 4 objetivos específicos, correlativos a tus 4 preguntas de investigación: diagnóstico, selección técnica, factibilidad y diseño.' },
+    { keywords: ['secciones marco teorico', 'cuantas secciones marco teorico', 'capitulo 2 estructura'], section: 'cap2',
+      a: 'El Marco Teórico (Capítulo II) debe tener entre 15 y 20 secciones técnicas: conceptos fundamentales (2.1-2.5), aspectos técnicos específicos (2.6-2.12) y aplicaciones/casos (2.13-2.18).' },
+    { keywords: ['cuantas referencias en total', 'minimo de referencias', 'referencias 2020 2025', 'referencias marco teorico', 'referencias necesito capitulo 2'], section: 'cap2',
+      a: 'Necesitas más de 30 referencias bibliográficas en todo el documento, con al menos el 50% de los años 2020-2025, y mínimo 2 referencias por cada sección del marco teórico.' },
+    { keywords: ['enfoque mixto', 'que es el enfoque mixto', 'enfoque de la investigacion'], section: 'cap3',
+      a: 'El enfoque mixto combina métodos cualitativos (para interpretar percepciones) y cuantitativos (para medir variables técnicas). Úsalo siempre en proyectos de ingeniería.' },
+    { keywords: ['tipo de investigacion', 'investigacion descriptiva'], section: 'cap3',
+      a: 'El tipo de investigación recomendado es siempre descriptivo: registra y describe sistemáticamente las características del objeto de estudio, sus limitaciones y las mejoras posibles.' },
+    { keywords: ['tecnicas de recoleccion', 'que tecnicas debo usar', 'observacion entrevistas encuesta'], section: 'cap3',
+      a: 'Debes aplicar siempre estas 4 técnicas: observación directa, entrevistas estructuradas, revisión documental y encuesta (usualmente vía Google Forms).' },
+    { keywords: ['cuantas preguntas encuesta', 'preguntas de resultados', 'tabla y grafico'], section: 'cap4',
+      a: 'Debes presentar entre 10 y 12 preguntas de tu encuesta en el Capítulo IV, cada una con tabla de frecuencias, gráfico y una interpretación descriptiva.' },
+    { keywords: ['discusion de resultados', 'parrafos de discusion', 'cruzar resultados con teoria'], section: 'cap4',
+      a: 'La Discusión de Resultados debe tener al menos 6 párrafos donde cruces tus hallazgos de campo con autores del marco teórico que los respalden o contrasten.' },
+    { keywords: ['presupuesto', 'como hago el presupuesto', 'analisis de presupuesto'], section: 'cap5',
+      a: 'En 5.6 Análisis de Presupuesto debes desglosar cada componente/servicio con cantidad, precio unitario y total, cerrando con el total de inversión estimada.' },
+    { keywords: ['justificativa de componentes', 'como justifico los componentes', 'especificacion de componentes'], section: 'cap5',
+      a: 'Cada componente técnico de tu propuesta necesita una tabla de especificaciones y un párrafo de Justificativa explicando por qué elegiste esa marca/modelo y cómo resuelve el problema diagnosticado.' },
+    { keywords: ['parrafos conclusion', 'cuantos parrafos tiene la conclusion', 'estructura de la conclusion', 'ayuda con la conclusion', 'como escribo la conclusion'], section: 'conclusiones',
+      a: 'La Conclusión se redacta en 8 párrafos: problema y contexto, enfoque de solución, justificación técnica, adecuación, validación con usuarios, hallazgos del diagnóstico, proceso metodológico e impacto/proyección.' },
+    { keywords: ['recomendaciones stakeholder', 'a quien van dirigidas las recomendaciones', 'niveles de recomendaciones'], section: 'conclusiones',
+      a: 'Las recomendaciones se dividen en 3 niveles: gerencial/directivo, técnico/soporte y operativo/empleados, cada uno con acciones concretas y accionables.' },
+    { keywords: ['anexos que incluyo', 'que va en los anexos'], section: 'anexos',
+      a: 'En Anexos incluye, en este orden: el instrumento de encuesta completo, el guion de entrevista, evidencia fotográfica propia, planos/diagramas de gran formato y cartas o constancias de la empresa.' },
+    { keywords: ['glosario', 'como hago el glosario', 'definiciones tecnicas'], section: 'anexos',
+      a: 'El Glosario debe listar solo términos técnicos o poco comunes, en orden alfabético, con una definición breve (1-2 líneas) contextualizada a tu proyecto.' },
+    { keywords: ['formato apa', 'como cito apa', 'referencias bibliograficas formato'], section: 'anexos',
+      a: 'Las referencias van en formato APA 7ma edición, ordenadas alfabéticamente por apellido, con sangría francesa. Revisa los 3 ejemplos (libro, artículo, página web) en la sección de Anexos y Referencias.' },
+    { keywords: ['puedo usar chatgpt', 'puedo usar inteligencia artificial', 'uso de ia', 'ia etica'], section: 'plagio-ia',
+      a: 'Sí puedes usar IA como apoyo (lluvia de ideas, ortografía, estructura), pero nunca como sustituto de tu análisis. Debes editar y humanizar el texto, y cualquier apoyo de IA debe pasar la verificación de detección de IA antes de entregar.' },
+    { keywords: ['plagio', 'porcentaje de similitud permitido', 'turnitin', 'antiplagio'], section: 'plagio-ia',
+      a: 'El requisito es menos del 20% de similitud total y 0% de plagio directo o no citado. Tu trabajo debe pasar por software antiplagio certificado antes de la entrega oficial.' },
+    { keywords: ['cuantas paginas minimo', 'minimo de paginas', '45 paginas', 'paginas debe tener mi trabajo', 'cuantas paginas debe tener'], section: 'calidad',
+      a: 'El TFG debe tener un mínimo de 45 páginas de contenido, sin contar las páginas preliminares.' },
+    { keywords: ['tipografia', 'fuente arial', 'interlineado', 'margenes', 'formato del documento'], section: 'calidad',
+      a: 'Usa Arial o Times New Roman 12pt, interlineado 1.5 en el texto (sencillo en la bibliografía) y márgenes de 2.54 cm en todos los lados.' },
+    { keywords: ['nota minima para aprobar', 'cuanto necesito para aprobar', 'criterios de aprobacion'], section: 'cronograma',
+      a: 'La nota mínima de aprobación es 70 puntos, combinando evaluación continua (60%) y trabajo final (40%): presentación, formulación teórica, desarrollo de ideas y soluciones propuestas.' },
+    { keywords: ['primera entrega', 'que debo entregar primero', 'entrega critica 1'], section: 'cronograma',
+      a: 'La Entrega 1 incluye: formulario de tema completado, justificación del tema (1-2 páginas), formulario de antecedentes con 5+ referencias y tus objetivos preliminares.' },
+    { keywords: ['grupos maximo integrantes', 'cuantos podemos ser en el grupo', 'trabajo en grupo'], section: 'cronograma',
+      a: 'Los grupos son de máximo 3 participantes.' },
+    { keywords: ['herramientas recomendadas', 'que programas uso para los planos', 'gestores bibliograficos'], section: 'recursos',
+      a: 'Para citas usa Mendeley o Zotero; para planos AutoCAD, Draw.io o Figma; y para revisar tu texto, Grammarly, LanguageTool o Turnitin Draft Coach.' },
+    { keywords: ['hola', 'ayuda', 'como funciona esto', 'que puedes hacer'],
+      a: '¡Hola! Puedes preguntarme sobre requisitos de cada capítulo, fórmulas de redacción, formato APA, plagio e IA, o el cronograma de entregas.' }
+  ];
+
+  function normalizeText(str) {
+    return (str || '')
+      .toLowerCase()
+      .normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .replace(/[^a-z0-9\s]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  var ADVISOR_STOPWORDS = ['de', 'del', 'la', 'el', 'los', 'las', 'en', 'y', 'a', 'que', 'es', 'un',
+    'una', 'al', 'se', 'mi', 'mis', 'tu', 'tus', 'con', 'para', 'por', 'este', 'esta', 'estos', 'estas',
+    'debe', 'deben', 'necesito', 'necesita', 'cuantas', 'cuantos', 'cual', 'cuales', 'como', 'hay',
+    'o', 'u', 'sobre', 'the', 'lo', 'su', 'sus', 'ser', 'son', 'tener', 'tengo'];
+
+  function tokenize(str) {
+    return normalizeText(str).split(' ').filter(function (w) {
+      return w.length > 2 && ADVISOR_STOPWORDS.indexOf(w) === -1;
+    });
+  }
+
+  var ADVISOR_GREETINGS = ['hola', 'hey', 'buenas', 'ayuda', 'gracias', 'ok', 'hi'];
+
+  function findAnswer(question) {
+    var normQuestion = normalizeText(question);
+    if (normQuestion.length < 2) return null;
+
+    var rawWords = normQuestion.split(' ').filter(Boolean);
+    if (rawWords.length <= 2 && rawWords.some(function (w) { return ADVISOR_GREETINGS.indexOf(w) !== -1; })) {
+      var greeting = TFG_FAQ.filter(function (e) { return e.keywords.indexOf('hola') !== -1; })[0];
+      if (greeting) return greeting;
+    }
+
+    var qWords = tokenize(question);
+    var qSet = {};
+    qWords.forEach(function (w) { qSet[w] = true; });
+
+    var best = null, bestScore = 0;
+    TFG_FAQ.forEach(function (entry) {
+      var wordSet = {};
+      entry.keywords.forEach(function (kw) {
+        tokenize(kw).forEach(function (w) { wordSet[w] = true; });
+      });
+      var score = 0;
+      Object.keys(wordSet).forEach(function (w) { if (qSet[w]) score++; });
+      entry.keywords.forEach(function (kw) {
+        if (kw.indexOf(' ') === -1) return; // el bono de frase exacta solo aplica a frases de 2+ palabras
+        var nkw = ' ' + normalizeText(kw) + ' ';
+        if ((' ' + normQuestion + ' ').indexOf(nkw) !== -1) score += 3;
+      });
+      if (score > bestScore) { bestScore = score; best = entry; }
+    });
+    return bestScore >= 2 ? best : null;
+  }
+
+  function escapeHTML(str) {
+    var d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+  }
+
+  var advisorToggle = document.getElementById('tfg-advisor-toggle');
+  var advisorPanel = document.getElementById('tfg-advisor-panel');
+  var advisorClose = document.getElementById('tfg-advisor-close');
+  var advisorLog = document.getElementById('tfg-advisor-log');
+  var advisorForm = document.getElementById('tfg-advisor-form');
+  var advisorInput = document.getElementById('tfg-advisor-input');
+  var advisorQuick = document.getElementById('tfg-advisor-quick');
+
+  function openAdvisor() {
+    if (!advisorPanel) return;
+    advisorPanel.hidden = false;
+    if (advisorToggle) advisorToggle.setAttribute('aria-expanded', 'true');
+    if (advisorInput) advisorInput.focus();
+  }
+  function closeAdvisor() {
+    if (!advisorPanel) return;
+    advisorPanel.hidden = true;
+    if (advisorToggle) { advisorToggle.setAttribute('aria-expanded', 'false'); advisorToggle.focus(); }
+  }
+  if (advisorToggle) {
+    advisorToggle.addEventListener('click', function () {
+      if (advisorPanel && !advisorPanel.hidden) closeAdvisor(); else openAdvisor();
+    });
+  }
+  if (advisorClose) advisorClose.addEventListener('click', closeAdvisor);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && advisorPanel && !advisorPanel.hidden) closeAdvisor();
+  });
+
+  function addMessage(html, who) {
+    if (!advisorLog) return;
+    var div = document.createElement('div');
+    div.className = 'tfg-advisor-msg tfg-advisor-msg-' + who;
+    div.innerHTML = html;
+    advisorLog.appendChild(div);
+    advisorLog.scrollTop = advisorLog.scrollHeight;
+  }
+
+  function askAdvisor(question) {
+    addMessage(escapeHTML(question), 'user');
+    var match = findAnswer(question);
+    if (match) {
+      var html = escapeHTML(match.a);
+      if (match.section) html += ' <a href="#' + match.section + '" data-advisor-link="1">Ir a la sección →</a>';
+      addMessage(html, 'bot');
+    } else {
+      addMessage('No encontré una respuesta exacta en la guía. Prueba con otras palabras, usa el buscador del índice, o consulta directamente a tu asesor académico para dudas específicas de tu proyecto.', 'bot');
+    }
+  }
+
+  if (advisorForm) {
+    advisorForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var val = advisorInput ? advisorInput.value.trim() : '';
+      if (!val) return;
+      askAdvisor(val);
+      advisorInput.value = '';
+    });
+  }
+
+  var QUICK_QUESTIONS = ['¿Cuántas palabras debe tener el título?', '¿Cuántas referencias necesito?', '¿Qué es el enfoque mixto?', '¿Puedo usar IA?', '¿Cuál es la nota mínima?'];
+  if (advisorQuick) {
+    QUICK_QUESTIONS.forEach(function (qq) {
+      var chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'tfg-advisor-chip';
+      chip.textContent = qq;
+      chip.addEventListener('click', function () { askAdvisor(qq); });
+      advisorQuick.appendChild(chip);
+    });
+  }
+
+  if (advisorLog) {
+    advisorLog.addEventListener('click', function (e) {
+      if (e.target && e.target.getAttribute && e.target.getAttribute('data-advisor-link')) closeAdvisor();
+    });
+  }
 })();
 </script>
 
