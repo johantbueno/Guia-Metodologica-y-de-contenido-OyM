@@ -8,6 +8,9 @@
 <meta name="author" content="Johan Tapia, PhD">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%98%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 /* ==========================================================================
    VARIABLES Y DISEÑO BASE (Estilo Documentación Moderna tipo Notion/Tailwind)
@@ -107,7 +110,7 @@ input:focus-visible,
 }
 
 .tfg-wrapper {
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   color: var(--secondary);
   background-color: var(--bg-body);
   line-height: 1.8;
@@ -930,6 +933,137 @@ input:focus-visible,
 .tfg-footer-note { max-width: 560px; margin: 0.5rem auto; font-size: 0.8rem; }
 .tfg-footer-year { margin-top: 1rem; font-size: 0.8rem; }
 
+/* ==========================================================================
+   ANIMACIÓN DE APARICIÓN AL HACER SCROLL
+   ========================================================================== */
+.tfg-reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+.tfg-reveal.in-view { opacity: 1; transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  .tfg-reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ==========================================================================
+   MAPA VISUAL DEL PROCESO (Roadmap de 5 etapas)
+   ========================================================================== */
+.tfg-roadmap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1.75rem 1rem;
+  margin: 0 0 2.5rem;
+  padding-top: 0.5rem;
+  position: relative;
+}
+.tfg-roadmap::before {
+  content: '';
+  position: absolute;
+  top: 25px;
+  left: 6%;
+  right: 6%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--o-m-blue), var(--o-m-gold));
+  z-index: 0;
+  border-radius: 999px;
+}
+.tfg-roadmap-node {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  gap: 0.5rem;
+  color: var(--secondary);
+}
+.tfg-roadmap-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 3px solid var(--o-m-blue);
+  color: var(--o-m-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.15rem;
+  transition: all .25s ease;
+  box-shadow: var(--shadow-sm);
+}
+.tfg-roadmap-node:hover .tfg-roadmap-icon,
+.tfg-roadmap-node:focus-visible .tfg-roadmap-icon {
+  background: var(--o-m-blue);
+  color: #ffffff;
+  transform: scale(1.08);
+  box-shadow: var(--shadow-md);
+}
+.tfg-roadmap-label { font-weight: 700; color: var(--primary); font-size: 0.88rem; }
+.tfg-roadmap-sub { font-size: 0.74rem; color: var(--muted); max-width: 135px; line-height: 1.4; }
+
+@media (max-width: 720px) {
+  .tfg-roadmap { flex-direction: column; align-items: stretch; gap: 1.25rem; }
+  .tfg-roadmap::before { display: none; }
+  .tfg-roadmap-node { flex-direction: row; text-align: left; }
+  .tfg-roadmap-icon { flex-shrink: 0; }
+  .tfg-roadmap-sub { max-width: none; }
+}
+
+/* ==========================================================================
+   CELEBRACIÓN AL COMPLETAR EL 100% DE LOS REQUISITOS
+   ========================================================================== */
+.tfg-progress-summary.complete .tfg-progress-summary-row span:first-child { color: var(--o-m-gold); }
+#tfg-progress-count.complete-text { color: #b45309; }
+[data-theme="dark"] #tfg-progress-count.complete-text { color: #fbbf24; }
+
+.tfg-celebration-toast {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(-24px);
+  background: linear-gradient(90deg, var(--o-m-blue), var(--o-m-gold));
+  color: #ffffff;
+  padding: 0.85rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  box-shadow: var(--shadow-lg);
+  z-index: 2500;
+  opacity: 0;
+  max-width: 90vw;
+  text-align: center;
+  transition: opacity .4s ease, transform .4s ease;
+  pointer-events: none;
+}
+.tfg-celebration-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+.tfg-confetti-piece {
+  position: fixed;
+  top: -12px;
+  width: 8px;
+  height: 14px;
+  z-index: 3000;
+  pointer-events: none;
+  animation-name: tfg-confetti-fall;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+@keyframes tfg-confetti-fall {
+  to { transform: translateY(110vh) rotate(720deg); opacity: 0.25; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tfg-confetti-piece { display: none; }
+  .tfg-celebration-toast { transition: none; }
+}
+@media print {
+  .tfg-celebration-toast, .tfg-confetti-piece { display: none !important; }
+}
+
 /* Formato de Impresión Fiel */
 @media print {
   .tfg-sidebar, .print-action, #tfg-top, #tfg-progress-wrap, .tfg-check-panel, .tfg-skip-link,
@@ -963,7 +1097,7 @@ input:focus-visible,
       </div>
     </div>
 
-    <div class="tfg-progress-summary">
+    <div class="tfg-progress-summary" id="tfg-progress-summary">
       <div class="tfg-progress-summary-row">
         <span>Requisitos cumplidos</span>
         <span id="tfg-progress-count">0 / 0</span>
@@ -1029,6 +1163,34 @@ input:focus-visible,
         <strong>🎓 Esta guía es interactiva y autocalificable</strong>
         <p style="margin: 0;">Al final de cada sección encontrarás una <strong>autoevaluación</strong>: marca los requisitos que ya cumples y el sistema te dirá si esa parte está completa. Si tienes dudas, pregúntale al <strong>Asesor Virtual</strong> (botón 🎓 abajo a la izquierda) — responde automáticamente según esta guía.</p>
       </div>
+
+      <nav class="tfg-roadmap" aria-label="Mapa de las 5 etapas del TFG">
+        <a class="tfg-roadmap-node" href="#dedicatoria">
+          <span class="tfg-roadmap-icon" aria-hidden="true">1</span>
+          <span class="tfg-roadmap-label">Fundamentos</span>
+          <span class="tfg-roadmap-sub">Portada, dedicatoria e introducción</span>
+        </a>
+        <a class="tfg-roadmap-node" href="#cap1">
+          <span class="tfg-roadmap-icon" aria-hidden="true">2</span>
+          <span class="tfg-roadmap-label">Investigación</span>
+          <span class="tfg-roadmap-sub">Problema, objetivos y metodología</span>
+        </a>
+        <a class="tfg-roadmap-node" href="#cap4">
+          <span class="tfg-roadmap-icon" aria-hidden="true">3</span>
+          <span class="tfg-roadmap-label">Resultados</span>
+          <span class="tfg-roadmap-sub">Análisis de datos de tu encuesta</span>
+        </a>
+        <a class="tfg-roadmap-node" href="#cap5">
+          <span class="tfg-roadmap-icon" aria-hidden="true">4</span>
+          <span class="tfg-roadmap-label">Propuesta</span>
+          <span class="tfg-roadmap-sub">Diseño técnico y presupuesto</span>
+        </a>
+        <a class="tfg-roadmap-node" href="#conclusiones">
+          <span class="tfg-roadmap-icon" aria-hidden="true">5</span>
+          <span class="tfg-roadmap-label">Cierre y Defensa</span>
+          <span class="tfg-roadmap-sub">Conclusiones, anexos y defensa oral</span>
+        </a>
+      </nav>
 
       <div class="callout gold" style="text-align: left; margin: 0 auto 3rem; max-width: 650px;">
         <div><span class="badge badge-gold">FÓRMULA DEL TÍTULO</span></div>
@@ -1947,6 +2109,8 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
 
 <button id="tfg-top" type="button" aria-label="Volver arriba" title="Volver arriba">↑</button>
 
+<div id="tfg-celebration-toast" class="tfg-celebration-toast" role="status" aria-live="polite" hidden>🎉 ¡Felicidades! Cumples el 100% de los requisitos mínimos de la guía.</div>
+
 <script>
 (function () {
   'use strict';
@@ -2027,6 +2191,23 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
       });
     }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
     sections.forEach(function (sec) { spy.observe(sec); });
+  }
+
+  /* Animación de aparición al hacer scroll (una sola vez por sección) */
+  var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if ('IntersectionObserver' in window && !prefersReducedMotion) {
+    var revealObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+    sections.forEach(function (sec) {
+      sec.classList.add('tfg-reveal');
+      revealObserver.observe(sec);
+    });
   }
 
   /* Barra de progreso de lectura + botón "volver arriba" */
@@ -2149,14 +2330,50 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
     if (link) link.classList.toggle('done', total > 0 && done === total);
   }
 
+  var progressSummaryEl = document.getElementById('tfg-progress-summary');
+  var celebrationFired = false; /* evita repetir el confeti en la misma sesión */
+  var isFirstProgressRender = true; /* evita celebrar al cargar una página ya completada previamente */
+
+  function launchConfetti() {
+    if (prefersReducedMotion) return;
+    var colors = ['#003865', '#D4AF37', '#16a34a', '#3b82f6', '#f59e0b'];
+    for (var i = 0; i < 60; i++) {
+      var piece = document.createElement('div');
+      piece.className = 'tfg-confetti-piece';
+      piece.style.left = (Math.random() * 100) + 'vw';
+      piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+      piece.style.animationDuration = (2.3 + Math.random() * 1.5) + 's';
+      piece.style.animationDelay = (Math.random() * 0.4) + 's';
+      document.body.appendChild(piece);
+      (function (el) {
+        el.addEventListener('animationend', function () { el.remove(); });
+      })(piece);
+    }
+  }
+
+  function showCelebrationToast() {
+    var toast = document.getElementById('tfg-celebration-toast');
+    if (!toast) return;
+    toast.hidden = false;
+    requestAnimationFrame(function () { toast.classList.add('show'); });
+    setTimeout(function () {
+      toast.classList.remove('show');
+      setTimeout(function () { toast.hidden = true; }, 400);
+    }, 4500);
+  }
+
   function refreshGlobalProgress() {
     var total = allCriteriaBoxes.length;
     var done = allCriteriaBoxes.filter(function (b) { return b.checked; }).length;
-    if (progressCountEl) progressCountEl.textContent = done + ' / ' + total;
+    var complete = total > 0 && done === total;
+    if (progressCountEl) {
+      progressCountEl.textContent = done + ' / ' + total;
+      progressCountEl.classList.toggle('complete-text', complete);
+    }
+    if (progressSummaryEl) progressSummaryEl.classList.toggle('complete', complete);
     if (progressBarEl) {
       var pct = total ? (done / total * 100) : 0;
       progressBarEl.style.width = pct + '%';
-      var complete = total > 0 && done === total;
       progressBarEl.classList.toggle('complete', complete);
       if (progressNoteEl) {
         progressNoteEl.textContent = complete
@@ -2164,6 +2381,12 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
           : 'Marca cada requisito al final de una sección para autoevaluarte.';
       }
     }
+    if (complete && !celebrationFired && !isFirstProgressRender) {
+      celebrationFired = true;
+      launchConfetti();
+      showCelebrationToast();
+    }
+    if (!complete) celebrationFired = false;
   }
 
   allCriteriaBoxes.forEach(function (cb) {
@@ -2179,6 +2402,7 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
 
   checkPanels.forEach(refreshPanel);
   refreshGlobalProgress();
+  isFirstProgressRender = false;
 
   /* Botones de "Copiar" en cada plantilla de redacción (Clipboard API con respaldo) */
   document.querySelectorAll('.tpl-box').forEach(function (box) {
