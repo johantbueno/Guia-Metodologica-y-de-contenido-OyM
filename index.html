@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Guía Metodológica del TFG — Ingeniería | Universidad Dominicana O&amp;M</title>
-<meta name="description" content="Guía interactiva paso a paso para elaborar el Trabajo Final de Grado (TFG) de Ingeniería: estructura, fórmulas de redacción, plantillas copiables, checklist de calidad, cronograma de entregas y uso ético de la IA.">
+<meta name="description" content="Guía interactiva paso a paso para elaborar el Trabajo Final de Grado (TFG) de Ingeniería: estructura, generador de fórmulas de redacción, plantillas copiables, checklist de progreso, cronograma de entregas y uso ético de la IA.">
 <meta name="author" content="Johan Tapia, PhD">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%98%3C/text%3E%3C/svg%3E">
@@ -71,6 +71,40 @@
 
 html { scroll-behavior: smooth; }
 body { margin: 0; background-color: var(--bg-body); transition: background-color .25s ease; }
+
+/* Accesibilidad: enlace para saltar al contenido y foco visible */
+.tfg-skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--o-m-blue);
+  color: #ffffff;
+  padding: 0.85rem 1.5rem;
+  z-index: 2000;
+  border-radius: 0 0 10px 0;
+  font-weight: 700;
+  text-decoration: none;
+}
+.tfg-skip-link:focus { left: 0; }
+
+.tfg-visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--o-m-blue);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
 
 .tfg-wrapper {
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -146,8 +180,8 @@ body { margin: 0; background-color: var(--bg-body); transition: background-color
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1.25rem;
   border-bottom: 1px solid var(--border-light);
 }
 
@@ -184,6 +218,34 @@ body { margin: 0; background-color: var(--bg-body); transition: background-color
 .tfg-icon-btn:hover { background: var(--bg-body); border-color: var(--border-dark); }
 .tfg-nav-toggle { display: none; }
 
+/* Resumen de progreso del estudiante */
+.tfg-progress-summary { margin-bottom: 1.25rem; }
+.tfg-progress-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}
+#tfg-progress-count { color: var(--primary); }
+.tfg-progress-summary-track {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--border-light);
+  overflow: hidden;
+}
+.tfg-progress-summary-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--o-m-blue), var(--o-m-gold));
+  transition: width .3s ease;
+}
+.tfg-progress-summary-fill.complete { background: linear-gradient(90deg, #16a34a, #22c55e); }
+
 .tfg-search { margin-bottom: 1.25rem; }
 .tfg-search input {
   width: 100%;
@@ -196,7 +258,7 @@ body { margin: 0; background-color: var(--bg-body); transition: background-color
   color: var(--secondary);
   font-family: inherit;
 }
-.tfg-search input:focus { outline: 2px solid var(--o-m-blue); outline-offset: 1px; }
+.tfg-search input:focus-visible { outline: 2px solid var(--o-m-blue); outline-offset: 1px; }
 
 .tfg-nav ul {
   list-style: none;
@@ -212,7 +274,10 @@ body { margin: 0; background-color: var(--bg-body); transition: background-color
   color: var(--muted);
   font-size: 0.95rem;
   font-weight: 500;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
   padding: 0.6rem 1rem;
   border-radius: var(--radius-sm);
   transition: all 0.2s ease;
@@ -232,6 +297,16 @@ body { margin: 0; background-color: var(--bg-body); transition: background-color
   transform: translateX(4px);
 }
 
+.tfg-nav a .tfg-nav-check {
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  color: #16a34a;
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+.tfg-nav a.done .tfg-nav-check { opacity: 1; }
+.tfg-nav a.active .tfg-nav-check { color: #ffffff; }
+
 .tfg-sidebar-actions {
   margin-top: 1.5rem;
   padding-top: 1.5rem;
@@ -239,10 +314,8 @@ body { margin: 0; background-color: var(--bg-body); transition: background-color
 }
 
 @media (max-width: 1023px) {
-  .tfg-nav, .tfg-search, .tfg-sidebar-actions { display: none; }
-  .tfg-sidebar.open .tfg-nav,
-  .tfg-sidebar.open .tfg-search,
-  .tfg-sidebar.open .tfg-sidebar-actions { display: block; }
+  .tfg-sidebar-collapsible { display: none; }
+  .tfg-sidebar.open .tfg-sidebar-collapsible { display: block; }
   .tfg-nav-toggle { display: inline-flex; }
 }
 
@@ -306,6 +379,32 @@ body { margin: 0; background-color: var(--bg-body); transition: background-color
 @media (max-width: 640px) {
   .tfg-section { padding: 1.5rem; }
 }
+
+/* Barra de herramientas por sección (marcar como completado) */
+.tfg-section-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+.tfg-complete-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border-dark);
+  background: var(--bg-body);
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s ease;
+  font-family: inherit;
+}
+.tfg-complete-btn:hover { border-color: var(--o-m-blue); color: var(--o-m-blue); }
+.tfg-complete-btn[aria-pressed="true"] { background: #dcfce7; border-color: #16a34a; color: #15803d; }
+[data-theme="dark"] .tfg-complete-btn[aria-pressed="true"] { background: #0c2417; border-color: #22c55e; color: #4ade80; }
+.tfg-complete-icon { font-size: 0.9rem; line-height: 1; }
 
 /* ==========================================================================
    PORTADA ACADÉMICA (Elegante)
@@ -403,8 +502,8 @@ body { margin: 0; background-color: var(--bg-body); transition: background-color
 [data-theme="dark"] .badge-blue { background: #0c2d48; color: #7dd3fc; border-color: #075985; }
 
 /* Plantillas copiables (tecnología: Clipboard API) */
+.tpl-box-wrap { position: relative; }
 .tpl-box {
-  position: relative;
   background: #f8fafc;
   border: 1px dashed var(--border-dark);
   border-radius: var(--radius-sm);
@@ -436,6 +535,42 @@ body { margin: 0; background-color: var(--bg-body); transition: background-color
 .tpl-copy-btn:hover { background: var(--o-m-blue); color: #fff; border-color: var(--o-m-blue); }
 .tpl-copy-btn.copied { background: #16a34a; color: #fff; border-color: #16a34a; }
 [data-theme="dark"] .tpl-copy-btn { background: var(--bg-card); color: var(--secondary); }
+
+/* Generador interactivo de fórmulas */
+.tpl-builder { margin: 1.25rem 0; }
+.tpl-builder-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.6rem;
+  margin-bottom: 0.85rem;
+}
+.tpl-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+.tpl-field input {
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: normal;
+  padding: 0.5rem 0.65rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-light);
+  background: var(--bg-card);
+  color: var(--primary);
+}
+.tpl-field input::placeholder { color: var(--muted); opacity: 0.7; }
+.tpl-field input:focus-visible { outline: 2px solid var(--o-m-blue); outline-offset: 1px; border-color: var(--o-m-blue); }
+.tpl-builder-count { margin-top: 0.6rem; font-size: 0.8rem; font-weight: 600; color: var(--muted); }
+.tpl-builder-count.ok { color: #16a34a; }
+.tpl-builder-count.warn { color: #b45309; }
 
 /* Tablas Modernas */
 .table-container {
@@ -596,6 +731,7 @@ body { margin: 0; background-color: var(--bg-body); transition: background-color
   cursor: pointer;
   transition: background 0.3s ease;
   text-decoration: none;
+  font-family: inherit;
 }
 
 .print-action:hover { background: var(--secondary); }
@@ -652,7 +788,7 @@ body { margin: 0; background-color: var(--bg-body); transition: background-color
 
 /* Formato de Impresión Fiel */
 @media print {
-  .tfg-sidebar, .print-action, #tfg-top, #tfg-progress-wrap { display: none !important; }
+  .tfg-sidebar, .print-action, #tfg-top, #tfg-progress-wrap, .tfg-section-toolbar, .tfg-skip-link { display: none !important; }
   .tfg-wrapper { display: block; background: white; }
   .tfg-main { width: 100%; max-width: none; padding: 0; margin: 0; }
   .tfg-section { box-shadow: none; border: none; padding: 1rem 0; page-break-inside: avoid; }
@@ -665,51 +801,66 @@ body { margin: 0; background-color: var(--bg-body); transition: background-color
 </head>
 <body>
 
+<a href="#main-content" class="tfg-skip-link">Saltar al contenido principal</a>
+
 <div id="tfg-progress-wrap"><div id="tfg-progress"></div></div>
 
 <div class="tfg-wrapper">
 
   <!-- BARRA LATERAL -->
-  <aside class="tfg-sidebar">
+  <aside class="tfg-sidebar" aria-label="Navegación e índice del documento">
     <div class="tfg-sidebar-header">
-      <span style="font-size: 1.5rem;">📘</span>
+      <span style="font-size: 1.5rem;" aria-hidden="true">📘</span>
       <h3 class="tfg-sidebar-title">Índice TFG</h3>
       <div class="tfg-header-actions">
         <button id="tfg-theme-toggle" class="tfg-icon-btn" type="button" aria-label="Cambiar tema claro/oscuro" title="Cambiar tema">🌙</button>
-        <button id="tfg-nav-toggle" class="tfg-icon-btn tfg-nav-toggle" type="button" aria-label="Mostrar u ocultar índice" aria-expanded="false" title="Mostrar/ocultar índice">☰</button>
+        <button id="tfg-nav-toggle" class="tfg-icon-btn tfg-nav-toggle" type="button" aria-label="Mostrar u ocultar índice" aria-expanded="false" aria-controls="tfg-sidebar-menu" title="Mostrar/ocultar índice">☰</button>
       </div>
     </div>
 
-    <div class="tfg-search">
-      <input type="search" id="tfg-search-input" placeholder="🔍 Buscar en el índice..." aria-label="Buscar sección en el índice">
+    <div class="tfg-progress-summary">
+      <div class="tfg-progress-summary-row">
+        <span>Tu progreso</span>
+        <span id="tfg-progress-count">0 / 13</span>
+      </div>
+      <div class="tfg-progress-summary-track">
+        <div id="tfg-progress-summary-bar" class="tfg-progress-summary-fill"></div>
+      </div>
     </div>
 
-    <nav class="tfg-nav">
-      <ul>
-        <li><a href="#portada">Portada y Preliminares</a></li>
-        <li><a href="#dedicatoria">Dedicatoria y Agradecimientos</a></li>
-        <li><a href="#intro">Introducción</a></li>
-        <li><a href="#cap1">Capítulo I: Aspectos Introductorios</a></li>
-        <li><a href="#cap2">Capítulo II: Marco Teórico</a></li>
-        <li><a href="#cap3">Capítulo III: Marco Metodológico</a></li>
-        <li><a href="#cap4">Capítulo IV: Resultados</a></li>
-        <li><a href="#cap5">Capítulo V: Propuesta Técnica</a></li>
-        <li><a href="#conclusiones">Conclusiones y Recomendaciones</a></li>
-        <li><a href="#anexos">Anexos, Glosario y Referencias</a></li>
-        <li><a href="#calidad">Criterios de Calidad (Checklist)</a></li>
-        <li><a href="#plagio-ia">Guía Anti-Plagio e IA Ética</a></li>
-        <li><a href="#cronograma">Cronograma y Evaluación</a></li>
-        <li><a href="#recursos">Recursos y Herramientas</a></li>
-      </ul>
-    </nav>
+    <div id="tfg-sidebar-menu" class="tfg-sidebar-collapsible">
+      <div class="tfg-search">
+        <label for="tfg-search-input" class="tfg-visually-hidden">Buscar sección en el índice</label>
+        <input type="search" id="tfg-search-input" placeholder="🔍 Buscar en el índice...">
+      </div>
 
-    <div class="tfg-sidebar-actions">
-      <button class="print-action" onclick="window.print()" type="button">🖨️ Imprimir Guía</button>
+      <nav class="tfg-nav" aria-label="Índice del documento">
+        <ul>
+          <li><a href="#portada">Portada y Preliminares</a></li>
+          <li><a href="#dedicatoria">Dedicatoria y Agradecimientos <span class="tfg-nav-check" aria-hidden="true">✓</span></a></li>
+          <li><a href="#intro">Introducción <span class="tfg-nav-check" aria-hidden="true">✓</span></a></li>
+          <li><a href="#cap1">Capítulo I: Aspectos Introductorios <span class="tfg-nav-check" aria-hidden="true">✓</span></a></li>
+          <li><a href="#cap2">Capítulo II: Marco Teórico <span class="tfg-nav-check" aria-hidden="true">✓</span></a></li>
+          <li><a href="#cap3">Capítulo III: Marco Metodológico <span class="tfg-nav-check" aria-hidden="true">✓</span></a></li>
+          <li><a href="#cap4">Capítulo IV: Resultados <span class="tfg-nav-check" aria-hidden="true">✓</span></a></li>
+          <li><a href="#cap5">Capítulo V: Propuesta Técnica <span class="tfg-nav-check" aria-hidden="true">✓</span></a></li>
+          <li><a href="#conclusiones">Conclusiones y Recomendaciones <span class="tfg-nav-check" aria-hidden="true">✓</span></a></li>
+          <li><a href="#anexos">Anexos, Glosario y Referencias <span class="tfg-nav-check" aria-hidden="true">✓</span></a></li>
+          <li><a href="#calidad">Criterios de Calidad (Checklist) <span class="tfg-nav-check" aria-hidden="true">✓</span></a></li>
+          <li><a href="#plagio-ia">Guía Anti-Plagio e IA Ética <span class="tfg-nav-check" aria-hidden="true">✓</span></a></li>
+          <li><a href="#cronograma">Cronograma y Evaluación <span class="tfg-nav-check" aria-hidden="true">✓</span></a></li>
+          <li><a href="#recursos">Recursos y Herramientas <span class="tfg-nav-check" aria-hidden="true">✓</span></a></li>
+        </ul>
+      </nav>
+
+      <div class="tfg-sidebar-actions">
+        <button class="print-action" onclick="window.print()" type="button">🖨️ Imprimir Guía</button>
+      </div>
     </div>
   </aside>
 
   <!-- CONTENIDO PRINCIPAL -->
-  <main class="tfg-main">
+  <main class="tfg-main" id="main-content">
 
     <!-- PORTADA -->
     <section id="portada" class="tfg-cover">
@@ -729,7 +880,14 @@ body { margin: 0; background-color: var(--bg-body); transition: background-color
 
       <div class="callout gold" style="text-align: left; margin: 3rem auto; max-width: 650px;">
         <div><span class="badge badge-gold">FÓRMULA DEL TÍTULO</span></div>
-        <div class="tpl-box">[ACCIÓN] de [SISTEMA/SOLUCIÓN] [TÉCNICA] para [EMPRESA/INSTITUCIÓN] en [UBICACIÓN], durante [PERÍODO]</div>
+        <p style="margin: 0.75rem 0 0; font-size: 0.9rem;">Completa cada campo y observa cómo se arma tu título en tiempo real. El conteo de palabras te avisa si estás dentro del rango permitido.</p>
+
+        <div class="tpl-builder" data-template="[ACCIÓN] de [SISTEMA/SOLUCIÓN] [TÉCNICA] para [EMPRESA/INSTITUCIÓN] en [UBICACIÓN], durante [PERÍODO]" data-min-words="15" data-max-words="25">
+          <div class="tpl-builder-fields"></div>
+          <div class="tpl-box tpl-builder-preview"></div>
+          <div class="tpl-builder-count"></div>
+        </div>
+
         <ul style="color: var(--secondary); font-size: 0.95rem; margin-top: 10px; padding-left: 1.2rem;">
           <li>Debe contener entre 15 y 25 palabras.</li>
           <li>Incluye la acción técnica específica y el beneficiario real.</li>
@@ -746,7 +904,13 @@ body { margin: 0; background-color: var(--bg-body); transition: background-color
     </section>
 
     <!-- DEDICATORIA Y AGRADECIMIENTOS -->
-    <section id="dedicatoria" class="tfg-section">
+    <section id="dedicatoria" class="tfg-section" data-completable="true">
+      <div class="tfg-section-toolbar">
+        <button class="tfg-complete-btn" data-section="dedicatoria" type="button" aria-pressed="false">
+          <span class="tfg-complete-icon" aria-hidden="true">○</span>
+          <span class="tfg-complete-label">Marcar como completado</span>
+        </button>
+      </div>
       <h1>Dedicatoria y Agradecimientos</h1>
       <p>Son de las primeras páginas que leerá el jurado. Aunque son de carácter personal, deben conservar un tono formal, específico y agradecido: evita frases genéricas como "gracias a todos los que me apoyaron" y nombra contribuciones concretas.</p>
 
@@ -774,7 +938,13 @@ body { margin: 0; background-color: var(--bg-body); transition: background-color
     </section>
 
     <!-- INTRODUCCIÓN -->
-    <section id="intro" class="tfg-section">
+    <section id="intro" class="tfg-section" data-completable="true">
+      <div class="tfg-section-toolbar">
+        <button class="tfg-complete-btn" data-section="intro" type="button" aria-pressed="false">
+          <span class="tfg-complete-icon" aria-hidden="true">○</span>
+          <span class="tfg-complete-label">Marcar como completado</span>
+        </button>
+      </div>
       <h1>Introducción</h1>
       <p>La introducción debe enganchar al lector y dar un panorama completo pero resumido del trabajo. Utiliza esta estructura metodológica de 4 párrafos:</p>
 
@@ -788,7 +958,13 @@ body { margin: 0; background-color: var(--bg-body); transition: background-color
     </section>
 
     <!-- CAPÍTULO 1 -->
-    <section id="cap1" class="tfg-section">
+    <section id="cap1" class="tfg-section" data-completable="true">
+      <div class="tfg-section-toolbar">
+        <button class="tfg-complete-btn" data-section="cap1" type="button" aria-pressed="false">
+          <span class="tfg-complete-icon" aria-hidden="true">○</span>
+          <span class="tfg-complete-label">Marcar como completado</span>
+        </button>
+      </div>
       <h1>Capítulo I: Aspectos Introductorios</h1>
 
       <h2>1.1 Antecedentes de la Investigación</h2>
@@ -862,8 +1038,13 @@ body { margin: 0; background-color: var(--bg-body); transition: background-color
 
       <h2>1.4 Objetivos de la Investigación</h2>
       <div class="callout gold">
-        <strong>Fórmula del Objetivo General:</strong>
-        <div class="tpl-box">[VERBO DE ACCIÓN] una [SOLUCIÓN INTEGRAL] de [COMPONENTES TÉCNICOS] en [EMPRESA], que permita [BENEFICIOS] durante [PERÍODO].</div>
+        <strong>Generador del Objetivo General</strong>
+        <p style="margin: 0.5rem 0 0; font-size: 0.9rem;">Completa los campos para construir tu objetivo general automáticamente.</p>
+        <div class="tpl-builder" data-template="[VERBO DE ACCIÓN] una [SOLUCIÓN INTEGRAL] de [COMPONENTES TÉCNICOS] en [EMPRESA], que permita [BENEFICIOS] durante [PERÍODO].">
+          <div class="tpl-builder-fields"></div>
+          <div class="tpl-box tpl-builder-preview"></div>
+          <div class="tpl-builder-count"></div>
+        </div>
         <em style="display: block; margin-top: 0.5rem; font-size: 0.9rem;">Verbos recomendados: Diseñar, Desarrollar, Implementar, Optimizar, Crear.</em>
       </div>
       <h3 style="font-size: 1.1rem; margin-top: 2rem;">Objetivos Específicos (Deben ser 4 correlativos a las preguntas):</h3>
@@ -876,7 +1057,13 @@ body { margin: 0; background-color: var(--bg-body); transition: background-color
     </section>
 
     <!-- CAPÍTULO 2 -->
-    <section id="cap2" class="tfg-section">
+    <section id="cap2" class="tfg-section" data-completable="true">
+      <div class="tfg-section-toolbar">
+        <button class="tfg-complete-btn" data-section="cap2" type="button" aria-pressed="false">
+          <span class="tfg-complete-icon" aria-hidden="true">○</span>
+          <span class="tfg-complete-label">Marcar como completado</span>
+        </button>
+      </div>
       <h1>Capítulo II: Marco Teórico</h1>
       <p>El marco teórico fundamenta tu proyecto. Debe contener entre <strong>15 y 20 secciones técnicas</strong> estructuradas lógicamente de la siguiente manera:</p>
 
@@ -907,7 +1094,13 @@ body { margin: 0; background-color: var(--bg-body); transition: background-color
     </section>
 
     <!-- CAPÍTULO 3 -->
-    <section id="cap3" class="tfg-section">
+    <section id="cap3" class="tfg-section" data-completable="true">
+      <div class="tfg-section-toolbar">
+        <button class="tfg-complete-btn" data-section="cap3" type="button" aria-pressed="false">
+          <span class="tfg-complete-icon" aria-hidden="true">○</span>
+          <span class="tfg-complete-label">Marcar como completado</span>
+        </button>
+      </div>
       <h1>Capítulo III: Marco Metodológico</h1>
       <p>Este capítulo detalla el <em>cómo</em> de la investigación. Comienza siempre con un párrafo introductorio y luego desarrolla cada componente metodológico con su propia plantilla de redacción.</p>
 
@@ -956,7 +1149,13 @@ La muestra estuvo conformada por un total de [número] participantes, distribuid
     </section>
 
     <!-- CAPÍTULO 4 -->
-    <section id="cap4" class="tfg-section">
+    <section id="cap4" class="tfg-section" data-completable="true">
+      <div class="tfg-section-toolbar">
+        <button class="tfg-complete-btn" data-section="cap4" type="button" aria-pressed="false">
+          <span class="tfg-complete-icon" aria-hidden="true">○</span>
+          <span class="tfg-complete-label">Marcar como completado</span>
+        </button>
+      </div>
       <h1>Capítulo IV: Presentación y Análisis de Resultados</h1>
       <p>Debes presentar un mínimo de <strong>10 a 12 preguntas</strong> derivadas de tu encuesta bajo este formato estricto y secuencial:</p>
 
@@ -1005,7 +1204,13 @@ A través de este análisis, se evidencia que la situación [caracterización ge
     </section>
 
     <!-- CAPÍTULO 5 -->
-    <section id="cap5" class="tfg-section">
+    <section id="cap5" class="tfg-section" data-completable="true">
+      <div class="tfg-section-toolbar">
+        <button class="tfg-complete-btn" data-section="cap5" type="button" aria-pressed="false">
+          <span class="tfg-complete-icon" aria-hidden="true">○</span>
+          <span class="tfg-complete-label">Marcar como completado</span>
+        </button>
+      </div>
       <h1>Capítulo V: Propuesta de Implementación</h1>
       <p>Esta es la sección <strong>NÚCLEO Y MÁS IMPORTANTE</strong> de tu TFG. Aquí demuestras tu nivel como ingeniero. Personalízala completamente según tu especialidad técnica.</p>
 
@@ -1070,7 +1275,13 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
     </section>
 
     <!-- CONCLUSIONES Y RECOMENDACIONES -->
-    <section id="conclusiones" class="tfg-section">
+    <section id="conclusiones" class="tfg-section" data-completable="true">
+      <div class="tfg-section-toolbar">
+        <button class="tfg-complete-btn" data-section="conclusiones" type="button" aria-pressed="false">
+          <span class="tfg-complete-icon" aria-hidden="true">○</span>
+          <span class="tfg-complete-label">Marcar como completado</span>
+        </button>
+      </div>
       <h1>Conclusiones y Recomendaciones</h1>
 
       <h2>Estructura de la Conclusión (8 Párrafos)</h2>
@@ -1111,7 +1322,13 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
     </section>
 
     <!-- ANEXOS, GLOSARIO Y REFERENCIAS -->
-    <section id="anexos" class="tfg-section">
+    <section id="anexos" class="tfg-section" data-completable="true">
+      <div class="tfg-section-toolbar">
+        <button class="tfg-complete-btn" data-section="anexos" type="button" aria-pressed="false">
+          <span class="tfg-complete-icon" aria-hidden="true">○</span>
+          <span class="tfg-complete-label">Marcar como completado</span>
+        </button>
+      </div>
       <h1>Anexos, Glosario y Referencias</h1>
       <p>El cierre documental de tu TFG demuestra el rigor de tu investigación. Estas tres secciones son obligatorias y suelen restar puntos importantes cuando se entregan incompletas.</p>
 
@@ -1151,7 +1368,13 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
     </section>
 
     <!-- CHECKLIST DE CALIDAD -->
-    <section id="calidad" class="tfg-section">
+    <section id="calidad" class="tfg-section" data-completable="true">
+      <div class="tfg-section-toolbar">
+        <button class="tfg-complete-btn" data-section="calidad" type="button" aria-pressed="false">
+          <span class="tfg-complete-icon" aria-hidden="true">○</span>
+          <span class="tfg-complete-label">Marcar como completado</span>
+        </button>
+      </div>
       <h1>Criterios de Calidad Final (Checklist)</h1>
       <p>Antes de imprimir o someter tu documento a evaluación, verifica rigurosamente:</p>
 
@@ -1170,7 +1393,13 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
     </section>
 
     <!-- PLAGIO E IA -->
-    <section id="plagio-ia" class="tfg-section">
+    <section id="plagio-ia" class="tfg-section" data-completable="true">
+      <div class="tfg-section-toolbar">
+        <button class="tfg-complete-btn" data-section="plagio-ia" type="button" aria-pressed="false">
+          <span class="tfg-complete-icon" aria-hidden="true">○</span>
+          <span class="tfg-complete-label">Marcar como completado</span>
+        </button>
+      </div>
       <h1>Prevención de Plagio y Uso Ético de IA</h1>
 
       <div class="callout warning">
@@ -1214,7 +1443,13 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
     </section>
 
     <!-- CRONOGRAMA Y EVALUACIÓN -->
-    <section id="cronograma" class="tfg-section">
+    <section id="cronograma" class="tfg-section" data-completable="true">
+      <div class="tfg-section-toolbar">
+        <button class="tfg-complete-btn" data-section="cronograma" type="button" aria-pressed="false">
+          <span class="tfg-complete-icon" aria-hidden="true">○</span>
+          <span class="tfg-complete-label">Marcar como completado</span>
+        </button>
+      </div>
       <h1>Cronograma de Trabajo y Criterios de Evaluación</h1>
       <p>El desarrollo del TFG se organiza en 3 módulos secuenciales. Las fechas exactas de cada corte las define tu asesor(a) al inicio del curso; usa esta estructura como plantilla de planificación.</p>
 
@@ -1282,7 +1517,13 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
     </section>
 
     <!-- RECURSOS Y HERRAMIENTAS -->
-    <section id="recursos" class="tfg-section">
+    <section id="recursos" class="tfg-section" data-completable="true">
+      <div class="tfg-section-toolbar">
+        <button class="tfg-complete-btn" data-section="recursos" type="button" aria-pressed="false">
+          <span class="tfg-complete-icon" aria-hidden="true">○</span>
+          <span class="tfg-complete-label">Marcar como completado</span>
+        </button>
+      </div>
       <h1>Recursos y Herramientas Recomendadas</h1>
 
       <div class="process-timeline">
@@ -1398,8 +1639,9 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
       entries.forEach(function (entry) {
         var link = linkFor(entry.target.id);
         if (!link || !entry.isIntersecting) return;
-        navLinks.forEach(function (l) { l.classList.remove('active'); });
+        navLinks.forEach(function (l) { l.classList.remove('active'); l.removeAttribute('aria-current'); });
         link.classList.add('active');
+        link.setAttribute('aria-current', 'true');
       });
     }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
     sections.forEach(function (sec) { spy.observe(sec); });
@@ -1423,15 +1665,132 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
     });
   }
 
-  /* Botones de "Copiar" en cada plantilla de redacción (Clipboard API) */
+  /* Generador interactivo de fórmulas de redacción */
+  function updateBuilderCount(builder, text) {
+    var counterEl = builder.querySelector('.tpl-builder-count');
+    if (!counterEl) return;
+    var words = text.trim().length ? text.trim().split(/\s+/).length : 0;
+    var min = parseInt(builder.getAttribute('data-min-words') || '0', 10);
+    var max = parseInt(builder.getAttribute('data-max-words') || '0', 10);
+    if (min && max) {
+      var inRange = words >= min && words <= max;
+      counterEl.textContent = words + ' palabras — ' + (inRange ? 'dentro del rango recomendado (' + min + '-' + max + ')' : 'fuera del rango recomendado (' + min + '-' + max + ')');
+      counterEl.classList.toggle('ok', inRange);
+      counterEl.classList.toggle('warn', !inRange);
+    } else {
+      counterEl.textContent = words + ' palabras';
+    }
+  }
+
+  document.querySelectorAll('.tpl-builder').forEach(function (builder) {
+    var template = builder.getAttribute('data-template') || '';
+    var fieldsWrap = builder.querySelector('.tpl-builder-fields');
+    var preview = builder.querySelector('.tpl-builder-preview');
+    if (!fieldsWrap || !preview) return;
+
+    var tokens = [];
+    var seen = {};
+    (template.match(/\[[^\]]+\]/g) || []).forEach(function (t) {
+      if (!seen[t]) { seen[t] = true; tokens.push(t); }
+    });
+
+    var inputs = {};
+    tokens.forEach(function (token, i) {
+      var fieldId = 'tpl-field-' + Math.random().toString(36).slice(2, 9) + '-' + i;
+      var label = document.createElement('label');
+      label.className = 'tpl-field';
+      label.setAttribute('for', fieldId);
+      var span = document.createElement('span');
+      span.textContent = token.replace(/^\[|\]$/g, '');
+      var input = document.createElement('input');
+      input.type = 'text';
+      input.id = fieldId;
+      input.placeholder = 'Escribe aquí…';
+      input.addEventListener('input', render);
+      label.appendChild(span);
+      label.appendChild(input);
+      fieldsWrap.appendChild(label);
+      inputs[token] = input;
+    });
+
+    function render() {
+      var text = template;
+      tokens.forEach(function (token) {
+        var value = inputs[token].value.trim();
+        text = text.split(token).join(value ? value : token);
+      });
+      preview.textContent = text;
+      updateBuilderCount(builder, text);
+    }
+
+    render();
+  });
+
+  /* Checklist de progreso por sección con persistencia (localStorage) */
+  var PROGRESS_KEY = 'tfg-progress-v1';
+  var completableSections = Array.prototype.slice.call(document.querySelectorAll('section[data-completable="true"]'));
+  var trackableIds = completableSections.map(function (s) { return s.id; });
+  var progressCountEl = document.getElementById('tfg-progress-count');
+  var progressBarEl = document.getElementById('tfg-progress-summary-bar');
+
+  function loadProgress() {
+    try { return JSON.parse(localStorage.getItem(PROGRESS_KEY)) || {}; } catch (e) { return {}; }
+  }
+  function saveProgress(p) {
+    try { localStorage.setItem(PROGRESS_KEY, JSON.stringify(p)); } catch (e) {}
+  }
+  var progressState = loadProgress();
+
+  function refreshProgressUI() {
+    var total = trackableIds.length;
+    var done = trackableIds.filter(function (id) { return !!progressState[id]; }).length;
+    if (progressCountEl) progressCountEl.textContent = done + ' / ' + total;
+    if (progressBarEl) {
+      progressBarEl.style.width = (total ? (done / total * 100) : 0) + '%';
+      progressBarEl.classList.toggle('complete', total > 0 && done === total);
+    }
+    trackableIds.forEach(function (id) {
+      var isDone = !!progressState[id];
+      var link = linkFor(id);
+      if (link) link.classList.toggle('done', isDone);
+      var btn = document.querySelector('.tfg-complete-btn[data-section="' + id + '"]');
+      if (btn) {
+        btn.setAttribute('aria-pressed', isDone ? 'true' : 'false');
+        var icon = btn.querySelector('.tfg-complete-icon');
+        var label = btn.querySelector('.tfg-complete-label');
+        if (icon) icon.textContent = isDone ? '✓' : '○';
+        if (label) label.textContent = isDone ? 'Completado' : 'Marcar como completado';
+      }
+    });
+  }
+
+  document.querySelectorAll('.tfg-complete-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var id = btn.getAttribute('data-section');
+      progressState[id] = !progressState[id];
+      saveProgress(progressState);
+      refreshProgressUI();
+    });
+  });
+
+  refreshProgressUI();
+
+  /* Botones de "Copiar" en cada plantilla de redacción (Clipboard API con respaldo) */
   document.querySelectorAll('.tpl-box').forEach(function (box) {
-    var text = box.textContent.trim();
+    var wrap = document.createElement('div');
+    wrap.className = 'tpl-box-wrap';
+    box.parentNode.insertBefore(wrap, box);
+    wrap.appendChild(box);
+
     var btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'tpl-copy-btn';
     btn.textContent = 'Copiar';
-    btn.setAttribute('aria-label', 'Copiar plantilla');
+    btn.setAttribute('aria-label', 'Copiar texto de la plantilla');
+    wrap.appendChild(btn);
+
     btn.addEventListener('click', function () {
+      var text = box.textContent.trim();
       var done = function () {
         btn.textContent = '✔ Copiado';
         btn.classList.add('copied');
@@ -1456,7 +1815,6 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
         fallbackCopy();
       }
     });
-    box.appendChild(btn);
   });
 })();
 </script>
