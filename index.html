@@ -1,3 +1,13 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Metodológica del TFG — Ingeniería | Universidad Dominicana O&amp;M</title>
+<meta name="description" content="Guía interactiva paso a paso para elaborar el Trabajo Final de Grado (TFG) de Ingeniería: estructura, fórmulas de redacción, plantillas copiables, checklist de calidad, cronograma de entregas y uso ético de la IA.">
+<meta name="author" content="Johan Tapia, PhD">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%98%3C/text%3E%3C/svg%3E">
 <style>
 /* ==========================================================================
    VARIABLES Y DISEÑO BASE (Estilo Documentación Moderna tipo Notion/Tailwind)
@@ -6,7 +16,7 @@
   /* Paleta Corporativa Refinada */
   --o-m-blue: #003865;
   --o-m-gold: #D4AF37;
-  
+
   /* Colores UI Modernos */
   --primary: #0f172a;        /* Texto principal muy oscuro */
   --secondary: #334155;      /* Texto secundario */
@@ -15,7 +25,7 @@
   --bg-card: #ffffff;        /* Fondo de tarjetas/secciones */
   --border-light: #e2e8f0;
   --border-dark: #cbd5e1;
-  
+
   /* Acentos para Alertas */
   --accent-blue-bg: #eff6ff;
   --accent-blue-border: #3b82f6;
@@ -35,6 +45,32 @@
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --sidebar-width: 300px;
 }
+
+/* Tema oscuro (activado por preferencia del sistema o por el interruptor) */
+[data-theme="dark"] {
+  --o-m-blue: #5aa3e0;
+  --primary: #f1f5f9;
+  --secondary: #cbd5e1;
+  --muted: #94a3b8;
+  --bg-body: #0b1220;
+  --bg-card: #16213a;
+  --border-light: #2b3958;
+  --border-dark: #3d4d70;
+  --accent-blue-bg: #13233f;
+  --accent-blue-border: #3b82f6;
+  --accent-gold-bg: #2a2108;
+  --accent-gold-border: #f59e0b;
+  --accent-green-bg: #0c2417;
+  --accent-green-border: #22c55e;
+  --accent-red-bg: #2a1212;
+  --accent-red-border: #ef4444;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.4);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.5);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.5);
+}
+
+html { scroll-behavior: smooth; }
+body { margin: 0; background-color: var(--bg-body); transition: background-color .25s ease; }
 
 .tfg-wrapper {
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -58,6 +94,23 @@
 }
 
 /* ==========================================================================
+   BARRA DE PROGRESO DE LECTURA
+   ========================================================================== */
+#tfg-progress-wrap {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  z-index: 1000;
+  background: transparent;
+}
+#tfg-progress {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--o-m-blue), var(--o-m-gold));
+  transition: width .1s linear;
+}
+
+/* ==========================================================================
    BARRA LATERAL (Navegación Sticky y Elegante)
    ========================================================================== */
 .tfg-sidebar {
@@ -65,6 +118,7 @@
   padding: 2rem 1.5rem;
   border-bottom: 1px solid var(--border-light);
   z-index: 10;
+  transition: background-color .25s ease, border-color .25s ease;
 }
 
 @media (min-width: 1024px) {
@@ -80,7 +134,7 @@
     box-shadow: var(--shadow-md);
     margin: 2rem 0;
   }
-  
+
   /* Scrollbar estético para sidebar */
   .tfg-sidebar::-webkit-scrollbar { width: 6px; }
   .tfg-sidebar::-webkit-scrollbar-track { background: transparent; }
@@ -92,7 +146,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid var(--border-light);
 }
@@ -105,6 +159,44 @@
   letter-spacing: 0.05em;
   margin: 0;
 }
+
+.tfg-header-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tfg-icon-btn {
+  background: none;
+  border: 1px solid var(--border-light);
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--secondary);
+  transition: all .2s ease;
+}
+.tfg-icon-btn:hover { background: var(--bg-body); border-color: var(--border-dark); }
+.tfg-nav-toggle { display: none; }
+
+.tfg-search { margin-bottom: 1.25rem; }
+.tfg-search input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  background: var(--bg-body);
+  color: var(--secondary);
+  font-family: inherit;
+}
+.tfg-search input:focus { outline: 2px solid var(--o-m-blue); outline-offset: 1px; }
 
 .tfg-nav ul {
   list-style: none;
@@ -131,6 +223,27 @@
   background: var(--bg-body);
   color: var(--o-m-blue);
   transform: translateX(4px);
+}
+
+.tfg-nav a.active,
+.tfg-nav a.active:hover {
+  background: var(--o-m-blue);
+  color: #ffffff;
+  transform: translateX(4px);
+}
+
+.tfg-sidebar-actions {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-light);
+}
+
+@media (max-width: 1023px) {
+  .tfg-nav, .tfg-search, .tfg-sidebar-actions { display: none; }
+  .tfg-sidebar.open .tfg-nav,
+  .tfg-sidebar.open .tfg-search,
+  .tfg-sidebar.open .tfg-sidebar-actions { display: block; }
+  .tfg-nav-toggle { display: inline-flex; }
 }
 
 /* ==========================================================================
@@ -184,7 +297,8 @@
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border-light);
   margin-bottom: 2.5rem;
-  transition: box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease, background-color .25s ease, border-color .25s ease;
+  scroll-margin-top: 1.5rem;
 }
 
 .tfg-section:hover { box-shadow: var(--shadow-md); }
@@ -199,13 +313,14 @@
 .tfg-cover {
   text-align: center;
   padding: 5rem 3rem;
-  background: #ffffff;
+  background: var(--bg-card);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
-  margin-bottom: 4rem;
+  margin-bottom: 2.5rem;
   position: relative;
   overflow: hidden;
+  scroll-margin-top: 1.5rem;
 }
 
 .tfg-cover::before {
@@ -284,6 +399,43 @@
 
 .badge-gold { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
 .badge-blue { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+[data-theme="dark"] .badge-gold { background: #3a2c05; color: #fbbf24; border-color: #78350f; }
+[data-theme="dark"] .badge-blue { background: #0c2d48; color: #7dd3fc; border-color: #075985; }
+
+/* Plantillas copiables (tecnología: Clipboard API) */
+.tpl-box {
+  position: relative;
+  background: #f8fafc;
+  border: 1px dashed var(--border-dark);
+  border-radius: var(--radius-sm);
+  padding: 1rem 3.75rem 1rem 1.1rem;
+  margin: 1rem 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: #1e293b;
+  white-space: pre-wrap;
+}
+[data-theme="dark"] .tpl-box { background: #0b1220; color: #e2e8f0; border-color: var(--border-dark); }
+
+.tpl-copy-btn {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.35rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-dark);
+  background: #ffffff;
+  color: var(--secondary);
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.tpl-copy-btn:hover { background: var(--o-m-blue); color: #fff; border-color: var(--o-m-blue); }
+.tpl-copy-btn.copied { background: #16a34a; color: #fff; border-color: #16a34a; }
+[data-theme="dark"] .tpl-copy-btn { background: var(--bg-card); color: var(--secondary); }
 
 /* Tablas Modernas */
 .table-container {
@@ -304,7 +456,7 @@
 }
 
 .tfg-main th {
-  background: #f8fafc;
+  background: var(--bg-body);
   color: var(--muted);
   font-weight: 600;
   font-size: 0.85rem;
@@ -322,7 +474,7 @@
 }
 
 .tfg-main tr:last-child td { border-bottom: none; }
-.tfg-main tr:hover td { background-color: #f8fafc; }
+.tfg-main tr:hover td { background-color: var(--bg-body); }
 
 /* Listas de Verificación Estilizadas */
 .feature-list {
@@ -448,9 +600,59 @@
 
 .print-action:hover { background: var(--secondary); }
 
+/* Botón flotante "Volver arriba" */
+#tfg-top {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all .25s ease;
+  z-index: 999;
+}
+#tfg-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+#tfg-top:hover { background: var(--o-m-blue); }
+
+/* Pie de página con autoría */
+.tfg-footer {
+  border-top: 1px solid var(--border-light);
+  background: var(--bg-card);
+  transition: background-color .25s ease, border-color .25s ease;
+}
+.tfg-footer-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+.tfg-footer-brand {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 0 0 0.35rem;
+}
+.tfg-footer-author { margin: 0.75rem 0 0.25rem; }
+.tfg-footer-author strong { color: var(--o-m-blue); }
+.tfg-footer-note { max-width: 560px; margin: 0.5rem auto; font-size: 0.8rem; }
+.tfg-footer-year { margin-top: 1rem; font-size: 0.8rem; }
+
 /* Formato de Impresión Fiel */
 @media print {
-  .tfg-sidebar, .print-action { display: none !important; }
+  .tfg-sidebar, .print-action, #tfg-top, #tfg-progress-wrap { display: none !important; }
   .tfg-wrapper { display: block; background: white; }
   .tfg-main { width: 100%; max-width: none; padding: 0; margin: 0; }
   .tfg-section { box-shadow: none; border: none; padding: 1rem 0; page-break-inside: avoid; }
@@ -459,21 +661,33 @@
   h1, h2 { page-break-after: avoid; }
   body { background: white; }
 }
-
-html { scroll-behavior: smooth; }
 </style>
+</head>
+<body>
+
+<div id="tfg-progress-wrap"><div id="tfg-progress"></div></div>
 
 <div class="tfg-wrapper">
-  
+
   <!-- BARRA LATERAL -->
   <aside class="tfg-sidebar">
     <div class="tfg-sidebar-header">
       <span style="font-size: 1.5rem;">📘</span>
       <h3 class="tfg-sidebar-title">Índice TFG</h3>
+      <div class="tfg-header-actions">
+        <button id="tfg-theme-toggle" class="tfg-icon-btn" type="button" aria-label="Cambiar tema claro/oscuro" title="Cambiar tema">🌙</button>
+        <button id="tfg-nav-toggle" class="tfg-icon-btn tfg-nav-toggle" type="button" aria-label="Mostrar u ocultar índice" aria-expanded="false" title="Mostrar/ocultar índice">☰</button>
+      </div>
     </div>
+
+    <div class="tfg-search">
+      <input type="search" id="tfg-search-input" placeholder="🔍 Buscar en el índice..." aria-label="Buscar sección en el índice">
+    </div>
+
     <nav class="tfg-nav">
       <ul>
         <li><a href="#portada">Portada y Preliminares</a></li>
+        <li><a href="#dedicatoria">Dedicatoria y Agradecimientos</a></li>
         <li><a href="#intro">Introducción</a></li>
         <li><a href="#cap1">Capítulo I: Aspectos Introductorios</a></li>
         <li><a href="#cap2">Capítulo II: Marco Teórico</a></li>
@@ -481,54 +695,89 @@ html { scroll-behavior: smooth; }
         <li><a href="#cap4">Capítulo IV: Resultados</a></li>
         <li><a href="#cap5">Capítulo V: Propuesta Técnica</a></li>
         <li><a href="#conclusiones">Conclusiones y Recomendaciones</a></li>
+        <li><a href="#anexos">Anexos, Glosario y Referencias</a></li>
         <li><a href="#calidad">Criterios de Calidad (Checklist)</a></li>
         <li><a href="#plagio-ia">Guía Anti-Plagio e IA Ética</a></li>
+        <li><a href="#cronograma">Cronograma y Evaluación</a></li>
         <li><a href="#recursos">Recursos y Herramientas</a></li>
       </ul>
     </nav>
-    <div style="margin-top: 2.5rem;">
-      <button class="print-action" onclick="window.print()">🖨️ Imprimir Guía</button>
+
+    <div class="tfg-sidebar-actions">
+      <button class="print-action" onclick="window.print()" type="button">🖨️ Imprimir Guía</button>
     </div>
   </aside>
 
   <!-- CONTENIDO PRINCIPAL -->
   <main class="tfg-main">
-    
+
     <!-- PORTADA -->
     <section id="portada" class="tfg-cover">
       <div class="tfg-cover-logo">UNIVERSIDAD DOMINICANA O&M</div>
       <div class="tfg-cover-subtitle">FUNDADA EL 12 DE ENERO DE 1966</div>
-      
+
       <div class="tfg-cover-department">
         ÁREA DE INGENIERÍA Y TECNOLOGÍA<br>
         ESCUELA DE INGENIERÍA<br>
         DIRECCIÓN DE TRABAJO FINAL DE GRADO
       </div>
-      
+
       <div class="tfg-cover-title">
         Trabajo Final de Grado para optar por el título de:<br>
         <span style="color: var(--o-m-blue);">Ingeniero en Sistemas y Computación</span>
       </div>
-      
-      <div class="callout gold" style="text-align: left; margin: 3rem auto; max-width: 650px; background: #fffcf2;">
+
+      <div class="callout gold" style="text-align: left; margin: 3rem auto; max-width: 650px;">
         <div><span class="badge badge-gold">FÓRMULA DEL TÍTULO</span></div>
-        <p style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 1.05rem; color: #1e293b; margin: 0.5rem 0; padding: 1rem; background: white; border-radius: 6px; border: 1px dashed #cbd5e1;">
-          [ACCIÓN] de [SISTEMA/SOLUCIÓN] [TÉCNICA] para[EMPRESA/INSTITUCIÓN] en [UBICACIÓN], durante [PERÍODO]
-        </p>
-        <ul style="color: #475569; font-size: 0.95rem; margin-top: 10px; padding-left: 1.2rem;">
+        <div class="tpl-box">[ACCIÓN] de [SISTEMA/SOLUCIÓN] [TÉCNICA] para [EMPRESA/INSTITUCIÓN] en [UBICACIÓN], durante [PERÍODO]</div>
+        <ul style="color: var(--secondary); font-size: 0.95rem; margin-top: 10px; padding-left: 1.2rem;">
           <li>Debe contener entre 15 y 25 palabras.</li>
           <li>Incluye la acción técnica específica y el beneficiario real.</li>
         </ul>
+        <p style="margin: 1rem 0 0; font-size: 0.9rem;"><strong>Ejemplos por especialidad:</strong></p>
+        <ul style="color: var(--secondary); font-size: 0.9rem; margin-top: 4px; padding-left: 1.2rem;">
+          <li><strong>Sistemas:</strong> "Diseño de sistema web de gestión hospitalaria para Hospital Regional en Santiago, RD, durante el segundo semestre 2025".</li>
+          <li><strong>Industrial:</strong> "Optimización de procesos de manufactura para Textiles del Norte en La Vega, RD, durante el primer trimestre 2025".</li>
+          <li><strong>Civil:</strong> "Diseño de estructura antisísmica para Complejo Residencial en Santo Domingo Este, durante 2025".</li>
+        </ul>
       </div>
-      
-      <p style="color: var(--muted); font-size: 0.95rem; letter-spacing: 0.5px; text-transform: uppercase;">EN SAN ISIDRO, SANTO DOMINGO, RD, DURANTE EL PRIMER CUATRIMESTRE DEL AÑO 2025.</p>
+
+      <p style="color: var(--muted); font-size: 0.95rem; letter-spacing: 0.5px; text-transform: uppercase;">EN [CIUDAD/PROVINCIA], REPÚBLICA DOMINICANA, DURANTE [CUATRIMESTRE/PERÍODO Y AÑO].</p>
+    </section>
+
+    <!-- DEDICATORIA Y AGRADECIMIENTOS -->
+    <section id="dedicatoria" class="tfg-section">
+      <h1>Dedicatoria y Agradecimientos</h1>
+      <p>Son de las primeras páginas que leerá el jurado. Aunque son de carácter personal, deben conservar un tono formal, específico y agradecido: evita frases genéricas como "gracias a todos los que me apoyaron" y nombra contribuciones concretas.</p>
+
+      <h2>Cómo escribir la Dedicatoria</h2>
+      <div class="callout info">
+        <strong>Estructura: personal y breve (máximo 1 página)</strong>
+        <div class="tpl-box">A [personas importantes en tu vida académica/personal], por [razón específica de apoyo durante la carrera].</div>
+      </div>
+
+      <h2>Cómo escribir los Agradecimientos</h2>
+      <p>Existe un <strong>orden obligatorio</strong> que debe respetarse en la redacción:</p>
+      <div class="process-timeline">
+        <div class="timeline-step"><strong>1. Dios / Fe</strong> — si aplica a tu caso personal.</div>
+        <div class="timeline-step"><strong>2. Universidad Dominicana O&amp;M</strong> — por la formación académica recibida.</div>
+        <div class="timeline-step"><strong>3. Asesor académico</strong> — nombre completo y títulos.</div>
+        <div class="timeline-step"><strong>4. Profesores</strong> — en general, por su aporte a tu formación.</div>
+        <div class="timeline-step"><strong>5. Empresa/institución</strong> — donde realizaste el proyecto.</div>
+        <div class="timeline-step"><strong>6. Personal de la empresa</strong> — que te apoyó directamente durante la investigación.</div>
+        <div class="timeline-step"><strong>7. Compañeros de equipo</strong> — si el trabajo es grupal (máximo 3 integrantes).</div>
+      </div>
+      <div class="callout warning">
+        <strong>Tono recomendado:</strong>
+        <p style="margin: 0;">Formal, específico y agradecido. Menciona contribuciones concretas de cada persona o institución en lugar de agradecimientos genéricos.</p>
+      </div>
     </section>
 
     <!-- INTRODUCCIÓN -->
     <section id="intro" class="tfg-section">
       <h1>Introducción</h1>
       <p>La introducción debe enganchar al lector y dar un panorama completo pero resumido del trabajo. Utiliza esta estructura metodológica de 4 párrafos:</p>
-      
+
       <div class="callout info">
         <strong>Estructura de la Introducción</strong>
         <p><strong>Párrafo 1: Contextualización tecnológica.</strong> "En la actualidad,[tu área técnica] son fundamentales para que las empresas puedan [beneficio general]. Según se ha demostrado, contar con[tipo de solución] ayuda a [beneficios]..."</p>
@@ -541,7 +790,7 @@ html { scroll-behavior: smooth; }
     <!-- CAPÍTULO 1 -->
     <section id="cap1" class="tfg-section">
       <h1>Capítulo I: Aspectos Introductorios</h1>
-      
+
       <h2>1.1 Antecedentes de la Investigación</h2>
       <p>Redacta utilizando una estructura obligatoria de 4 párrafos que van de lo general a lo particular (método de embudo):</p>
       <ul class="feature-list" style="margin-bottom: 2rem;">
@@ -550,10 +799,10 @@ html { scroll-behavior: smooth; }
         <li><strong>Párrafo 3:</strong> Aspecto técnico específico (crítico para la solución propuesta).</li>
         <li><strong>Párrafo 4:</strong> Aplicación directa y requerimientos del caso específico de la empresa.</li>
       </ul>
-      
+
       <div class="callout warning">
         <strong>Requisitos mínimos de antecedentes:</strong>
-        <ul style="margin-top: 0.5rem; padding-left: 1.2rem; color: #7f1d1d;">
+        <ul style="margin-top: 0.5rem; padding-left: 1.2rem; color: inherit;">
           <li>4 a 10 referencias bibliográficas recientes (2020-2025).</li>
           <li>Al menos 1 referencia de nivel internacional.</li>
           <li>Extensión mínima de 800 palabras en esta subsección.</li>
@@ -567,13 +816,13 @@ html { scroll-behavior: smooth; }
       <div class="callout info" style="margin-top: 2.5rem;">
         <h3 style="margin-top: 0; font-size: 1.15rem;">1.2.1 Formulación y Sistematización del Problema</h3>
         <p>Todo proyecto de ingeniería nace de una <strong>Gran Pregunta</strong> (Formulación) que luego se desglosa en <strong>Preguntas Específicas</strong> (Sistematización). Existe una alineación directa, lógica y obligatoria entre estas preguntas y tus objetivos de investigación.</p>
-        
+
         <div class="table-container" style="box-shadow: none; border-color: #bfdbfe; margin-top: 1.5rem;">
           <table style="background: transparent;">
             <thead>
               <tr>
-                <th style="background: #eff6ff; color: #1e3a8a;">Preguntas de Investigación</th>
-                <th style="background: #eff6ff; color: #1e3a8a;">Objetivos Correspondientes</th>
+                <th>Preguntas de Investigación</th>
+                <th>Objetivos Correspondientes</th>
               </tr>
             </thead>
             <tbody>
@@ -613,8 +862,8 @@ html { scroll-behavior: smooth; }
 
       <h2>1.4 Objetivos de la Investigación</h2>
       <div class="callout gold">
-        <strong>Fórmula del Objetivo General:</strong><br>
-        <span style="font-family: monospace; display: block; margin-top: 0.5rem; color: #92400e;">[VERBO DE ACCIÓN] una[SOLUCIÓN INTEGRAL] de [COMPONENTES TÉCNICOS] en [EMPRESA], que permita[BENEFICIOS] durante [PERÍODO].</span>
+        <strong>Fórmula del Objetivo General:</strong>
+        <div class="tpl-box">[VERBO DE ACCIÓN] una [SOLUCIÓN INTEGRAL] de [COMPONENTES TÉCNICOS] en [EMPRESA], que permita [BENEFICIOS] durante [PERÍODO].</div>
         <em style="display: block; margin-top: 0.5rem; font-size: 0.9rem;">Verbos recomendados: Diseñar, Desarrollar, Implementar, Optimizar, Crear.</em>
       </div>
       <h3 style="font-size: 1.1rem; margin-top: 2rem;">Objetivos Específicos (Deben ser 4 correlativos a las preguntas):</h3>
@@ -630,7 +879,7 @@ html { scroll-behavior: smooth; }
     <section id="cap2" class="tfg-section">
       <h1>Capítulo II: Marco Teórico</h1>
       <p>El marco teórico fundamenta tu proyecto. Debe contener entre <strong>15 y 20 secciones técnicas</strong> estructuradas lógicamente de la siguiente manera:</p>
-      
+
       <div class="card-grid">
         <div class="info-card">
           <h4>📌 1. Conceptos Fundamentales</h4>
@@ -660,21 +909,50 @@ html { scroll-behavior: smooth; }
     <!-- CAPÍTULO 3 -->
     <section id="cap3" class="tfg-section">
       <h1>Capítulo III: Marco Metodológico</h1>
-      <p>Este capítulo detalla el <em>cómo</em> de la investigación. Usa esta estructura pre-aprobada para proyectos de diseño en ingeniería técnica:</p>
+      <p>Este capítulo detalla el <em>cómo</em> de la investigación. Comienza siempre con un párrafo introductorio y luego desarrolla cada componente metodológico con su propia plantilla de redacción.</p>
 
-      <ul class="feature-list" style="margin-top: 2rem;">
-        <li><strong>Diseño de Investigación:</strong> No experimental y transeccional (los datos se levantan en un solo momento de tiempo sin alterar variables).</li>
-        <li><strong>Enfoque:</strong> Mixto (Combina lo cualitativo para interpretar percepciones operativas, y cuantitativo para medir variables y deficiencias técnicas).</li>
-        <li><strong>Tipo de Investigación:</strong> Descriptivo (Levanta las características exactas del problema actual).</li>
-        <li><strong>Técnicas de Recolección (Las 4 son obligatorias):</strong>
-          <ul style="margin-top: 0.5rem; padding-left: 1.5rem; list-style-type: disc; color: var(--muted);">
-            <li><strong>Observación Directa:</strong> Uso de listas de verificación técnica in-situ.</li>
-            <li><strong>Entrevistas Estructuradas:</strong> Guía de preguntas al personal gerencial o técnico clave.</li>
-            <li><strong>Revisión Documental:</strong> Análisis de planos, inventarios, manuales o reportes previos.</li>
-            <li><strong>Encuesta:</strong> Cuestionario digital (Google Forms) aplicado a los usuarios del sistema.</li>
-          </ul>
-        </li>
+      <div class="callout info">
+        <strong>Párrafo introductorio obligatorio</strong>
+        <div class="tpl-box">El presente capítulo describe la metodología utilizada para el desarrollo de la investigación titulada [tu título completo]. Este marco metodológico establece los procedimientos y herramientas empleadas para recolectar, analizar e interpretar la información requerida para [objetivo principal de tu proyecto].</div>
+      </div>
+
+      <h2>3.1 Diseño de la Investigación</h2>
+      <p>Usa siempre un diseño <strong>no experimental y transeccional</strong> (los datos se levantan en un solo momento de tiempo sin alterar variables):</p>
+      <div class="tpl-box">El diseño de esta investigación es un diseño no experimental y transeccional. [Autor] (2014) describe que cuando una investigación se considera no experimental, es porque en esta no se manipulan las variables premeditadamente, sino que se estudian en su entorno natural; también explica que, cuando es transeccional, se refiere a que los datos fueron recolectados en un solo momento durante [tu período], permitiendo captar una fotografía del estado actual de [tu objeto de estudio].
+
+Este diseño permitirá el diagnóstico de la situación de [aspectos relevantes de tu proyecto], y servirá como base para el desarrollo de una propuesta integral que mejore [beneficios esperados].</div>
+
+      <h2>3.2 Enfoque de la Investigación</h2>
+      <p>Para proyectos técnicos, usa <strong>siempre</strong> enfoque mixto:</p>
+      <div class="tpl-box">Esta investigación tiene un enfoque mixto, ya que combina elementos del enfoque cualitativo y cuantitativo. Por un lado, se utilizan métodos cualitativos para interpretar [aspectos cualitativos de tu proyecto]. Por el otro lado, se utilizan métodos cuantitativos para medir aspectos como [aspectos medibles específicos de tu área].
+
+Según [Autor] (2014) el enfoque mixto permite aprovechar las ventajas de ambos enfoques para tener una visión más completa y profunda del fenómeno de estudio, además de que esta combinación de metodologías brinda una mayor solidez al análisis y a la elaboración de la propuesta técnica.</div>
+
+      <h2>3.3 Tipo de Investigación</h2>
+      <p>Usa <strong>siempre</strong> tipo descriptivo:</p>
+      <div class="tpl-box">Se utilizó un enfoque descriptivo porque se necesitaba registrar y describir de manera sistemática las características de [objeto de estudio específico]. [Autor] (2012) plantea que este tipo de investigación se centra en comprender cómo están conformados actualmente estos sistemas, cuáles son las limitaciones que tienen y qué mejoras se pueden proponer desde una perspectiva técnica.
+
+De igual modo, el enfoque tecnológico implica que la investigación se basa en principios, herramientas y criterios propios del campo de [tu especialidad de ingeniería], con la meta de desarrollar una solución práctica que mejore [objetivo específico].</div>
+
+      <h2>3.4 Población y Muestra</h2>
+      <div class="tpl-box">La población objeto del estudio está conformada por [define tu población específica - instalaciones, personal, procesos, etc.] de [empresa/institución]. Dado el carácter técnico del estudio se utilizó un muestreo intencional, seleccionando sujetos clave con conocimiento sobre [aspectos relevantes].
+
+La muestra estuvo conformada por un total de [número] participantes, distribuidos de la siguiente manera: [descripción específica de tu muestra - ej: gerentes, técnicos, operarios, etc.].</div>
+
+      <h2>3.5 Técnicas de Recolección de Datos</h2>
+      <p>Incluye <strong>siempre</strong> estas 4 técnicas obligatorias:</p>
+      <ul class="feature-list" style="margin-top: 1rem;">
+        <li><strong>Observación Directa:</strong> "Esta observación se realizó haciendo un recorrido técnico por [lugar específico] para identificar [qué observaste específicamente]. Se utilizó una lista de verificación para registrar hallazgos relevantes."</li>
+        <li><strong>Entrevistas Estructuradas:</strong> "Se realizaron entrevistas a [tipo de personal] mediante una guía de preguntas abiertas previamente elaborada. Estas entrevistas permitieron recoger opiniones sobre [aspectos específicos de interés]."</li>
+        <li><strong>Revisión Documental:</strong> "Se analizaron [tipos de documentos relevantes a tu proyecto]. Esta documentación sirvió como referencia para entender [aspectos que te ayudaron]."</li>
+        <li><strong>Encuesta:</strong> "Se realizó un cuestionario con preguntas dirigidas a [población objetivo], con el objetivo de obtener datos cuantificables sobre [aspectos específicos que mediste]."</li>
       </ul>
+
+      <h2>3.6 Procedimientos de Análisis</h2>
+      <div class="tpl-box">Para esta etapa se utilizó la herramienta Google Forms mediante la cual se diseñó y distribuyó la encuesta. Una vez recolectados los datos se organizaron en tablas y se calcularon frecuencias y porcentajes para entender mejor [qué analizaste]. Los datos fueron representados en gráficos para facilitar su interpretación.</div>
+
+      <h2>3.7 Validez y Confiabilidad</h2>
+      <div class="tpl-box">La validez se aseguró mediante la triangulación de fuentes, es decir, el cruce de información proveniente de distintos actores y documentos. La confiabilidad se garantizó a través del uso sistemático de instrumentos validados, el registro ordenado de los datos y la revisión constante del proceso investigativo.</div>
     </section>
 
     <!-- CAPÍTULO 4 -->
@@ -712,14 +990,18 @@ html { scroll-behavior: smooth; }
         </table>
       </div>
       <p style="font-size: 0.9rem; color: var(--muted); margin-top: -1.5rem;"><em>Fuente: Encuesta aplicada al personal operativo de [Empresa], [Mes y Año].</em></p>
-      
+
       <div style="border-left: 3px solid var(--border-dark); padding-left: 1rem; margin-top: 1.5rem;">
         <p><strong>Interpretación:</strong> <em>"En la tabla y gráfico precedentes se puede observar que de la población total encuestada, el 80% considera el cumplimiento de los objetivos como 'Muy bueno', mientras que un 20% lo valora como 'Bueno', evidenciando una percepción general positiva frente a..."</em></p>
       </div>
 
       <h2 style="margin-top: 3rem;">4.2 Discusión de Resultados</h2>
       <p>No basta con mostrar gráficos. Debes <strong>cruzar tus hallazgos de campo con el marco teórico</strong>. Desarrolla al menos 6 párrafos donde cites autores que respalden o contrasten tus resultados.</p>
-      <p><em>Ejemplo: "El 73% de latencia reportada en la encuesta confirma las deficiencias del cableado UTP categoría 5. Tal y como señala Stallings (2022), infraestructuras obsoletas en entornos de alta demanda generan cuellos de botella que impactan la operatividad..."</em></p>
+      <div class="tpl-box">Durante el proceso de análisis de las encuestas realizadas al [personal/objeto de estudio], se detectaron varios patrones que muestran [problemáticas principales]. Lo más relevante es que [hallazgo más importante y su impacto específico].
+
+En la Tabla X se muestra que el [porcentaje]% de [población] [resultado específico]. Este dato es [preocupante/positivo/revelador] porque [explicación del impacto]. Tal y como señala [Autor] (año), "[cita que respalde tu interpretación]", lo cual refuerza [conexión con tus resultados].
+
+A través de este análisis, se evidencia que la situación [caracterización general], pero también [oportunidades identificadas]. Los resultados no solo señalan problemas, sino que también muestran [aspectos positivos o disposición al cambio encontrados].</div>
     </section>
 
     <!-- CAPÍTULO 5 -->
@@ -750,6 +1032,15 @@ html { scroll-behavior: smooth; }
 
       <h2>5.5 Especificación de Componentes Detallados</h2>
       <p>Para cada equipo físico, módulo de software o servidor propuesto en tu diseño, debes incluir una tabla técnica estricta y un párrafo de <strong>Justificativa</strong> (por qué elegiste exactamente esa marca, modelo o framework y cómo resuelve el problema diagnosticado).</p>
+      <div class="tpl-box">[Nombre del Componente/Equipo]
+[Descripción técnica de 2-3 párrafos explicando qué es, cómo funciona y por qué es importante para tu solución]
+
+| Característica | Especificación |
+|-----------------|-----------------|
+| [Característica 1] | [Valor/descripción] |
+| [Característica 2] | [Valor/descripción] |
+
+Justificativa: [Párrafo explicando por qué elegiste este componente específico, cómo resuelve problemas identificados, y cómo se integra con el resto de tu solución]</div>
 
       <h2>5.6 Análisis de Presupuesto Detallado</h2>
       <p>Todo diseño de ingeniería debe ser económicamente viable. Desglosa los costos de implementación:</p>
@@ -775,12 +1066,13 @@ html { scroll-behavior: smooth; }
           </tbody>
         </table>
       </div>
+      <p style="font-size: 0.85rem; color: var(--muted); margin-top: -1.5rem;"><em>Incluye la tasa de cambio de referencia usada y su fecha de consulta.</em></p>
     </section>
 
     <!-- CONCLUSIONES Y RECOMENDACIONES -->
     <section id="conclusiones" class="tfg-section">
       <h1>Conclusiones y Recomendaciones</h1>
-      
+
       <h2>Estructura de la Conclusión (8 Párrafos)</h2>
       <div class="process-timeline">
         <div class="timeline-step">
@@ -818,20 +1110,61 @@ html { scroll-behavior: smooth; }
       </ul>
     </section>
 
+    <!-- ANEXOS, GLOSARIO Y REFERENCIAS -->
+    <section id="anexos" class="tfg-section">
+      <h1>Anexos, Glosario y Referencias</h1>
+      <p>El cierre documental de tu TFG demuestra el rigor de tu investigación. Estas tres secciones son obligatorias y suelen restar puntos importantes cuando se entregan incompletas.</p>
+
+      <h2>Anexos</h2>
+      <p>Incluye toda la evidencia que respalda tu trabajo de campo, en este orden:</p>
+      <ul class="feature-list">
+        <li><strong>Instrumento de encuesta:</strong> el cuestionario completo aplicado (Google Forms u otro), con todas sus secciones y opciones de respuesta.</li>
+        <li><strong>Guion de entrevista:</strong> las preguntas exactas utilizadas en las entrevistas estructuradas, con el perfil de los entrevistados.</li>
+        <li><strong>Evidencia fotográfica:</strong> fotos propias tomadas durante la observación directa, correctamente rotuladas ("Fuente: propia, [lugar], [fecha]").</li>
+        <li><strong>Planos y diagramas técnicos</strong> de gran formato que no caben en el cuerpo del Capítulo V.</li>
+        <li><strong>Cartas o constancias</strong> de la empresa/institución que autorizó el levantamiento de información.</li>
+      </ul>
+
+      <h2>Glosario de Términos</h2>
+      <p>Incluye únicamente los términos técnicos o poco comunes de tu área, en orden alfabético, con una definición breve (1-2 líneas) contextualizada a tu proyecto:</p>
+      <div class="tpl-box">[Término 1]: [definición breve y contextualizada al proyecto].
+[Término 2]: [definición breve y contextualizada al proyecto].
+[Término 3]: [definición breve y contextualizada al proyecto].</div>
+      <p style="font-size: 0.9rem; color: var(--muted);"><em>Ejemplo: "Escalable: término técnico para sistemas que pueden crecer en capacidad sin perder rendimiento."</em></p>
+
+      <h2>Referencias Bibliográficas (Formato APA 7ma Edición)</h2>
+      <p>Todas las citas usadas en el cuerpo del documento deben tener su referencia completa, ordenada alfabéticamente por apellido del autor, con sangría francesa e interlineado sencillo.</p>
+      <div class="card-grid">
+        <div class="info-card">
+          <h4>📖 Libro</h4>
+          <div class="tpl-box" style="margin: 0;">Apellido, N. (Año). Título del libro en cursiva (edición). Editorial.</div>
+        </div>
+        <div class="info-card">
+          <h4>📰 Artículo de revista</h4>
+          <div class="tpl-box" style="margin: 0;">Apellido, N. (Año). Título del artículo. Nombre de la Revista, volumen(número), páginas. https://doi.org/xxxx</div>
+        </div>
+        <div class="info-card">
+          <h4>🌐 Página web</h4>
+          <div class="tpl-box" style="margin: 0;">Apellido, N. o Nombre de la organización. (Año, mes día). Título de la página. Nombre del sitio. URL</div>
+        </div>
+      </div>
+    </section>
+
     <!-- CHECKLIST DE CALIDAD -->
     <section id="calidad" class="tfg-section">
       <h1>Criterios de Calidad Final (Checklist)</h1>
       <p>Antes de imprimir o someter tu documento a evaluación, verifica rigurosamente:</p>
-      
+
       <div class="callout success">
         <ul class="checklist" style="margin-top: 0;">
-          <li style="background: transparent; border: none; padding-top: 0.2rem; padding-bottom: 0.2rem; box-shadow: none;"><strong>Estructura Base:</strong> Portada oficial (15-25 palabras), Índice automático, Introducción (4 párrafos).</li>
+          <li style="background: transparent; border: none; padding-top: 0.2rem; padding-bottom: 0.2rem; box-shadow: none;"><strong>Estructura Base:</strong> Portada oficial (15-25 palabras), Índice automático, Dedicatoria y Agradecimientos, Introducción (4 párrafos).</li>
           <li style="background: transparent; border: none; padding-top: 0.2rem; padding-bottom: 0.2rem; box-shadow: none;"><strong>Capítulo I:</strong> Antecedentes (5+ ref.), Planteamiento claro, Preguntas Sistematizadas alineadas 1:1 con los 4 Objetivos Específicos.</li>
           <li style="background: transparent; border: none; padding-top: 0.2rem; padding-bottom: 0.2rem; box-shadow: none;"><strong>Capítulo II:</strong> 15-20 subsecciones técnicas, más de 30 referencias bibliográficas (Mínimo 50% de los años 2020-2025).</li>
           <li style="background: transparent; border: none; padding-top: 0.2rem; padding-bottom: 0.2rem; box-shadow: none;"><strong>Capítulo III:</strong> Metodología de enfoque mixto justificada, con las 4 técnicas de recolección aplicadas.</li>
           <li style="background: transparent; border: none; padding-top: 0.2rem; padding-bottom: 0.2rem; box-shadow: none;"><strong>Capítulo IV:</strong> Mínimo 10 tablas y gráficos tabulados + Discusión robusta contrastada con el marco teórico.</li>
           <li style="background: transparent; border: none; padding-top: 0.2rem; padding-bottom: 0.2rem; box-shadow: none;"><strong>Capítulo V:</strong> Planos o diagramas técnicos propios, componentes estrictamente justificados y presupuesto total.</li>
-          <li style="background: transparent; border: none; padding-top: 0.2rem; padding-bottom: 0.2rem; box-shadow: none;"><strong>Formato General:</strong> Mínimo 45 páginas de contenido, Normas APA 7ma Edición, tipografía Arial/Times 12pt, interlineado 1.5.</li>
+          <li style="background: transparent; border: none; padding-top: 0.2rem; padding-bottom: 0.2rem; box-shadow: none;"><strong>Cierre:</strong> Conclusión (8 párrafos), Recomendaciones por stakeholder, Anexos completos, Glosario y Referencias en formato APA.</li>
+          <li style="background: transparent; border: none; padding-top: 0.2rem; padding-bottom: 0.2rem; box-shadow: none;"><strong>Formato General:</strong> Mínimo 45 páginas de contenido, Normas APA 7ma Edición, tipografía Arial/Times 12pt, interlineado 1.5, márgenes de 2.54 cm.</li>
         </ul>
       </div>
     </section>
@@ -839,9 +1172,9 @@ html { scroll-behavior: smooth; }
     <!-- PLAGIO E IA -->
     <section id="plagio-ia" class="tfg-section">
       <h1>Prevención de Plagio y Uso Ético de IA</h1>
-      
+
       <div class="callout warning">
-        <h3 style="margin-top: 0; color: #7f1d1d;">🚨 Uso Categórico y Ético de IA (ChatGPT, Claude)</h3>
+        <h3 style="margin-top: 0; color: inherit;">🚨 Uso Categórico y Ético de IA (ChatGPT, Claude)</h3>
         <p>La Inteligencia Artificial es una herramienta válida de apoyo (lluvia de ideas, revisión de ortografía, estructuración), <strong>NUNCA un sustituto de tu pensamiento crítico, análisis de ingeniería personal o redacción de resultados.</strong></p>
         <p style="margin-bottom: 0;">Si la usas, asume la responsabilidad de editar el texto. Los detectores universitarios (Turnitin, GPTZero) penalizan: patrones gramaticales repetitivos, vocabulario "excesivamente perfecto" o genérico, y la ausencia de una voz académica personal.</p>
       </div>
@@ -854,19 +1187,104 @@ html { scroll-behavior: smooth; }
           <p style="color: #16a34a;">✅ <strong>TEXTO HUMANO (Analítico y Contextualizado):</strong><br> "A través del levantamiento de información en el almacén MSC, se constató cómo la intermitencia de la red generaba latencias críticas en el control de inventario. Esta vulnerabilidad operativa evidencia que una infraestructura tecnológica deficiente trasciende el hardware e impacta directamente los costos logísticos..."</p>
         </div>
       </div>
-      
+
       <h3 style="margin-top: 2.5rem;">Uso Correcto de Citas APA (7ma Edición)</h3>
       <ul class="feature-list">
         <li><strong>Parafraseo:</strong> "Según García (2024), la conectividad es el pilar de la industria moderna." <em>(Recomendado: demuestra que leíste y entendiste).</em></li>
         <li><strong>Cita Corta (&lt; 40 palabras):</strong> Dentro del párrafo entre comillas. <em>Ej: Como afirma Rodríguez (2024), "la red es la clave del éxito" (p. 45).</em></li>
         <li><strong>Cita Larga (&gt; 40 palabras):</strong> En bloque separado, con sangría de 1.27 cm, sin comillas.</li>
       </ul>
+
+      <h3 style="margin-top: 2.5rem;">✅ Proceso de Verificación Final Obligatorio</h3>
+      <p>Antes de la entrega oficial, todo trabajo debe superar este proceso riguroso:</p>
+      <div class="process-timeline">
+        <div class="timeline-step">
+          <strong>Paso 1 — Verificación de originalidad:</strong> pasar el documento completo por software antiplagio certificado. Requisito mínimo: menos del 20% de similitud total. Requisito estricto: 0% de plagio directo o no citado.
+        </div>
+        <div class="timeline-step">
+          <strong>Paso 2 — Detección de Inteligencia Artificial:</strong> someter el documento a software especializado de detección de IA. El trabajo debe demostrar autoría humana genuina; cualquier apoyo de IA debe estar identificado y justificado.
+        </div>
+        <div class="timeline-step">
+          <strong>Paso 3 — Corrección (si aplica):</strong> si el trabajo no cumple los porcentajes requeridos, se devuelve para corrección y se repite la verificación hasta obtener resultados aceptables.
+        </div>
+        <div class="timeline-step">
+          <strong>Paso 4 — Entrega oficial:</strong> una vez aprobadas las verificaciones digitales, se procede con la entrega formal ante la Dirección de Trabajo Final de Grado, según el formato indicado por tu asesor (impreso, USB y/o PDF).
+        </div>
+      </div>
+    </section>
+
+    <!-- CRONOGRAMA Y EVALUACIÓN -->
+    <section id="cronograma" class="tfg-section">
+      <h1>Cronograma de Trabajo y Criterios de Evaluación</h1>
+      <p>El desarrollo del TFG se organiza en 3 módulos secuenciales. Las fechas exactas de cada corte las define tu asesor(a) al inicio del curso; usa esta estructura como plantilla de planificación.</p>
+
+      <div class="card-grid">
+        <div class="info-card">
+          <h4>1️⃣ Módulo 1 — Asesoría Metodológica y Propuesta</h4>
+          <p style="color: var(--muted); font-size: 0.95rem;">Selección del tema, antecedentes, planteamiento del problema, objetivos y estructura del marco metodológico. Cierra con la <strong>Entrega Crítica 1</strong>: propuesta completa.</p>
+        </div>
+        <div class="info-card">
+          <h4>2️⃣ Módulo 2 — Desarrollo de Contenido y Estructura</h4>
+          <p style="color: var(--muted); font-size: 0.95rem;">Redacción del marco teórico, recolección de datos, análisis de resultados, propuesta técnica y diseño de componentes. Cierra con la <strong>Entrega Crítica 2</strong>: capítulos I-III completos.</p>
+        </div>
+        <div class="info-card">
+          <h4>3️⃣ Módulo 3 — Corrección y Evaluación Final</h4>
+          <p style="color: var(--muted); font-size: 0.95rem;">Revisión, verificación antiplagio y de IA, preparación de la presentación y defensa ante jurado. Cierra con la <strong>Entrega Crítica 3</strong>: trabajo final en PDF + reportes de verificación.</p>
+        </div>
+      </div>
+
+      <h2>Checklist de Entregas Obligatorias</h2>
+      <ul class="feature-list">
+        <li><strong>Entrega 1:</strong> formulario de tema completado, justificación del tema (1-2 páginas), formulario de antecedentes con 5+ referencias, objetivos preliminares.</li>
+        <li><strong>Entrega 2:</strong> Capítulo I completo, estructura del Capítulo II, Capítulo III completo, cronograma de trabajo personal, referencias preliminares (mínimo 20).</li>
+        <li><strong>Entrega 3:</strong> trabajo completo en PDF (45+ páginas), reporte de antiplagio, índice automático actualizado, referencias en APA, anexos completos, resumen ejecutivo (1 página).</li>
+      </ul>
+
+      <h2>Criterios de Aprobación</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Componente de evaluación</th>
+              <th>Peso</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Evaluación continua — Asistencia</td><td>15%</td></tr>
+            <tr><td>Evaluación continua — Participación práctica</td><td>40%</td></tr>
+            <tr><td>Evaluación continua — Participación en curso</td><td>20%</td></tr>
+            <tr><td>Evaluación continua — Control de lectura</td><td>15%</td></tr>
+            <tr><td>Evaluación continua — Conferencias</td><td>10%</td></tr>
+            <tr><td><strong>Subtotal Evaluación Continua</strong></td><td><strong>60%</strong></td></tr>
+            <tr><td>Trabajo Final — Presentación</td><td>20%</td></tr>
+            <tr><td>Trabajo Final — Formulación teórica</td><td>30%</td></tr>
+            <tr><td>Trabajo Final — Desarrollo de ideas</td><td>20%</td></tr>
+            <tr><td>Trabajo Final — Soluciones propuestas</td><td>30%</td></tr>
+            <tr><td><strong>Subtotal Trabajo Final</strong></td><td><strong>40%</strong></td></tr>
+            <tr style="background: var(--primary); color: white; font-weight: 700;">
+              <td>Nota mínima de aprobación</td>
+              <td style="color: white;">70 puntos</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout warning" style="margin-top: 2rem;">
+        <strong>Requisitos técnicos obligatorios</strong>
+        <ul style="margin-top: 0.5rem; padding-left: 1.2rem; color: inherit;">
+          <li>Mínimo 45 páginas de contenido, Arial 12pt o Times New Roman 12pt.</li>
+          <li>Espaciado 1.5 en el texto, sencillo en la bibliografía; márgenes de 2.54 cm en todos los lados.</li>
+          <li>Originalidad: máximo 20% de similitud, 0% de plagio directo.</li>
+          <li>Debe pasar verificación de contenido generado artificialmente (IA).</li>
+          <li>Grupos de máximo 3 participantes.</li>
+        </ul>
+      </div>
     </section>
 
     <!-- RECURSOS Y HERRAMIENTAS -->
     <section id="recursos" class="tfg-section">
       <h1>Recursos y Herramientas Recomendadas</h1>
-      
+
       <div class="process-timeline">
         <div class="timeline-step">
           <h4 style="margin: 0 0 0.5rem; color: var(--primary);">Gestores Bibliográficos</h4>
@@ -893,3 +1311,155 @@ html { scroll-behavior: smooth; }
 
   </main>
 </div>
+
+<footer class="tfg-footer">
+  <div class="tfg-footer-inner">
+    <p class="tfg-footer-brand">📘 Guía Metodológica del TFG — Ingeniería y Tecnología</p>
+    <p>Universidad Dominicana O&amp;M · Dirección de Trabajo Final de Grado</p>
+    <p class="tfg-footer-author">Elaborado por <strong>Johan Tapia, PhD</strong> — Asesor Metodológico</p>
+    <p class="tfg-footer-note">Material de apoyo académico de uso libre para estudiantes de la carrera. Compártelo con tus compañeros de clase.</p>
+    <p class="tfg-footer-year">© <span id="tfg-year"></span> Johan Tapia, PhD. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<button id="tfg-top" type="button" aria-label="Volver arriba" title="Volver arriba">↑</button>
+
+<script>
+(function () {
+  'use strict';
+
+  /* Año dinámico en el pie de página */
+  var yearEl = document.getElementById('tfg-year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  /* Tema claro/oscuro con persistencia */
+  var root = document.documentElement;
+  var themeToggle = document.getElementById('tfg-theme-toggle');
+  function updateThemeIcon() {
+    if (!themeToggle) return;
+    themeToggle.textContent = root.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙';
+  }
+  try {
+    var stored = localStorage.getItem('tfg-theme');
+    if (stored) {
+      root.setAttribute('data-theme', stored);
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      root.setAttribute('data-theme', 'dark');
+    }
+  } catch (e) { /* localStorage no disponible */ }
+  updateThemeIcon();
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('tfg-theme', next); } catch (e) {}
+      updateThemeIcon();
+    });
+  }
+
+  /* Menú lateral colapsable en móvil */
+  var sidebar = document.querySelector('.tfg-sidebar');
+  var navToggle = document.getElementById('tfg-nav-toggle');
+  if (navToggle && sidebar) {
+    navToggle.addEventListener('click', function () {
+      var open = sidebar.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      navToggle.textContent = open ? '✕' : '☰';
+    });
+    document.querySelectorAll('.tfg-nav a').forEach(function (a) {
+      a.addEventListener('click', function () {
+        sidebar.classList.remove('open');
+        navToggle.setAttribute('aria-expanded', 'false');
+        navToggle.textContent = '☰';
+      });
+    });
+  }
+
+  /* Buscador del índice */
+  var searchInput = document.getElementById('tfg-search-input');
+  if (searchInput) {
+    searchInput.addEventListener('input', function (e) {
+      var q = e.target.value.trim().toLowerCase();
+      document.querySelectorAll('.tfg-nav li').forEach(function (li) {
+        var text = li.textContent.toLowerCase();
+        li.style.display = text.indexOf(q) !== -1 ? '' : 'none';
+      });
+    });
+  }
+
+  /* Resaltado de la sección activa en el índice (scrollspy) */
+  var sections = document.querySelectorAll('.tfg-main > section[id]');
+  var navLinks = document.querySelectorAll('.tfg-nav a');
+  function linkFor(id) {
+    return document.querySelector('.tfg-nav a[href="#' + id + '"]');
+  }
+  if ('IntersectionObserver' in window && sections.length) {
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var link = linkFor(entry.target.id);
+        if (!link || !entry.isIntersecting) return;
+        navLinks.forEach(function (l) { l.classList.remove('active'); });
+        link.classList.add('active');
+      });
+    }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+    sections.forEach(function (sec) { spy.observe(sec); });
+  }
+
+  /* Barra de progreso de lectura + botón "volver arriba" */
+  var progress = document.getElementById('tfg-progress');
+  var topBtn = document.getElementById('tfg-top');
+  function onScroll() {
+    var h = document.documentElement;
+    var scrollable = h.scrollHeight - h.clientHeight;
+    var pct = scrollable > 0 ? (h.scrollTop / scrollable) * 100 : 0;
+    if (progress) progress.style.width = pct + '%';
+    if (topBtn) topBtn.classList.toggle('visible', h.scrollTop > 480);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  if (topBtn) {
+    topBtn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  /* Botones de "Copiar" en cada plantilla de redacción (Clipboard API) */
+  document.querySelectorAll('.tpl-box').forEach(function (box) {
+    var text = box.textContent.trim();
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'tpl-copy-btn';
+    btn.textContent = 'Copiar';
+    btn.setAttribute('aria-label', 'Copiar plantilla');
+    btn.addEventListener('click', function () {
+      var done = function () {
+        btn.textContent = '✔ Copiado';
+        btn.classList.add('copied');
+        setTimeout(function () {
+          btn.textContent = 'Copiar';
+          btn.classList.remove('copied');
+        }, 1800);
+      };
+      var fallbackCopy = function () {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); done(); } catch (e) {}
+        document.body.removeChild(ta);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(fallbackCopy);
+      } else {
+        fallbackCopy();
+      }
+    });
+    box.appendChild(btn);
+  });
+})();
+</script>
+
+</body>
+</html>
