@@ -209,6 +209,40 @@
     // Extensión total
     var pg = paginasEstimadas(S);
     add('minimo_paginas', 'Mínimo 45 páginas de contenido (estimado)', pg >= 45, 'Llevas unas ' + pg + ' páginas estimadas.', 'Desarrolla cada capítulo con profundidad.', false, 'intro', pg > 0);
+
+    // Contenido de todos los capítulos (sin esto se podría llegar al 100 % con capítulos vacíos)
+    var vacias = [];
+    S.caps.forEach(function (c, ci) { c.secs.forEach(function (sc) {
+      if (sc.kind === 'presupuesto' || sc.kind === 'matriz') return;
+      var n = palabras(sc.body) + (sc.subs || []).reduce(function (a, b) { return a + palabras(b.body); }, 0);
+      if (n < 60) vacias.push({ t: sc.t, ci: ci });
+    }); });
+    add('capitulos_completos', 'Todos los subcapítulos tienen contenido (mínimo 60 palabras)', !vacias.length,
+      vacias.length + ' subcapítulos están vacíos o muy cortos: ' + vacias.slice(0, 4).map(function (v) { return v.t; }).join(', ') + (vacias.length > 4 ? '…' : '') + '.',
+      'Desarrolla cada subcapítulo con tus datos y tus fuentes.', true, 'cap-' + (vacias.length ? vacias[0].ci : 0), vacias.length < 20);
+    R[R.length - 1].ir = 'f-cap-' + (vacias.length ? vacias[0].ci : 0);
+
+    var nMarco = S.caps[1].secs.reduce(function (a, sc) { return a + 1 + (sc.subs || []).length; }, 0);
+    add('marco_teorico_15_20', 'Marco teórico con 15 a 20 secciones', nMarco >= 15 && nMarco <= 20, 'Tienes ' + nMarco + ' secciones en el Capítulo II.', 'Agrega subcapítulos (botón «Agregar subcapítulo») con los conceptos clave de tu título y tus objetivos.', false, 'cap-1', nMarco > 3);
+    R[R.length - 1].ir = 'f-cap-1';
+
+    var mal4 = [];
+    S.caps[3].secs.forEach(function (sc) { if (/\?|pregunta\s*\d/i.test(sc.t)) mal4.push(sc.t); (sc.subs || []).forEach(function (b) { if (/\?|pregunta\s*\d/i.test(b.t)) mal4.push(b.t); }); });
+    add('titulos_cap4', 'Subtítulos del Capítulo IV como indicador, sin signos de pregunta', !mal4.length, 'Estos subtítulos son preguntas: ' + mal4.slice(0, 3).join('; ') + '.', 'Nombra el indicador medido (ej.: «Frecuencia de diferencias de inventario»); la pregunta textual va en el anexo del instrumento.', true, 'cap-3');
+    R[R.length - 1].ir = 'f-cap-3';
+
+    var matMal = P.integrantes.filter(function (i) { return i.m.trim() && !/^\d{2}-[A-Za-z]{3,5}-\d-\d{3}$/.test(i.m.trim()); });
+    add('matriculas_formato', 'Matrículas con el formato oficial (22-SISN-1-043)', !matMal.length, 'Revisa la matrícula de ' + matMal.map(function (i) { return i.n || '(sin nombre)'; }).join(', ') + '.', 'Escríbela como en tu carné: 22-SISN-1-043.', false, 'portada');
+
+    var t4 = S.caps[3].secs.map(function (sc) { return sc.body + ' ' + (sc.subs || []).map(function (b) { return b.body; }).join(' '); }).join(' ');
+    var nTab4 = (t4.match(/(?:Tabla|Figura|Gr[aá]fico)\s+4\.\d+/g) || []).length;
+    add('resultados_tablas', 'Capítulo IV: tablas y gráficos mencionados en el texto (mínimo 5)', nTab4 >= 5, 'Mencionas ' + nTab4 + ' tablas o gráficos del Capítulo IV.', 'Inserta tus tablas y gráficos en el Word descargado, con su fuente, y menciónalos aquí («como muestra la Tabla 4.1…»).', false, 'cap-3', nTab4 > 0);
+    R[R.length - 1].ir = 'f-cap-3';
+
+    var GRUPO = { portada_escuela: 'PE', titulo_infinitivo: 'PE', introduccion_extension: 'PE', conclusion_extension: 'PE', recomendaciones: 'PE', glosario: 'PE', referencias_minimas: 'PE', citas_referencias: 'PE', anexos_sin_mencion: 'PE', antiplagio_en_documento: 'PE', minimo_paginas: 'PE', matriculas_formato: 'PE', titulos_cap4: 'PE', resultados_tablas: 'PE', encuesta_anexos: 'PE',
+      objetivos_verbos: 'RPAP', objetivos_preguntas: 'RPAP', encuesta_modalidad: 'RPAP', libros_metodologia: 'RPAP', conclusion_por_objetivo: 'RPAP', capitulos_completos: 'RPAP', marco_teorico_15_20: 'RPAP',
+      presupuesto_soportes: 'AITO', matriz_antes_despues: 'AITO', areas_impactadas: 'AITO', beneficios: 'AITO' };
+    R.forEach(function (r) { r.grupo = GRUPO[r.id] || 'PE'; });
     return R;
   }
 
@@ -221,7 +255,7 @@
   function auditarCitas(texto, refs) {
     var citas = {};
     var t = limpio(texto);
-    var re1 = /([A-ZÁÉÍÓÚÑ][\wáéíóúñ\-]+)(?:\s+(?:y|&)\s+[A-ZÁÉÍÓÚÑ][\wáéíóúñ\-]+|\s+et al\.)?\s*\((\d{4})[a-z]?\)/g, bloque = /\(([^()]{3,250})\)/g, m;
+    var re1 = /([A-ZÁÉÍÓÚÑ][\wáéíóúñ\-]+)(?:\s+(?:y|&)\s+[A-ZÁÉÍÓÚÑ][\wáéíóúñ\-]+(?:\s+[A-ZÁÉÍÓÚÑ][\wáéíóúñ\-]+)?|\s+et al\.)?\s*\((\d{4})[a-z]?\)/g, bloque = /\(([^()]{3,250})\)/g, m;
     while ((m = re1.exec(t))) citas[normalizar(m[1]) + m[2]] = m[1] + ' (' + m[2] + ')';
     while ((m = bloque.exec(t))) {
       m[1].split(';').forEach(function (parte) {
@@ -390,7 +424,7 @@
           heading2: { run: { font: FUENTE, size: 28, bold: true, color: '000000' }, paragraph: { alignment: AlignmentType.LEFT, spacing: { before: 240, after: 120, line: 360 } } },
           heading3: { run: { font: FUENTE, size: 24, bold: true, color: '000000' }, paragraph: { alignment: AlignmentType.LEFT, spacing: { before: 200, after: 100, line: 360 } } }
         },
-        paragraphStyles: [1, 2, 3].map(function (n) { return { id: 'TOC' + n, name: 'toc ' + n, basedOn: 'Normal', next: 'Normal', run: { font: FUENTE, size: 24 }, paragraph: { alignment: AlignmentType.LEFT, spacing: { line: 240, after: 60 }, indent: { left: (n - 1) * 360 } } }; })
+        paragraphStyles: [1, 2, 3].map(function (n) { return { id: 'TOC' + n, name: 'toc ' + n, basedOn: 'Normal', next: 'Normal', run: { font: FUENTE, size: 24, bold: n === 1 }, paragraph: { alignment: AlignmentType.LEFT, spacing: { line: 240, after: 60 }, indent: { left: (n - 1) * 360 } } }; })
       },
       numbering: { config: [{ reference: 'vinetas', levels: [{ level: 0, format: LevelFormat.BULLET, text: '•', alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 720, hanging: 360 } } } }] }] },
       sections: [

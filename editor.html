@@ -110,12 +110,52 @@ footer.cred .apa { background:#fff; border:1px solid var(--borde); border-radius
 #modal table.ap { border-collapse:collapse; width:100%; font-size:.84rem; }
 #modal table.ap td, #modal table.ap th { border:1px solid var(--borde); padding:5px 7px; text-align:left; vertical-align:top; }
 #modal code { background:#f1f4f9; padding:1px 4px; border-radius:4px; font-size:.82rem; }
+.guardado { font-size:.74rem; opacity:.92; max-width:260px; line-height:1.25; }
+.guardado b { color:#ffd98a; }
+.onboard { margin:14px 14px 0; background:#fff8e6; border:1px solid #e9c46a; border-radius:10px; padding:10px 16px; display:flex; gap:16px; align-items:flex-start; justify-content:space-between; }
+.onboard[hidden] { display:none; }
+.onboard ol { margin:6px 0 4px 18px; padding:0; font-size:.88rem; }
+.onboard p { margin:4px 0 0; font-size:.82rem; color:#5b4a14; }
+.insignia { float:right; font-size:.7rem; border-radius:10px; padding:1px 8px; font-weight:700; }
+.insignia.ok { background:#dcfce7; color:#166534; }
+.insignia.pend { background:#fee2e2; color:#991b1b; }
+.barras { margin-bottom:10px; }
+.barra-g { margin:6px 0; font-size:.76rem; }
+.barra-g .pista { height:8px; background:#e5eaf2; border-radius:5px; overflow:hidden; margin-top:2px; }
+.barra-g .relleno { height:100%; background:var(--azul); }
+.siguiente { background:var(--azul); color:#fff; border-radius:8px; padding:8px 10px; margin:6px 0 10px; cursor:pointer; font-size:.84rem; }
+.siguiente small { display:block; opacity:.85; margin-top:2px; }
+#tutor-btn { position:fixed; right:18px; bottom:18px; z-index:30; border:0; border-radius:28px; padding:12px 18px; font-weight:700; background:var(--oro); color:#1b1b1b; cursor:pointer; box-shadow:0 4px 14px rgba(0,0,0,.3); }
+#tutor { position:fixed; right:18px; bottom:72px; z-index:31; width:min(400px, calc(100vw - 24px)); height:min(560px, calc(100vh - 110px)); background:#fff; border:1px solid var(--borde); border-radius:12px; box-shadow:0 8px 28px rgba(0,0,0,.35); display:none; flex-direction:column; }
+#tutor.abierto { display:flex; }
+#tutor .cab-t { background:var(--azul); color:#fff; padding:9px 12px; border-radius:12px 12px 0 0; display:flex; justify-content:space-between; align-items:center; font-weight:700; font-size:.9rem; }
+#tutor .msgs { flex:1; overflow:auto; padding:10px; font-size:.86rem; line-height:1.45; }
+#tutor .m { margin:6px 0; padding:7px 10px; border-radius:9px; max-width:94%; }
+#tutor .m.yo { background:#e8effb; margin-left:auto; }
+#tutor .m.ia { background:#f3f5f9; }
+#tutor .m p { margin:4px 0; } #tutor .m ul, #tutor .m ol { margin:4px 0 4px 18px; padding:0; }
+#tutor .rapidas { display:flex; flex-wrap:wrap; gap:5px; padding:0 10px 6px; }
+#tutor .entrada { display:flex; gap:6px; padding:8px; border-top:1px solid var(--borde); }
+#tutor .entrada textarea { min-height:38px; max-height:90px; }
+#tutor .aviso-t { font-size:.74rem; color:#5b6678; padding:6px 10px; background:#fff8e6; border-bottom:1px solid #f1e1ad; }
+#aviso { position:fixed; inset:0; background:rgba(10,20,40,.6); z-index:60; display:none; padding:16px; }
+#aviso.abierto { display:flex; align-items:center; justify-content:center; }
+#aviso .caja-a { background:#fff; border-radius:12px; max-width:560px; max-height:100%; overflow:auto; padding:16px 20px; font-size:.92rem; line-height:1.5; }
+#aviso ol { margin:6px 0 10px 18px; padding:0; }
+@media (max-width: 860px) {
+  main { display:flex; flex-direction:column; }
+  #form { order:1; max-height:none; } #vista { order:2; } #revision { order:3; position:static; max-height:none; grid-column:auto; }
+  #hojas { max-height:70vh; }
+  header.barra h1 { font-size:.95rem; }
+  header.barra { position:static; }
+}
 </style>
 </head>
 <body>
 <header class="barra">
   <h1>Constructor del TFG · Universidad Dominicana O&amp;M</h1>
   <div class="progreso"><div class="pista"><div class="relleno" id="relleno"></div></div><small id="pct">0 % de los puntos del jurado</small></div>
+  <span class="guardado" id="guardado"></span>
   <button class="btn" id="btn-biblio" type="button">Biblioteca: metodología, reglas, APA y Zotero</button>
   <button class="btn oro" id="btn-word" type="button">Descargar Word (.docx)</button>
   <button class="btn" id="btn-guardar" type="button">Guardar copia</button>
@@ -124,6 +164,15 @@ footer.cred .apa { background:#fff; border:1px solid var(--borde); border-radius
   <a class="btn" href="index.html">Volver a la guía</a>
 </header>
 
+<div id="bienvenida" class="onboard" hidden>
+  <div><strong>Cómo usar el constructor</strong>
+    <ol><li><b>Escribe</b> en el formulario de la izquierda, sección por sección. Cada una trae su lección «Aprende» con el porqué y los pasos.</li>
+      <li><b>Mira</b> cómo se arma tu trabajo en las hojas del centro, con el formato oficial de la universidad.</li>
+      <li><b>Corrige</b> lo que marca en rojo la revisión del jurado (a la derecha): te dice qué falta, por qué y cómo.</li>
+      <li><b>Descarga</b> tu Word cuando no queden puntos obligatorios pendientes.</li></ol>
+    <p>Tu trabajo se guarda solo en este navegador: descarga una copia cada día. Si dudas, usa el botón «Tutor» o la Biblioteca. Tú escribes el trabajo; el constructor te enseña y te revisa.</p></div>
+  <button class="btn" id="cerrar-bienvenida" type="button">Entendido</button>
+</div>
 <main>
   <div class="panel" id="form" aria-label="Formulario del TFG"></div>
   <div id="vista">
@@ -133,6 +182,16 @@ footer.cred .apa { background:#fff; border:1px solid var(--borde); border-radius
   </div>
   <aside class="panel" id="revision" aria-label="Revisión del jurado"></aside>
 </main>
+
+<button id="tutor-btn" type="button" aria-label="Abrir el tutor del TFG">Tutor del TFG</button>
+<aside id="tutor" aria-label="Tutor del TFG con inteligencia artificial">
+  <div class="cab-t"><span>Tutor del TFG (IA)</span><button class="btn chico" id="tutor-cerrar" type="button">Cerrar</button></div>
+  <div class="aviso-t" id="tutor-aviso">El tutor te orienta, pero no escribe tu trabajo. Lo que consultes se envía a un servicio de inteligencia artificial: no incluyas datos personales ni confidenciales de la empresa. <label style="display:block;margin-top:4px"><input type="checkbox" id="tutor-ok"> Entiendo y quiero usar el tutor</label></div>
+  <div class="msgs" id="tutor-msgs"></div>
+  <div class="rapidas" id="tutor-rapidas"></div>
+  <div class="entrada"><textarea id="tutor-q" rows="2" placeholder="Escribe tu duda…"></textarea><button class="btn" id="tutor-enviar" type="button" style="background:var(--azul);color:#fff">Enviar</button></div>
+</aside>
+<div id="aviso" role="dialog" aria-modal="true"><div class="caja-a"><div id="aviso-cont"></div><button class="btn" id="aviso-cerrar" type="button" style="margin-top:8px;background:var(--azul);color:#fff">Entendido</button></div></div>
 
 <div id="modal" role="dialog" aria-modal="true" aria-label="Biblioteca de aprendizaje"><div class="caja">
   <div class="cab"><strong>Biblioteca de aprendizaje</strong><div class="pestanas" id="pestanas"></div><input type="search" id="bq" placeholder="Buscar en esta pestaña…" style="max-width:230px"><button class="btn chico peligro" id="cerrar-modal" type="button">Cerrar</button></div>
@@ -160,7 +219,7 @@ footer.cred .apa { background:#fff; border:1px solid var(--borde); border-radius
   function cargar() {
     try { var x = JSON.parse(localStorage.getItem(KEY)); return x && x.v === 1 && x.caps && x.caps.length === 5 ? x : null; } catch (e) { return null; }
   }
-  function guardar() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+  function guardar() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} estadoGuardado(); }
   function cambio() {
     clearTimeout(tempo);
     tempo = setTimeout(function () { guardar(); pintarHojas(); pintarRevision(); }, 250);
@@ -491,21 +550,23 @@ footer.cred .apa { background:#fff; border:1px solid var(--borde); border-radius
   // ---------- Revisión del jurado ----------
   var IR = { portada_escuela: 'f-portada', titulo_infinitivo: 'f-portada', introduccion_extension: 'f-intro', objetivos_verbos: 'f-cap-0', objetivos_preguntas: 'f-cap-0', encuesta_modalidad: 'f-cap-2', encuesta_anexos: 'f-anexos', libros_metodologia: 'f-referencias',
     presupuesto_soportes: 'f-cap-4', matriz_antes_despues: 'f-cap-4', areas_impactadas: 'f-cap-4', beneficios: 'f-cap-4', conclusion_extension: 'f-conclusiones', conclusion_por_objetivo: 'f-conclusiones', recomendaciones: 'f-recomendaciones', glosario: 'f-glosario',
-    referencias_minimas: 'f-referencias', citas_referencias: 'f-referencias', anexos_sin_mencion: 'f-anexos', antiplagio_en_documento: 'f-anexos', minimo_paginas: 'f-intro' };
+    referencias_minimas: 'f-referencias', citas_referencias: 'f-referencias', anexos_sin_mencion: 'f-anexos', antiplagio_en_documento: 'f-anexos', minimo_paginas: 'f-intro', capitulos_completos: 'f-cap-0', marco_teorico_15_20: 'f-cap-1', titulos_cap4: 'f-cap-3', matriculas_formato: 'f-portada', resultados_tablas: 'f-cap-3' };
   function pintarRevision() {
     var R = C.revisar(S), ok = R.filter(function (r) { return r.estado === 'CUMPLE'; }).length, pct = Math.round(100 * ok / R.length);
     $('#relleno').style.width = pct + '%'; $('#pct').textContent = pct + ' % de los puntos del jurado (' + ok + ' de ' + R.length + ')';
     var obl = R.filter(function (r) { return r.bloqueante && r.estado !== 'CUMPLE'; }).length;
-    var h = '<h2>Revisión como el jurado</h2><p class="ayuda">Las mismas comprobaciones de la plataforma tesis. Toca una para ir al campo. ' + (obl ? '<strong>' + obl + ' obligatorias pendientes.</strong>' : '<strong>No quedan obligatorias pendientes.</strong>') + '</p>';
+    var h = barrasHTML(R) + '<h2>Revisión como el jurado</h2><p class="ayuda">Las mismas comprobaciones de la plataforma tesis. Toca una para ir al campo. ' + (obl ? '<strong>' + obl + ' obligatorias pendientes.</strong>' : '<strong>No quedan obligatorias pendientes.</strong>') + '</p>';
     R.sort(function (a, b) { var o = { 'PENDIENTE': 0, 'EN PROCESO': 1, 'CUMPLE': 2 }; return (o[a.estado] - o[b.estado]) || (b.bloqueante - a.bloqueante); });
+    h += siguienteHTML(R);
     R.forEach(function (r) {
       var cl = r.estado.replace(' ', '-');
-      h += '<div class="regla ' + cl + '" data-ir="' + (IR[r.id] || '') + '"><span class="marca">' + (r.estado === 'CUMPLE' ? '✓' : (r.estado === 'EN PROCESO' ? '…' : '!')) + '</span><div><div class="t">' + esc(r.titulo) + (r.bloqueante && r.estado !== 'CUMPLE' ? '<span class="etq">obligatorio</span>' : '') + '</div>' +
+      h += '<div class="regla ' + cl + '" data-ir="' + (r.ir || IR[r.id] || '') + '"><span class="marca">' + (r.estado === 'CUMPLE' ? '✓' : (r.estado === 'EN PROCESO' ? '…' : '!')) + '</span><div><div class="t">' + esc(r.titulo) + (r.bloqueante && r.estado !== 'CUMPLE' ? '<span class="etq">obligatorio</span>' : '') + '</div>' +
         (r.estado !== 'CUMPLE' ? '<div class="d">' + esc(r.detalle) + ' ' + esc(r.accion) + '</div>' : '') +
         '<a href="#" class="why" data-why="' + r.id + '">¿Por qué?</a><div class="why-box" hidden>' + A.htmlRegla(r.id) + '<a href="#" class="why-lec" data-lec="' + (A.REGLAS[r.id] ? A.REGLAS[r.id].leccion : '') + '">Ver la lección completa</a></div></div></div>';
     });
     h += '<p class="ayuda" style="margin-top:10px">El formato (márgenes de 2,54 cm, interlineado 1,5, Times New Roman 12, títulos, viñetas con punto, numeración, hoja de firmas, tablas con fuente) se aplica solo al descargar el Word.</p>';
     $('#revision').innerHTML = h;
+    pintarInsignias(R);
     document.querySelectorAll('.why').forEach(function (a) { a.addEventListener('click', function (ev) { ev.preventDefault(); var b = a.nextElementSibling; b.hidden = !b.hidden; }); });
     document.querySelectorAll('.why-lec').forEach(function (a) { a.addEventListener('click', function (ev) { ev.preventDefault(); abrirBiblioteca('metodologia', a.getAttribute('data-lec')); }); });
     document.querySelectorAll('.regla').forEach(function (n) { n.addEventListener('click', function (ev) { if (ev.target.closest('.why, .why-box')) return; var id = n.getAttribute('data-ir'); if (!id) return; var d = document.getElementById(id); if (d) { d.open = true; d.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }); });
@@ -521,10 +582,16 @@ footer.cred .apa { background:#fff; border:1px solid var(--borde); border-radius
     var logo = null; try { logo = new Uint8Array(await (await fetch('assets/logo-oym.png')).arrayBuffer()); } catch (e) {}
     var blob = await window.docx.Packer.toBlob(C.construirDocx(S, window.docx, logo));
     descargar(blob, nombreArchivo('.docx'));
-    alert('Listo. Al abrir el Word, acepta «Actualizar campos» para que el índice tenga los números de página reales.');
+    aviso('<h3 style="margin-top:0;color:#17356b">Tu Word está listo. Antes de entregar:</h3><ol>' +
+      '<li><b>Actualiza el índice.</b> Al abrirlo, acepta «Actualizar campos». Si no te lo pregunta: clic derecho sobre el índice, «Actualizar campo» y «Todo».</li>' +
+      '<li><b>Inserta tus tablas y gráficos</b> del Capítulo IV, cada uno con «Fuente: Realización propia.», y menciónalos en el texto.</li>' +
+      '<li><b>Pega el contenido de tus anexos</b> donde dice «[Coloca aquí el contenido del Anexo…]»: formularios de la encuesta, cotizaciones y validación de los instrumentos.</li>' +
+      '<li><b>Agrega las pantallas de tu sistema</b> en el subcapítulo «Pantallas o planos de la solución».</li>' +
+      '<li><b>Revisa la similitud</b> con la herramienta con licencia de la universidad (máximo 30 %) y entrega ese reporte en un archivo aparte, no dentro del trabajo.</li>' +
+      '<li>Si tu asesor usa la plataforma de revisión, súbelo para la pre-revisión antes de entregar.</li></ol>');
   }
   $('#btn-word').addEventListener('click', function () { exportarWord().catch(function (e) { alert('No se pudo generar el Word: ' + e.message); }); });
-  $('#btn-guardar').addEventListener('click', function () { descargar(new Blob([JSON.stringify(S)], { type: 'application/json' }), nombreArchivo('.json')); });
+  $('#btn-guardar').addEventListener('click', function () { descargar(new Blob([JSON.stringify(S)], { type: 'application/json' }), nombreArchivo('.json')); try { localStorage.setItem('tfg_copia', String(Date.now())); } catch (e) {} estadoGuardado(); });
   $('#archivo').addEventListener('change', function (ev) {
     var f = ev.target.files[0]; if (!f) return; var r = new FileReader();
     r.onload = function () { try { var x = JSON.parse(r.result); if (x.v !== 1 || !x.caps || x.caps.length !== 5) throw new Error('formato'); S = x; guardar(); reconstruir(); pintarHojas(); pintarRevision(); } catch (e) { alert('Ese archivo no es una copia válida del constructor.'); } };
@@ -532,7 +599,7 @@ footer.cred .apa { background:#fff; border:1px solid var(--borde); border-radius
   });
   $('#btn-nuevo').addEventListener('click', function () { if (confirm('Se borrará todo lo que has escrito en este navegador. ¿Empezar de nuevo?')) { S = C.estadoInicial(); guardar(); reconstruir(); pintarHojas(); pintarRevision(); } });
   $('#zoom').addEventListener('input', function (e) { var z = e.target.value; $('#hojas').style.zoom = z / 100; $('#zoom-v').textContent = z + ' %'; });
-  $('#hojas').style.zoom = 0.62;
+  ajustarZoom(); window.addEventListener('resize', ajustarZoom);
 
   $('#btn-biblio').addEventListener('click', function () { abrirBiblioteca('metodologia'); });
   $('#cerrar-modal').addEventListener('click', function () { $('#modal').classList.remove('abierto'); });
@@ -542,7 +609,99 @@ footer.cred .apa { background:#fff; border:1px solid var(--borde); border-radius
     document.querySelectorAll('#contenido-modal details').forEach(function (d) { var ok = !q || d.textContent.toLowerCase().indexOf(q) !== -1; d.style.display = ok ? '' : 'none'; if (q && ok) d.open = true; });
   });
 
-  reconstruir(); pintarHojas(); pintarRevision();
+  // ---------- Auditoría: orientación, avance y ayuda ----------
+  function aviso(html) { $('#aviso-cont').innerHTML = html; $('#aviso').classList.add('abierto'); }
+  function ajustarZoom() {
+    var w = $('#vista').clientWidth - 24, z = Math.max(35, Math.min(100, Math.floor(w / 816 * 100)));
+    $('#hojas').style.zoom = z / 100; $('#zoom').value = z; $('#zoom-v').textContent = z + ' %';
+  }
+  function estadoGuardado() {
+    var el = $('#guardado'); if (!el) return;
+    var c = 0; try { c = parseInt(localStorage.getItem('tfg_copia') || '0', 10); } catch (e) {}
+    var hora = new Date().toLocaleTimeString('es-DO', { hour: '2-digit', minute: '2-digit' });
+    el.innerHTML = 'Guardado en este navegador (' + hora + '). ' + (c ? (Date.now() - c > 864e5 ? '<b>Descarga una copia: la última fue hace más de un día.</b>' : 'Copia descargada hoy.') : '<b>Aún no has descargado una copia.</b>');
+  }
+  var NOMBRES_G = { PE: 'Presentación escrita (20 %)', RPAP: 'Relevancia y calidad (40 %)', AITO: 'Innovación y originalidad (20 %)' };
+  function barrasHTML(R) {
+    var h = '<div class="barras">';
+    ['PE', 'RPAP', 'AITO'].forEach(function (g) {
+      var t = R.filter(function (r) { return r.grupo === g; }), ok = t.filter(function (r) { return r.estado === 'CUMPLE'; }).length;
+      h += '<div class="barra-g">' + NOMBRES_G[g] + ': <b>' + ok + ' de ' + t.length + '</b><div class="pista"><div class="relleno" style="width:' + (t.length ? Math.round(100 * ok / t.length) : 0) + '%"></div></div></div>';
+    });
+    return h + '<p class="ayuda" style="margin:4px 0 0">La exposición oral (20 %) se prepara aparte: ensaya con tu grupo.</p></div>';
+  }
+  function siguienteHTML(R) {
+    var p = R.filter(function (r) { return r.estado !== 'CUMPLE'; })[0];
+    if (!p) return '<div class="siguiente" style="background:#15803d">No quedan pendientes en el constructor. Descarga tu Word y sigue la lista de «antes de entregar».</div>';
+    return '<div class="siguiente" data-ir="' + (p.ir || IR[p.id] || '') + '">Tu siguiente paso: ' + esc(p.titulo) + '<small>' + esc(p.accion) + '</small></div>';
+  }
+  function pintarInsignias(R) {
+    var pend = {};
+    R.forEach(function (r) { var id = r.ir || IR[r.id]; if (id && r.estado !== 'CUMPLE') pend[id] = (pend[id] || 0) + 1; });
+    document.querySelectorAll('#form > details').forEach(function (d) {
+      var sm = d.querySelector('summary'), b = sm.querySelector('.insignia');
+      if (!b) { b = document.createElement('span'); sm.appendChild(b); }
+      var n = pend[d.id] || 0; b.textContent = n ? n + (n > 1 ? ' pendientes' : ' pendiente') : '✓'; b.className = 'insignia ' + (n ? 'pend' : 'ok');
+    });
+    document.querySelectorAll('.siguiente[data-ir]').forEach(function (n) { n.addEventListener('click', function () { var d = document.getElementById(n.getAttribute('data-ir')); if (d) { d.open = true; d.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }); });
+  }
+
+  // ---------- Tutor con IA (con respaldo determinista) ----------
+  var TUTOR_URL = 'https://tesis.plataformajt.com/tutor-tfg', tutorHist = [], tutorSec = { titulo: '', texto: '', leccion: null };
+  function leccionDe(d) {
+    if (!d) return null; var id = d.id;
+    if (id === 'f-portada') return 'titulo'; if (id === 'f-prelim') return 'agradecimientos'; if (id === 'f-intro') return 'introduccion';
+    var m = /^f-c(\d)s(\d+)$/.exec(id); if (m) { var sc = S.caps[+m[1]] && S.caps[+m[1]].secs[+m[2]]; return sc ? A.claveSeccion(sc) : null; }
+    return { 'f-conclusiones': 'conclusiones', 'f-recomendaciones': 'recomendaciones', 'f-glosario': 'glosario', 'f-referencias': 'referencias', 'f-anexos': 'anexos' }[id] || null;
+  }
+  document.addEventListener('focusin', function (e) {
+    var d = e.target.closest && e.target.closest('#form details[id^="f-"]'); if (!d) return;
+    var sm = d.querySelector(':scope > summary'), partes = [];
+    d.querySelectorAll(':scope > .cuerpo textarea, :scope > .cuerpo input[type=text]').forEach(function (x) { if (x.value.trim()) partes.push(x.value.trim()); });
+    tutorSec = { titulo: sm ? sm.textContent.replace(/\d+ pendientes?|✓/g, '').trim() : '', texto: partes.join('\n\n').slice(0, 3500), leccion: leccionDe(d) };
+  });
+  function fmt(t) {
+    var l = esc(t).replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').split('\n'), h = '', lista = false;
+    l.forEach(function (x) {
+      var li = /^\s*(?:[-*•]|\d+[.)])\s+(.*)/.exec(x);
+      if (li) { if (!lista) { h += '<ul>'; lista = true; } h += '<li>' + li[1] + '</li>'; }
+      else { if (lista) { h += '</ul>'; lista = false; } if (x.trim()) h += '<p>' + x + '</p>'; }
+    });
+    return h + (lista ? '</ul>' : '');
+  }
+  function msg(clase, html) { var m = el('div', { class: 'm ' + clase }); m.innerHTML = html; $('#tutor-msgs').appendChild(m); $('#tutor-msgs').scrollTop = 1e6; return m; }
+  function respaldo(razon) {
+    var l = tutorSec.leccion && A.LECCIONES[tutorSec.leccion];
+    return '<p><b>' + esc(razon) + '</b> Mientras tanto, esto te sirve para esta sección:</p>' + (l ? A.htmlLeccion(l, false) : '<p>Abre la Biblioteca (botón de arriba) para ver las lecciones de metodología, las reglas y el APA 7.</p>');
+  }
+  async function preguntarTutor(pregunta, conTexto) {
+    if (!$('#tutor-ok').checked) { msg('ia', '<p>Marca primero «Entiendo y quiero usar el tutor».</p>'); return; }
+    msg('yo', esc(pregunta)); var espera = msg('ia', '<p>Pensando…</p>');
+    try {
+      localStorage.setItem('tfg_tutor_ok', '1');
+      var r = await fetch(TUTOR_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
+        pregunta: pregunta, seccion: tutorSec.titulo, texto: conTexto ? tutorSec.texto : '',
+        reglas: C.revisar(S).map(function (x) { return { id: x.id, titulo: x.titulo, estado: x.estado, detalle: x.detalle }; }), historial: tutorHist.slice(-4) }) });
+      if (r.status === 429) { espera.innerHTML = respaldo('Usaste el tutor muchas veces seguidas; intenta más tarde.'); return; }
+      if (!r.ok) throw new Error('estado ' + r.status);
+      var d = await r.json(); espera.innerHTML = fmt(d.respuesta) + (d.fuentes && d.fuentes.length ? '<p class="ayuda">Basado en: ' + d.fuentes.map(esc).join('; ') + '</p>' : '');
+      tutorHist.push({ rol: 'estudiante', texto: pregunta }, { rol: 'tutor', texto: d.respuesta });
+    } catch (e) { espera.innerHTML = respaldo('El tutor con IA no está disponible ahora mismo.'); }
+  }
+  function enviarTutor() { var q = $('#tutor-q'), t = q.value.trim(); if (t.length < 2) return; q.value = ''; preguntarTutor(t, /mi texto|revisa|lo que llevo|corrige/i.test(t)); }
+  $('#tutor-btn').addEventListener('click', function () { $('#tutor').classList.toggle('abierto'); if ($('#tutor').classList.contains('abierto') && !$('#tutor-msgs').children.length) msg('ia', '<p>Hola. Soy el tutor del constructor. Te explico cada parte, te digo por qué se pide y reviso lo que escribes, pero el trabajo lo escribes tú. Elige una opción o escribe tu duda.</p>'); });
+  $('#tutor-cerrar').addEventListener('click', function () { $('#tutor').classList.remove('abierto'); });
+  $('#tutor-enviar').addEventListener('click', enviarTutor);
+  $('#tutor-q').addEventListener('keydown', function (e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); enviarTutor(); } });
+  try { $('#tutor-ok').checked = localStorage.getItem('tfg_tutor_ok') === '1'; } catch (e) {}
+  [['Explícame esta sección', 'Explícame esta sección: qué es, por qué se pide y cómo se hace.', false], ['Revisa lo que llevo', 'Revisa mi texto de esta sección y dime qué mejorar.', true], ['¿Qué me falta para el jurado?', '¿Qué me falta para cumplir con lo que pide el jurado y por dónde empiezo?', false]].forEach(function (q) {
+    var b = el('button', { class: 'btn chico', type: 'button', text: q[0] }); b.style.background = '#e8effb'; b.addEventListener('click', function () { preguntarTutor(q[1], q[2]); }); $('#tutor-rapidas').appendChild(b);
+  });
+  $('#aviso-cerrar').addEventListener('click', function () { $('#aviso').classList.remove('abierto'); });
+  try { if (localStorage.getItem('tfg_bienvenida') !== '1') $('#bienvenida').hidden = false; } catch (e) { $('#bienvenida').hidden = false; }
+  $('#cerrar-bienvenida').addEventListener('click', function () { $('#bienvenida').hidden = true; try { localStorage.setItem('tfg_bienvenida', '1'); } catch (e) {} });
+
+  reconstruir(); pintarHojas(); pintarRevision(); estadoGuardado();
 })();
 </script>
 </body>
