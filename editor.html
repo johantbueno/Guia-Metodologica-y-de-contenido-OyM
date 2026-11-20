@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Constructor del TFG | Universidad Dominicana O&amp;M</title>
+<meta name="description" content="Escribe tu Trabajo Final de Grado de Ingeniería sobre las hojas con el formato oficial: se completa solo, te avisa lo que falta como el jurado y descarga el Word listo.">
+<meta name="author" content="Johan Manuel Tapia Bueno, PhD.">
+<style>
+:root { --azul:#17356b; --oro:#c8982b; --fondo:#e9edf3; --texto:#1c2430; --borde:#cdd6e3; --ok:#15803d; --pend:#b45309; --mal:#b91c1c; }
+* { box-sizing: border-box; }
+body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background:var(--fondo); color:var(--texto); }
+header.barra { position:sticky; top:0; z-index:20; background:var(--azul); color:#fff; display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px; padding:10px 16px; }
+header.barra h1 { font-size:1.05rem; margin:0; font-weight:700; }
+header.barra .progreso { flex:1; min-width:180px; max-width:340px; }
+.progreso .pista { height:10px; background:rgba(255,255,255,.25); border-radius:6px; overflow:hidden; }
+.progreso .relleno { height:100%; background:var(--oro); width:0; transition:width .25s; }
+.progreso small { display:block; margin-top:3px; opacity:.9; }
+.btn { border:0; border-radius:7px; padding:8px 12px; font-weight:600; cursor:pointer; background:#fff; color:var(--azul); font-size:.88rem; }
+.btn.oro { background:var(--oro); color:#1b1b1b; }
+.btn.chico { padding:4px 9px; font-size:.8rem; }
+.btn.peligro { background:#fee2e2; color:#991b1b; }
+a.btn { text-decoration:none; display:inline-block; }
+main { display:grid; grid-template-columns: 410px minmax(0,1fr) 330px; gap:14px; padding:14px; align-items:start; }
+@media (max-width: 1250px) { main { grid-template-columns: 380px minmax(0,1fr); } #revision { grid-column: 1 / -1; order:-1; } }
+@media (max-width: 860px) { main { grid-template-columns: 1fr; } }
+.panel { background:#fff; border:1px solid var(--borde); border-radius:10px; }
+#form { padding:6px; max-height: calc(100vh - 92px); overflow:auto; }
+#revision { padding:12px; position:sticky; top:68px; max-height: calc(100vh - 92px); overflow:auto; }
+details { border:1px solid var(--borde); border-radius:8px; margin:6px 0; background:#fafcff; }
+details > summary { cursor:pointer; padding:9px 11px; font-weight:700; color:var(--azul); list-style:none; }
+details > summary::before { content:"▸ "; }
+details[open] > summary::before { content:"▾ "; }
+details .cuerpo { padding:4px 11px 12px; }
+details details { background:#fff; }
+details details > summary { font-weight:600; font-size:.92rem; }
+.campo { margin:10px 0; }
+.campo > label, .campo > .rotulo { display:block; font-weight:600; font-size:.88rem; margin-bottom:3px; }
+.ayuda { font-size:.8rem; color:#5b6678; margin:0 0 4px; }
+textarea, input[type=text], input[type=url], select { width:100%; border:1px solid #b9c4d6; border-radius:6px; padding:7px 8px; font:inherit; font-size:.9rem; background:#fff; }
+textarea { min-height:84px; resize:vertical; line-height:1.4; }
+.contador { font-size:.76rem; color:#5b6678; text-align:right; margin-top:2px; }
+.contador.ok { color:var(--ok); font-weight:600; }
+.fila { display:flex; gap:6px; align-items:center; margin:4px 0; }
+.fila > * { min-width:0; }
+.tabla-edit { width:100%; border-collapse:collapse; font-size:.82rem; }
+.tabla-edit td { padding:2px; }
+.tabla-edit input { padding:5px; font-size:.82rem; }
+#revision h2 { font-size:.98rem; margin:0 0 8px; color:var(--azul); }
+.regla { display:flex; gap:8px; padding:7px 6px; border-bottom:1px solid #eef1f6; cursor:pointer; font-size:.84rem; border-radius:6px; }
+.regla:hover { background:#f3f6fb; }
+.regla .marca { flex:none; width:20px; height:20px; border-radius:50%; display:grid; place-items:center; font-size:.75rem; color:#fff; margin-top:1px; }
+.regla.CUMPLE .marca { background:var(--ok); }
+.regla.PENDIENTE .marca { background:var(--mal); }
+.regla.EN-PROCESO .marca { background:var(--pend); }
+.regla .t { font-weight:600; }
+.regla .d { color:#5b6678; font-size:.78rem; margin-top:1px; }
+.etq { display:inline-block; font-size:.66rem; background:#fee2e2; color:#991b1b; border-radius:4px; padding:0 5px; margin-left:4px; vertical-align:middle; }
+#vista { min-width:0; }
+.zoom { display:flex; align-items:center; gap:8px; padding:6px 8px; font-size:.82rem; }
+#hojas { background:#6b7686; border-radius:10px; padding:14px 6px; overflow:auto; max-height: calc(100vh - 140px); }
+.hoja { position:relative; width:8.5in; min-height:11in; margin:0 auto 18px; background:#fff; color:#000; padding:1in; font-family:"Times New Roman", Times, serif; font-size:12pt; line-height:1.5; text-align:justify; box-shadow:0 3px 14px rgba(0,0,0,.35); }
+.hoja p { margin:0 0 6pt; }
+.hoja .centro { text-align:center; }
+.hoja .sin { line-height:1.15; text-align:center; margin:0; }
+.hoja h1 { font-size:14pt; font-weight:700; text-align:center; text-transform:none; margin:12pt 0; line-height:1.5; }
+.hoja h2 { font-size:14pt; font-weight:700; text-align:left; margin:12pt 0 6pt; line-height:1.5; }
+.hoja h3 { font-size:12pt; font-weight:700; text-align:left; margin:10pt 0 5pt; line-height:1.5; }
+.hoja ul { margin:0 0 6pt; padding-left:0.5in; }
+.hoja li { margin:0 0 3pt; }
+.hoja .pie { position:absolute; right:1in; bottom:0.5in; font-size:12pt; }
+.hoja .vacio { color:#9aa3b1; font-style:italic; }
+.hoja .ix { display:flex; line-height:1.0; margin:0 0 4pt; }
+.hoja .ix .pts { flex:1; border-bottom:1px dotted #000; margin:0 4px 4px; }
+.hoja .ix.n2 { padding-left:.25in; } .hoja .ix.n3 { padding-left:.5in; }
+.hoja .ix.n1 { font-weight:700; }
+.hoja table.dato { width:100%; border-collapse:collapse; font-size:11pt; line-height:1.2; margin:4pt 0; }
+.hoja table.dato td, .hoja table.dato th { border:1px solid #000; padding:3pt 5pt; text-align:left; vertical-align:top; }
+.hoja .rot { text-align:left; line-height:1.2; margin:8pt 0 0; font-weight:700; font-size:11pt; }
+.hoja .rot em { font-weight:400; display:block; }
+.hoja .fuente { font-size:10pt; text-align:left; line-height:1.2; }
+.hoja .ref { font-size:10pt; line-height:1.15; text-align:left; padding-left:.5in; text-indent:-.5in; margin:0 0 6pt; }
+.hoja .logo { display:block; margin:0 auto 6pt; height:62px; }
+.hoja .firmas { display:flex; justify-content:space-around; margin-top:3.6in; line-height:1.2; font-size:11pt; font-weight:700; }
+.hoja .firmas div { width:42%; text-align:center; border-top:1px solid #000; padding-top:4px; }
+.hoja .nota { font-size:9pt; line-height:1.2; text-align:center; border:1px solid #000; padding:4px 6px; width:3.2in; margin:14pt 0 0 auto; }
+footer.cred { padding:14px 18px 26px; font-size:.84rem; color:#3b4658; max-width:1100px; margin:0 auto; }
+footer.cred p { margin:4px 0; }
+footer.cred .apa { background:#fff; border:1px solid var(--borde); border-radius:8px; padding:8px 12px; text-indent:-.5in; margin-left:.5in; }
+@media print { header.barra, #form, #revision, .zoom, footer.cred { display:none !important; } main { display:block; padding:0; } #hojas { background:#fff; padding:0; max-height:none; } .hoja { box-shadow:none; margin:0; page-break-after:always; zoom:1 !important; } }
+</style>
+</head>
+<body>
+<header class="barra">
+  <h1>Constructor del TFG · Universidad Dominicana O&amp;M</h1>
+  <div class="progreso"><div class="pista"><div class="relleno" id="relleno"></div></div><small id="pct">0 % de los puntos del jurado</small></div>
+  <button class="btn oro" id="btn-word" type="button">Descargar Word (.docx)</button>
+  <button class="btn" id="btn-guardar" type="button">Guardar copia</button>
+  <label class="btn" style="margin:0">Cargar copia<input type="file" id="archivo" accept=".json,application/json" hidden></label>
+  <button class="btn peligro" id="btn-nuevo" type="button">Empezar de nuevo</button>
+  <a class="btn" href="index.html">Volver a la guía</a>
+</header>
+
+<main>
+  <div class="panel" id="form" aria-label="Formulario del TFG"></div>
+  <div id="vista">
+    <div class="panel zoom"><strong>Hojas del trabajo</strong> <span style="color:#5b6678">(vista previa con el formato exacto: carta, márgenes de 2,54 cm, Times New Roman 12, interlineado 1,5)</span>
+      <span style="margin-left:auto">Zoom <input type="range" id="zoom" min="40" max="100" value="62"> <span id="zoom-v">62 %</span></span></div>
+    <div id="hojas"></div>
+  </div>
+  <aside class="panel" id="revision" aria-label="Revisión del jurado"></aside>
+</main>
+
+<footer class="cred">
+  <p><strong>Créditos de desarrollo.</strong> Diseño y desarrollo: Johan Manuel Tapia Bueno, PhD., Universidad Dominicana O&amp;M.</p>
+  <p>Cómo citar esta herramienta (APA 7.ª edición):</p>
+  <p class="apa">Tapia Bueno, J. M. (2026). <em>Constructor del Trabajo Final de Grado de Ingeniería</em> [Aplicación web]. Universidad Dominicana O&amp;M. https://johantbueno.github.io/Guia-Metodologica-y-de-contenido-OyM/editor.html</p>
+  <p>Guía metodológica relacionada: <span class="apa" style="display:inline-block">Tapia Bueno, J. M. (2026). <em>Guía metodológica y de contenido del Trabajo Final de Grado de Ingeniería</em> [Aplicación web]. Universidad Dominicana O&amp;M. https://johantbueno.github.io/Guia-Metodologica-y-de-contenido-OyM/</span></p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
+<script src="tfg-core.js"></script>
+<script>
+(function () {
+  'use strict';
+  var C = window.TFGCore, KEY = 'tfg_oym_constructor_v1';
+  var S = cargar() || C.estadoInicial();
+  var tempo = null;
+
+  function $(q) { return document.querySelector(q); }
+  function esc(t) { return String(t == null ? '' : t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function cargar() {
+    try { var x = JSON.parse(localStorage.getItem(KEY)); return x && x.v === 1 && x.caps && x.caps.length === 5 ? x : null; } catch (e) { return null; }
+  }
+  function guardar() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+  function cambio() {
+    clearTimeout(tempo);
+    tempo = setTimeout(function () { guardar(); pintarHojas(); pintarRevision(); }, 250);
+  }
+
+  // ---------- Formulario ----------
+  function el(tag, attrs, hijos) {
+    var n = document.createElement(tag);
+    Object.keys(attrs || {}).forEach(function (k) { if (k === 'class') n.className = attrs[k]; else if (k === 'text') n.textContent = attrs[k]; else n.setAttribute(k, attrs[k]); });
+    (hijos || []).forEach(function (h) { n.appendChild(h); });
+    return n;
+  }
+  function campo(titulo, ayuda, nodo, extra) {
+    var c = el('div', { class: 'campo' });
+    c.appendChild(el('div', { class: 'rotulo', text: titulo }));
+    if (ayuda) c.appendChild(el('p', { class: 'ayuda', text: ayuda }));
+    c.appendChild(nodo);
+    if (extra) c.appendChild(extra);
+    return c;
+  }
+  function texto(get, set, opciones) {
+    opciones = opciones || {};
+    var ta = el('textarea', { placeholder: opciones.ph || '' });
+    ta.value = get();
+    if (opciones.filas) ta.rows = opciones.filas;
+    var cont = el('div', { class: 'contador' });
+    function actualizar() {
+      var n = C.palabras(ta.value);
+      var ok = opciones.min ? (n >= opciones.min && n <= (opciones.max || 1e9)) : n > 0;
+      cont.textContent = n + ' palabras' + (opciones.min ? ' (meta: ' + opciones.min + ' a ' + opciones.max + ')' : '');
+      cont.className = 'contador' + (ok ? ' ok' : '');
+    }
+    ta.addEventListener('input', function () { set(ta.value); actualizar(); cambio(); });
+    actualizar();
+    var w = el('div'); w.appendChild(ta); w.appendChild(cont); return w;
+  }
+  function linea(get, set, ph) {
+    var i = el('input', { type: 'text', placeholder: ph || '' }); i.value = get();
+    i.addEventListener('input', function () { set(i.value); cambio(); });
+    return i;
+  }
+  function det(id, titulo, abierto) {
+    var d = el('details', { id: 'f-' + id }); if (abierto) d.open = true;
+    d.appendChild(el('summary', { text: titulo }));
+    var c = el('div', { class: 'cuerpo' }); d.appendChild(c); d._c = c; return d;
+  }
+  function abiertos() { var a = []; document.querySelectorAll('#form details[open]').forEach(function (d) { a.push(d.id); }); return a; }
+
+  function formPortada() {
+    var d = det('portada', '1. Portada y hoja de título', true), P = S.portada, c = d._c;
+    c.appendChild(campo('Tema del trabajo (el título)', 'Fórmula: [ACCIÓN] de [SISTEMA/SOLUCIÓN] [TÉCNICA] para [EMPRESA/INSTITUCIÓN] en [UBICACIÓN], durante [PERÍODO]. De 15 a 25 palabras; empieza con un sustantivo (evaluación, diseño, análisis…), no con un verbo.', texto(function () { return P.titulo; }, function (v) { P.titulo = v; }, { filas: 4 })));
+    c.appendChild(campo('Título que se obtiene', 'Solo se escribe «ESCUELA DE INGENIERÍA» en la portada.', linea(function () { return P.carrera; }, function (v) { P.carrera = v; })));
+    var cajaI = el('div');
+    P.integrantes.forEach(function (it, i) {
+      var f = el('div', { class: 'fila' });
+      var a = linea(function () { return it.n; }, function (v) { it.n = v; }, 'Nombre completo (integrante ' + (i + 1) + ')');
+      var b = linea(function () { return it.m; }, function (v) { it.m = v; }, 'Matrícula'); b.style.maxWidth = '120px';
+      f.appendChild(a); f.appendChild(b); cajaI.appendChild(f);
+    });
+    c.appendChild(campo('Sustentantes y matrículas (máximo 3)', 'Los nombres salen en mayúscula en la portada.', cajaI));
+    c.appendChild(campo('Asesor', 'Con el nombre y los títulos exactamente como deben aparecer.', linea(function () { return P.asesor; }, function (v) { P.asesor = v; }, 'Ej.: Ing. María Pérez, MSc.')));
+    c.appendChild(campo('Lugar', '', linea(function () { return P.lugar; }, function (v) { P.lugar = v; })));
+    c.appendChild(campo('Fecha (mes y año)', '', linea(function () { return P.fecha; }, function (v) { P.fecha = v; }, 'Ej.: Noviembre 2026')));
+    return d;
+  }
+  function formPrelim() {
+    var d = det('prelim', '2. Agradecimientos y dedicatorias'), c = d._c;
+    c.appendChild(campo('Agradecimientos', 'Orden: Dios, la universidad, el asesor, los profesores, la empresa, su personal y los compañeros. El título va en plural y una sola vez.', texto(function () { return S.agradecimientos; }, function (v) { S.agradecimientos = v; })));
+    c.appendChild(campo('Dedicatorias', 'Personal y breve, no más de una página.', texto(function () { return S.dedicatorias; }, function (v) { S.dedicatorias = v; })));
+    return d;
+  }
+  function formIntro() {
+    var d = det('intro', '3. Introducción'), c = d._c;
+    c.appendChild(campo('Introducción (2 a 3 páginas)', 'Presenta el tema y el título, el contexto, el propósito y un párrafo por capítulo («El Capítulo I, denominado…, expone…»). No resume resultados ni usa primera persona.', texto(function () { return S.intro; }, function (v) { S.intro = v; }, { min: 550, max: 1150, filas: 8 })));
+    return d;
+  }
+  function tablaEditable(sec, tipo) {
+    var cont = el('div'), cols = tipo === 'presupuesto' ? ['Descripción técnica del equipo o servicio', 'Cant.', 'Precio unit. (RD$)'] : ['Criterio', 'Antes del proyecto', 'Después de implementarlo'];
+    var claves = tipo === 'presupuesto' ? ['d', 'c', 'p'] : ['k', 'a', 'd'];
+    var t = el('table', { class: 'tabla-edit' }), th = el('tr');
+    cols.forEach(function (x) { th.appendChild(el('th', { text: x, style: 'font-size:.74rem;text-align:left' })); }); th.appendChild(el('th')); t.appendChild(th);
+    sec.tabla.forEach(function (f, i) {
+      var tr = el('tr');
+      claves.forEach(function (k, j) {
+        var td = el('td'), inp = el('input', { type: 'text' }); inp.value = f[k]; if (tipo === 'presupuesto' && j > 0) inp.style.maxWidth = '90px';
+        inp.addEventListener('input', function () { f[k] = inp.value; cambio(); }); td.appendChild(inp); tr.appendChild(td);
+      });
+      var td = el('td'), x = el('button', { class: 'btn chico peligro', type: 'button', title: 'Quitar fila', text: '✕' });
+      x.addEventListener('click', function () { sec.tabla.splice(i, 1); reconstruir(); cambio(); }); td.appendChild(x); tr.appendChild(td); t.appendChild(tr);
+    });
+    cont.appendChild(t);
+    var b = el('button', { class: 'btn chico', type: 'button', text: '＋ Agregar fila' });
+    b.addEventListener('click', function () { var o = {}; claves.forEach(function (k) { o[k] = ''; }); sec.tabla.push(o); reconstruir(); cambio(); });
+    cont.appendChild(b);
+    if (tipo === 'presupuesto') { var tot = el('div', { class: 'contador', id: 'total-pres' }); cont.appendChild(tot); }
+    return cont;
+  }
+  function formSec(ci, si) {
+    var cap = S.caps[ci], sc = cap.secs[si], num = (ci + 1) + '.' + (si + 1);
+    var d = det('c' + ci + 's' + si, num + ' ' + sc.t), c = d._c;
+    if (sc.extra) {
+      var nm = el('input', { type: 'text' }); nm.value = sc.t;
+      nm.addEventListener('input', function () { sc.t = C.oracion(nm.value) || 'Nuevo subcapítulo'; cambio(); });
+      c.appendChild(campo('Nombre del subcapítulo (tipo oración)', 'Solo la primera palabra en mayúscula, salvo nombres propios y siglas.', nm));
+    }
+    if (sc.ayuda) c.appendChild(el('p', { class: 'ayuda', text: sc.ayuda }));
+    if (sc.kind === 'objetivos') {
+      sc.subs.forEach(function (sb, bi) { c.appendChild(campo(num + '.' + (bi + 1) + ' ' + sb.t, sb.ayuda, texto(function () { return sb.body; }, function (v) { sb.body = v; }, { filas: bi ? 5 : 3 }))); });
+    } else {
+      c.appendChild(campo('Texto de ' + num, '', texto(function () { return sc.body; }, function (v) { sc.body = v; }, { filas: 6 })));
+      (sc.subs || []).forEach(function (sb, bi) { c.appendChild(campo(num + '.' + (bi + 1) + ' ' + sb.t, sb.ayuda, texto(function () { return sb.body; }, function (v) { sb.body = v; }, { filas: 5 }))); });
+    }
+    if (sc.kind === 'tecnicas') {
+      var e = S.encuesta, caja = el('div');
+      var chk = el('input', { type: 'checkbox' }); chk.checked = e.usa;
+      chk.addEventListener('change', function () { e.usa = chk.checked; cambio(); }); var lb = el('label'); lb.appendChild(chk); lb.appendChild(document.createTextNode(' Apliqué una encuesta o cuestionario')); caja.appendChild(lb);
+      var sel = el('select'); [['', 'Selecciona la modalidad'], ['presencial', 'Presencial'], ['virtual', 'Virtual']].forEach(function (o) { var op = el('option', { value: o[0], text: o[1] }); if (e.modalidad === o[0]) op.selected = true; sel.appendChild(op); });
+      sel.addEventListener('change', function () { e.modalidad = sel.value; cambio(); }); caja.appendChild(sel);
+      var url = el('input', { type: 'url', placeholder: 'URL completa del formulario virtual (https://…)' }); url.value = e.url; url.style.marginTop = '6px';
+      url.addEventListener('input', function () { e.url = url.value; cambio(); }); caja.appendChild(url);
+      c.appendChild(campo('Encuesta', 'El texto «se aplicó de forma presencial/virtual» y los anexos se agregan solos. En los anexos van un formulario vacío y dos llenos.', caja));
+    }
+    if (sc.kind === 'presupuesto') c.appendChild(campo('Tabla del presupuesto', 'Incluye una fila con el costo de tu propio trabajo (horas y honorarios). La Tabla, el total y la mención al anexo de cotizaciones se generan solos.', tablaEditable(sc, 'presupuesto')));
+    if (sc.kind === 'matriz') c.appendChild(campo('Matriz del antes y después', 'Mínimo 3 criterios con datos concretos.', tablaEditable(sc, 'matriz')));
+    if (sc.extra) { var q = el('button', { class: 'btn chico peligro', type: 'button', text: 'Quitar este subcapítulo' }); q.addEventListener('click', function () { cap.secs.splice(si, 1); reconstruir(); cambio(); }); c.appendChild(q); }
+    return d;
+  }
+  function formCap(ci) {
+    var cap = S.caps[ci], d = det('cap-' + ci, 'Capítulo ' + cap.num + ': ' + cap.titulo.charAt(0) + cap.titulo.slice(1).toLowerCase()), c = d._c;
+    cap.secs.forEach(function (s, si) { c.appendChild(formSec(ci, si)); });
+    if (cap.dinamico) {
+      var b = el('button', { class: 'btn chico', type: 'button', text: '＋ Agregar subcapítulo' });
+      b.addEventListener('click', function () { cap.secs.push({ t: 'Nuevo subcapítulo', body: '', extra: true }); reconstruir(['f-cap-' + ci]); cambio(); }); c.appendChild(b);
+    }
+    return d;
+  }
+  function formCierre() {
+    var f = document.createDocumentFragment(), d;
+    d = det('conclusiones', 'Conclusiones'); d._c.appendChild(campo('Conclusiones (3 a 5 páginas)', 'Un párrafo por cada objetivo específico, sin datos ni autores nuevos.', texto(function () { return S.conclusiones; }, function (v) { S.conclusiones = v; }, { min: 900, max: 2000, filas: 10 }))); f.appendChild(d);
+    d = det('recomendaciones', 'Recomendaciones'); d._c.appendChild(campo('Recomendaciones', 'Una por línea, dirigidas a alguien concreto. La hoja pone la viñeta y el punto.', texto(function () { return S.recomendaciones; }, function (v) { S.recomendaciones = v; }, { filas: 6 }))); f.appendChild(d);
+    d = det('glosario', 'Glosario de términos'); d._c.appendChild(campo('Glosario de términos', 'Un término por línea, con el formato «Término: definición».', texto(function () { return S.glosario; }, function (v) { S.glosario = v; }, { filas: 6 }))); f.appendChild(d);
+    d = det('referencias', 'Referencias bibliográficas'); d._c.appendChild(campo('Referencias bibliográficas (APA 7)', 'Una por línea. La hoja las ordena alfabéticamente. Cita cada una en el texto como (Apellido, año) o Apellido (año), y cita dos libros de metodología.', texto(function () { return S.referencias; }, function (v) { S.referencias = v; }, { filas: 10 }))); f.appendChild(d);
+    d = det('anexos', 'Anexos'); var c = d._c;
+    c.appendChild(el('p', { class: 'ayuda', text: 'Todo anexo debe mencionarse en un capítulo («ver Anexo C»). Los de la encuesta y las cotizaciones se mencionan solos. No incluyas el reporte antiplagio.' }));
+    S.anexos.forEach(function (a, i) {
+      var fila = el('div', { class: 'fila' });
+      var l = linea(function () { return a.letra; }, function (v) { a.letra = v.toUpperCase().slice(0, 2); }, 'A'); l.style.maxWidth = '48px';
+      var n = linea(function () { return a.nombre; }, function (v) { a.nombre = v; }, 'Nombre del anexo');
+      var x = el('button', { class: 'btn chico peligro', type: 'button', text: '✕', title: 'Quitar' }); x.addEventListener('click', function () { S.anexos.splice(i, 1); reconstruir(['f-anexos']); cambio(); });
+      fila.appendChild(l); fila.appendChild(n); fila.appendChild(x); c.appendChild(fila);
+    });
+    var b = el('button', { class: 'btn chico', type: 'button', text: '＋ Agregar anexo' });
+    b.addEventListener('click', function () { var sig = String.fromCharCode(65 + Math.min(S.anexos.length, 25)); S.anexos.push({ letra: sig, nombre: '' }); reconstruir(['f-anexos']); cambio(); }); c.appendChild(b);
+    f.appendChild(d); return f;
+  }
+  function reconstruir(extraAbiertos) {
+    var ab = abiertos().concat(extraAbiertos || []), f = $('#form'), y = f.scrollTop;
+    f.innerHTML = '';
+    f.appendChild(formPortada()); f.appendChild(formPrelim()); f.appendChild(formIntro());
+    for (var i = 0; i < S.caps.length; i++) f.appendChild(formCap(i));
+    f.appendChild(formCierre());
+    ab.forEach(function (id) { var d = document.getElementById(id); if (d) d.open = true; });
+    f.scrollTop = y;
+  }
+
+  // ---------- Hojas ----------
+  function paras(t, vacio) {
+    var l = C.parrafos(t);
+    if (!l.length) return '<p class="vacio">' + esc(vacio || '[Escribe aquí tu texto.]') + '</p>';
+    return l.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('');
+  }
+  function vinetas(t, vacio) {
+    var l = C.lineas(t);
+    if (!l.length) return '<p class="vacio">' + esc(vacio || '[Una por línea.]') + '</p>';
+    return '<ul>' + l.map(function (x) { return '<li>' + esc(C.punto(x.replace(/^[•\-\d.)\s]+/, ''))) + '</li>'; }).join('') + '</ul>';
+  }
+  function hoja(html, pie, id) { return '<section class="hoja"' + (id ? ' id="' + id + '"' : '') + '>' + html + (pie ? '<div class="pie">' + esc(pie) + '</div>' : '') + '</section>'; }
+  function romano(n) { return ['', 'i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x'][n] || String(n); }
+  function paginasDe(t) { return Math.max(1, Math.ceil(C.palabras(t) / C.PALABRAS_POR_PAGINA)); }
+
+  function calcularPaginas() {
+    // devuelve {entradas:[{nivel,texto,pag}], intro:n}
+    var pag = 1, e = [], ci;
+    e.push({ nivel: 1, texto: 'AGRADECIMIENTOS', pag: romano(1) }, { nivel: 1, texto: 'DEDICATORIAS', pag: romano(1 + paginasDe(S.agradecimientos)) });
+    e.push({ nivel: 1, texto: 'INTRODUCCIÓN', pag: pag }); pag += paginasDe(S.intro);
+    S.caps.forEach(function (cap, i) {
+      e.push({ nivel: 1, texto: 'CAPÍTULO ' + cap.num + ': ' + cap.titulo, pag: pag });
+      var acum = 0, base = pag;
+      cap.secs.forEach(function (sc, si) {
+        e.push({ nivel: 2, texto: (i + 1) + '.' + (si + 1) + ' ' + sc.t, pag: base + Math.floor(acum / C.PALABRAS_POR_PAGINA) });
+        var w = C.palabras(sc.body); (sc.subs || []).forEach(function (sb, bi) { e.push({ nivel: 3, texto: (i + 1) + '.' + (si + 1) + '.' + (bi + 1) + ' ' + sb.t, pag: base + Math.floor((acum + w) / C.PALABRAS_POR_PAGINA) }); w += C.palabras(sb.body); });
+        acum += w + 60;
+      });
+      pag += Math.max(1, Math.ceil(acum / C.PALABRAS_POR_PAGINA));
+    });
+    e.push({ nivel: 1, texto: 'CONCLUSIONES', pag: pag }); pag += paginasDe(S.conclusiones);
+    e.push({ nivel: 1, texto: 'RECOMENDACIONES', pag: pag }); pag += 1;
+    e.push({ nivel: 1, texto: 'GLOSARIO DE TÉRMINOS', pag: pag }); pag += 1;
+    e.push({ nivel: 1, texto: 'REFERENCIAS BIBLIOGRÁFICAS', pag: pag }); pag += Math.max(1, Math.ceil(C.lineas(S.referencias).length / 14));
+    e.push({ nivel: 1, texto: 'ANEXOS', pag: pag });
+    return e;
+  }
+
+  function hojasHTML() {
+    var P = S.portada, out = [], ints = P.integrantes.filter(function (i) { return i.n.trim() || i.m.trim(); });
+    var v = function (t, d) { return t && t.trim() ? esc(t) : '<span class="vacio">' + d + '</span>'; };
+    out.push(hoja('<img class="logo" src="assets/logo-oym.png" alt="Escudo de la Universidad Dominicana O&amp;M">' +
+      '<p class="sin"><strong>UNIVERSIDAD DOMINICANA O&amp;M</strong></p><p class="sin"><strong>FUNDADA EL 12 DE ENERO DE 1966</strong></p><p class="sin"><strong>DIRECCIÓN DE TRABAJO FINAL DE GRADO</strong></p>' +
+      '<p class="sin">' + esc(P.area) + '</p><p class="sin">ESCUELA DE INGENIERÍA</p><p class="sin">&nbsp;</p>' +
+      '<p class="sin">TRABAJO FINAL DE GRADO PARA OPTAR POR EL TÍTULO DE</p><p class="sin"><strong>' + esc((P.carrera || '').toUpperCase()) + '.</strong></p><p class="sin">&nbsp;</p>' +
+      '<p class="sin"><strong>TEMA</strong></p><p class="sin"><strong>' + v((P.titulo || '').toUpperCase(), '[TÍTULO DEL TRABAJO]') + '</strong></p><p class="sin">&nbsp;</p>' +
+      '<p class="sin"><strong>PRESENTADO POR</strong></p>' +
+      (ints.length ? ints.map(function (i) { return '<p class="sin">' + esc((i.n || '').toUpperCase()) + (i.m ? ' &nbsp;&nbsp; ' + esc(i.m) : '') + '</p>'; }).join('') : '<p class="sin vacio">[NOMBRES Y MATRÍCULAS]</p>') +
+      '<p class="sin">&nbsp;</p><p class="sin"><strong>ASESOR:</strong></p><p class="sin">' + v(P.asesor, '[Nombre del asesor]') + '</p><p class="sin">&nbsp;</p>' +
+      '<p class="sin">' + esc((P.lugar || '').toUpperCase()) + '</p><p class="sin">' + v((P.fecha || '').toUpperCase(), '[MES Y AÑO]') + '</p>' +
+      '<div class="nota">Los conceptos expuestos en este trabajo final de grado son de la exclusiva responsabilidad del o los sustentantes.</div>', null, 'h-portada'));
+    out.push(hoja('<p class="centro" style="margin-top:3in"><strong style="font-size:14pt">' + v((P.titulo || '').toUpperCase(), '[TÍTULO DEL TRABAJO]') + '</strong></p>', null, 'h-titulo'));
+    var pa = paginasDe(S.agradecimientos);
+    out.push(hoja('<h1>AGRADECIMIENTOS</h1>' + paras(S.agradecimientos, '[Escribe tus agradecimientos.]'), romano(1), 'h-agr'));
+    out.push(hoja('<h1>DEDICATORIAS</h1>' + paras(S.dedicatorias, '[Escribe tus dedicatorias.]'), romano(1 + pa), 'h-ded'));
+    var ent = calcularPaginas();
+    out.push(hoja('<h1>ÍNDICE</h1>' + ent.map(function (x) { return '<div class="ix n' + x.nivel + '"><span>' + esc(x.texto) + '</span><span class="pts"></span><span>' + x.pag + '</span></div>'; }).join('') +
+      '<p class="vacio" style="font-size:10pt;line-height:1.2;margin-top:10pt">Los números de página son un cálculo aproximado; en Word se actualizan con clic derecho sobre el índice y «Actualizar campo».</p>', null, 'h-indice'));
+    var pg = 1;
+    out.push(hoja('<h1>INTRODUCCIÓN</h1>' + paras(S.intro, '[La introducción es un mapa de lectura: tema, contexto, propósito y un párrafo por capítulo.]'), String(pg), 'h-intro'));
+    pg += paginasDe(S.intro);
+    var cotL = C.letraCotizaciones(S), nT = 0;
+    S.caps.forEach(function (cap, ci) {
+      var h = '<h1>CAPÍTULO ' + cap.num + ': ' + esc(cap.titulo) + '</h1>';
+      cap.secs.forEach(function (sc, si) {
+        var num = (ci + 1) + '.' + (si + 1);
+        h += '<h2>' + num + ' ' + esc(sc.t) + '</h2>';
+        if (sc.kind === 'objetivos') {
+          h += '<h3>' + num + '.1 ' + esc(sc.subs[0].t) + '</h3>' + paras(sc.subs[0].body, '[Objetivo general.]');
+          h += '<h3>' + num + '.2 ' + esc(sc.subs[1].t) + '</h3>' + vinetas(sc.subs[1].body, '[Un objetivo específico por línea.]');
+          return;
+        }
+        h += paras(sc.body, '[Escribe ' + sc.t.toLowerCase() + '.]');
+        if (sc.kind === 'tecnicas' && S.encuesta.usa && S.encuesta.modalidad) {
+          var ae = S.anexos.filter(function (a) { return /formulario|encuesta|cuestionario/i.test(a.nombre); }).map(function (a) { return a.letra; });
+          h += '<p>La encuesta se aplicó de forma ' + S.encuesta.modalidad + (S.encuesta.modalidad === 'virtual' ? ' mediante el siguiente enlace: ' + esc(S.encuesta.url) + '.' : '.') + (ae.length ? ' El formulario de la encuesta, vacío y lleno, se incluye en ' + (ae.length === 1 ? 'el Anexo ' + ae[0] : 'los Anexos ' + ae.slice(0, -1).join(', ') + ' y ' + ae[ae.length - 1]) + '.' : '') + '</p>';
+        }
+        (sc.subs || []).forEach(function (sb, bi) { h += '<h3>' + num + '.' + (bi + 1) + ' ' + esc(sb.t) + '</h3>' + paras(sb.body, '[Escribe ' + sb.t.toLowerCase() + '.]'); });
+        if (sc.kind === 'presupuesto') {
+          nT++; var filas = sc.tabla.filter(C.filaPresupuestoCompleta);
+          h += '<p>El presupuesto estimado del proyecto se resume en la Tabla ' + (ci + 1) + '.' + nT + '. ' + (cotL ? 'Las cotizaciones y los soportes de cada elemento se encuentran en el Anexo ' + esc(cotL) + '.' : '') + '</p>';
+          h += '<div class="rot">Tabla ' + (ci + 1) + '.' + nT + '<em>Presupuesto estimado del proyecto</em></div><table class="dato"><tr><th>Descripción técnica</th><th>Cant.</th><th>Precio unitario (RD$)</th><th>Total (RD$)</th><th>Soporte</th></tr>' +
+            (filas.length ? filas.map(function (f) { return '<tr><td>' + esc(f.d) + '</td><td>' + C.num(f.c) + '</td><td style="text-align:right">' + C.moneda(C.num(f.p)).replace('RD$ ', '') + '</td><td style="text-align:right">' + C.moneda(C.num(f.c) * C.num(f.p)).replace('RD$ ', '') + '</td><td>' + (cotL ? 'Anexo ' + esc(cotL) : '') + '</td></tr>'; }).join('') : '<tr><td colspan="5" class="vacio">[Agrega las partidas del presupuesto.]</td></tr>') +
+            '<tr><td colspan="3"><strong>TOTAL DE LA INVERSIÓN ESTIMADA</strong></td><td style="text-align:right"><strong>' + C.moneda(C.totalPresupuesto(sc)).replace('RD$ ', '') + '</strong></td><td></td></tr></table><p class="fuente">Fuente: Realización propia.</p>';
+        }
+        if (sc.kind === 'matriz') {
+          nT++; var mf = sc.tabla.filter(function (f) { return f.k.trim() && f.a.trim() && f.d.trim(); });
+          h += '<p>La comparación entre la situación antes del proyecto y la situación después de implementarlo se presenta en la Tabla ' + (ci + 1) + '.' + nT + '.</p>';
+          h += '<div class="rot">Tabla ' + (ci + 1) + '.' + nT + '<em>Matriz comparativa del antes y después del proyecto</em></div><table class="dato"><tr><th>Criterio</th><th>Antes del proyecto</th><th>Después de implementarlo</th></tr>' +
+            (mf.length ? mf.map(function (f) { return '<tr><td>' + esc(f.k) + '</td><td>' + esc(f.a) + '</td><td>' + esc(f.d) + '</td></tr>'; }).join('') : '<tr><td colspan="3" class="vacio">[Completa al menos 3 criterios.]</td></tr>') + '</table><p class="fuente">Fuente: Realización propia.</p>';
+        }
+        if (sc.t === 'Pantallas o planos de la solución') h += '<p>Nota: todas las imágenes de este subcapítulo son generadas por la herramienta desarrollada en este proyecto.</p>';
+      });
+      out.push(hoja(h, String(pg), 'h-cap-' + ci));
+      pg += Math.max(1, Math.ceil(C.palabras(cap.secs.map(function (s) { return s.body + ' ' + (s.subs || []).map(function (b) { return b.body; }).join(' '); }).join(' ')) / C.PALABRAS_POR_PAGINA));
+    });
+    out.push(hoja('<h1>CONCLUSIONES</h1>' + paras(S.conclusiones, '[Una conclusión por cada objetivo específico.]'), String(pg), 'h-conclusiones')); pg += paginasDe(S.conclusiones);
+    out.push(hoja('<h1>RECOMENDACIONES</h1>' + vinetas(S.recomendaciones, '[Una recomendación por línea.]'), String(pg), 'h-recomendaciones')); pg++;
+    out.push(hoja('<h1>GLOSARIO DE TÉRMINOS</h1>' + (C.lineas(S.glosario).length ? C.lineas(S.glosario).map(function (l) { var i = l.indexOf(':'); return '<p>' + (i > 0 ? '<strong>' + esc(l.slice(0, i + 1)) + '</strong>' + esc(C.punto(l.slice(i + 1))) : esc(C.punto(l))) + '</p>'; }).join('') : '<p class="vacio">[Término: definición, uno por línea.]</p>'), String(pg), 'h-glosario')); pg++;
+    var refs = C.lineas(S.referencias).sort(function (a, b) { return a.localeCompare(b, 'es'); });
+    out.push(hoja('<h1>REFERENCIAS BIBLIOGRÁFICAS</h1>' + (refs.length ? refs.map(function (r) { return '<p class="ref">' + esc(r) + '</p>'; }).join('') : '<p class="vacio">[Una referencia por línea, en APA 7.]</p>'), String(pg), 'h-referencias')); pg += Math.max(1, Math.ceil(refs.length / 14));
+    out.push(hoja('<h1>ANEXOS</h1>' + S.anexos.filter(function (a) { return a.nombre.trim(); }).map(function (a) { return '<h2>ANEXO ' + esc(a.letra) + '. ' + esc(a.nombre) + '</h2><p class="vacio">[Coloca aquí el contenido del Anexo ' + esc(a.letra) + '.]</p>'; }).join(''), String(pg), 'h-anexos'));
+    out.push(hoja('<img class="logo" src="assets/logo-oym.png" alt="Escudo"><p class="sin"><strong>UNIVERSIDAD DOMINICANA O&amp;M</strong></p><p class="sin"><strong>FUNDADA EL 12 DE ENERO DE 1966</strong></p><p class="sin"><strong>DIRECCIÓN DE TRABAJO FINAL DE GRADO</strong></p><div class="firmas"><div>Director de trabajo final de grado</div><div>Asesor</div></div>', null, 'h-firmas'));
+    return out.join('');
+  }
+  function pintarHojas() { $('#hojas').innerHTML = hojasHTML(); var t = $('#total-pres'); if (t) { var p = C.buscarSec ? null : null; } actualizarTotalPresupuesto(); }
+  function actualizarTotalPresupuesto() {
+    var t = $('#total-pres'); if (!t) return;
+    var pres = null; S.caps.forEach(function (c) { c.secs.forEach(function (s) { if (s.kind === 'presupuesto') pres = s; }); });
+    t.textContent = 'Total de la inversión estimada: ' + C.moneda(C.totalPresupuesto(pres));
+  }
+
+  // ---------- Revisión del jurado ----------
+  var IR = { portada_escuela: 'f-portada', titulo_infinitivo: 'f-portada', introduccion_extension: 'f-intro', objetivos_verbos: 'f-cap-0', objetivos_preguntas: 'f-cap-0', encuesta_modalidad: 'f-cap-2', encuesta_anexos: 'f-anexos', libros_metodologia: 'f-referencias',
+    presupuesto_soportes: 'f-cap-4', matriz_antes_despues: 'f-cap-4', areas_impactadas: 'f-cap-4', beneficios: 'f-cap-4', conclusion_extension: 'f-conclusiones', conclusion_por_objetivo: 'f-conclusiones', recomendaciones: 'f-recomendaciones', glosario: 'f-glosario',
+    referencias_minimas: 'f-referencias', citas_referencias: 'f-referencias', anexos_sin_mencion: 'f-anexos', antiplagio_en_documento: 'f-anexos', minimo_paginas: 'f-intro' };
+  function pintarRevision() {
+    var R = C.revisar(S), ok = R.filter(function (r) { return r.estado === 'CUMPLE'; }).length, pct = Math.round(100 * ok / R.length);
+    $('#relleno').style.width = pct + '%'; $('#pct').textContent = pct + ' % de los puntos del jurado (' + ok + ' de ' + R.length + ')';
+    var obl = R.filter(function (r) { return r.bloqueante && r.estado !== 'CUMPLE'; }).length;
+    var h = '<h2>Revisión como el jurado</h2><p class="ayuda">Las mismas comprobaciones de la plataforma tesis. Toca una para ir al campo. ' + (obl ? '<strong>' + obl + ' obligatorias pendientes.</strong>' : '<strong>No quedan obligatorias pendientes.</strong>') + '</p>';
+    R.sort(function (a, b) { var o = { 'PENDIENTE': 0, 'EN PROCESO': 1, 'CUMPLE': 2 }; return (o[a.estado] - o[b.estado]) || (b.bloqueante - a.bloqueante); });
+    R.forEach(function (r) {
+      var cl = r.estado.replace(' ', '-');
+      h += '<div class="regla ' + cl + '" data-ir="' + (IR[r.id] || '') + '"><span class="marca">' + (r.estado === 'CUMPLE' ? '✓' : (r.estado === 'EN PROCESO' ? '…' : '!')) + '</span><div><div class="t">' + esc(r.titulo) + (r.bloqueante && r.estado !== 'CUMPLE' ? '<span class="etq">obligatorio</span>' : '') + '</div>' +
+        (r.estado !== 'CUMPLE' ? '<div class="d">' + esc(r.detalle) + ' ' + esc(r.accion) + '</div>' : '') + '</div></div>';
+    });
+    h += '<p class="ayuda" style="margin-top:10px">El formato (márgenes de 2,54 cm, interlineado 1,5, Times New Roman 12, títulos, viñetas con punto, numeración, hoja de firmas, tablas con fuente) se aplica solo al descargar el Word.</p>';
+    $('#revision').innerHTML = h;
+    document.querySelectorAll('.regla').forEach(function (n) { n.addEventListener('click', function () { var id = n.getAttribute('data-ir'); if (!id) return; var d = document.getElementById(id); if (d) { d.open = true; d.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }); });
+  }
+
+  // ---------- Acciones ----------
+  function descargar(blob, nombre) { var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = nombre; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500); }
+  function nombreArchivo(ext) { var t = (S.portada.titulo || 'TFG').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^A-Za-z0-9]+/g, '_').slice(0, 40); return 'TFG_' + t + ext; }
+  async function exportarWord() {
+    if (!window.docx) { alert('No se pudo cargar la librería para generar el Word. Revisa tu conexión a internet y vuelve a intentarlo.'); return; }
+    var pend = C.revisar(S).filter(function (r) { return r.bloqueante && r.estado !== 'CUMPLE'; }).length;
+    if (pend && !confirm('Aún tienes ' + pend + ' puntos obligatorios pendientes. ¿Descargar el Word de todos modos?')) return;
+    var logo = null; try { logo = new Uint8Array(await (await fetch('assets/logo-oym.png')).arrayBuffer()); } catch (e) {}
+    var blob = await window.docx.Packer.toBlob(C.construirDocx(S, window.docx, logo));
+    descargar(blob, nombreArchivo('.docx'));
+    alert('Listo. Al abrir el Word, acepta «Actualizar campos» para que el índice tenga los números de página reales.');
+  }
+  $('#btn-word').addEventListener('click', function () { exportarWord().catch(function (e) { alert('No se pudo generar el Word: ' + e.message); }); });
+  $('#btn-guardar').addEventListener('click', function () { descargar(new Blob([JSON.stringify(S)], { type: 'application/json' }), nombreArchivo('.json')); });
+  $('#archivo').addEventListener('change', function (ev) {
+    var f = ev.target.files[0]; if (!f) return; var r = new FileReader();
+    r.onload = function () { try { var x = JSON.parse(r.result); if (x.v !== 1 || !x.caps || x.caps.length !== 5) throw new Error('formato'); S = x; guardar(); reconstruir(); pintarHojas(); pintarRevision(); } catch (e) { alert('Ese archivo no es una copia válida del constructor.'); } };
+    r.readAsText(f); ev.target.value = '';
+  });
+  $('#btn-nuevo').addEventListener('click', function () { if (confirm('Se borrará todo lo que has escrito en este navegador. ¿Empezar de nuevo?')) { S = C.estadoInicial(); guardar(); reconstruir(); pintarHojas(); pintarRevision(); } });
+  $('#zoom').addEventListener('input', function (e) { var z = e.target.value; $('#hojas').style.zoom = z / 100; $('#zoom-v').textContent = z + ' %'; });
+  $('#hojas').style.zoom = 0.62;
+
+  reconstruir(); pintarHojas(); pintarRevision();
+})();
+</script>
+</body>
+</html>
