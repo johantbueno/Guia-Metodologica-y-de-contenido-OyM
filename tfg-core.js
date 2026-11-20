@@ -192,7 +192,7 @@
     add('glosario', 'Glosario de términos (al menos 5)', lineas(S.glosario).length >= 5, 'Hay ' + lineas(S.glosario).length + ' términos.', 'Escribe «Término: definición», uno por línea.', false, 'glosario', lineas(S.glosario).length > 0);
 
     // Referencias y citas
-    var refs = lineas(S.referencias);
+    var refs = lineas(S.referencias).map(function (x) { return x.replace(/\*/g, ''); });
     add('referencias_minimas', 'Referencias bibliográficas (al menos 15)', refs.length >= 15, 'Hay ' + refs.length + ' referencias.', 'Fuentes académicas, con DOI o enlace, en APA 7.', false, 'referencias', refs.length > 0);
     var aud = auditarCitas(todo, refs);
     add('citas_referencias', 'Cada cita del texto está en las referencias y viceversa', refs.length > 0 && !aud.sinReferencia.length && !aud.sinCita.length,
@@ -221,9 +221,14 @@
   function auditarCitas(texto, refs) {
     var citas = {};
     var t = limpio(texto);
-    var re1 = /([A-ZÁÉÍÓÚÑ][\wáéíóúñ\-]+)(?:\s+(?:y|&)\s+[A-ZÁÉÍÓÚÑ][\wáéíóúñ\-]+|\s+et al\.)?\s*\((\d{4})[a-z]?\)/g, re2 = /\(([A-ZÁÉÍÓÚÑ][\wáéíóúñ\-]+)[^()]{0,60}?,\s*(\d{4})[a-z]?\)/g, m;
+    var re1 = /([A-ZÁÉÍÓÚÑ][\wáéíóúñ\-]+)(?:\s+(?:y|&)\s+[A-ZÁÉÍÓÚÑ][\wáéíóúñ\-]+|\s+et al\.)?\s*\((\d{4})[a-z]?\)/g, bloque = /\(([^()]{3,250})\)/g, m;
     while ((m = re1.exec(t))) citas[normalizar(m[1]) + m[2]] = m[1] + ' (' + m[2] + ')';
-    while ((m = re2.exec(t))) citas[normalizar(m[1]) + m[2]] = m[1] + ' (' + m[2] + ')';
+    while ((m = bloque.exec(t))) {
+      m[1].split(';').forEach(function (parte) {
+        var mm = /^\s*(?:v[eé]ase\s+|ver\s+|cf\.\s+)?([A-ZÁÉÍÓÚÑ][\wáéíóúñ\-]+)[^\d()]*?,?\s*(\d{4})[a-z]?\b/.exec(parte);
+        if (mm) citas[normalizar(mm[1]) + mm[2]] = mm[1] + ' (' + mm[2] + ')';
+      });
+    }
     var enRefs = {}, sinCita = [];
     refs.forEach(function (r) {
       var mm = /^([^,(]+).*?\((\d{4})/.exec(r);
@@ -351,8 +356,9 @@
     body.push(titulo('GLOSARIO DE TÉRMINOS', true));
     lineas(S.glosario).forEach(function (l) { var i = l.indexOf(':'); body.push(new Paragraph({ alignment: AlignmentType.JUSTIFIED, spacing: { line: 360, after: 80 }, children: i > 0 ? [run(l.slice(0, i + 1), { bold: true }), run(punto(l.slice(i + 1)))] : [run(punto(l))] })); });
     body.push(titulo('REFERENCIAS BIBLIOGRÁFICAS', true));
-    lineas(S.referencias).sort(function (a, b) { return a.localeCompare(b, 'es'); }).forEach(function (r) {
-      body.push(new Paragraph({ alignment: AlignmentType.LEFT, spacing: { line: 240, after: 120 }, indent: { left: 720, hanging: 720 }, children: [run(r, { size: 20 })] }));
+    lineas(S.referencias).sort(function (a, b) { return a.replace(/\*/g, '').localeCompare(b.replace(/\*/g, ''), 'es'); }).forEach(function (r) {
+      body.push(new Paragraph({ alignment: AlignmentType.LEFT, spacing: { line: 240, after: 120 }, indent: { left: 720, hanging: 720 },
+        children: r.split(/(\*[^*]+\*)/).filter(Boolean).map(function (p) { return /^\*[^*]+\*$/.test(p) ? run(p.slice(1, -1), { size: 20, italics: true }) : run(p, { size: 20 }); }) }));
     });
     body.push(titulo('ANEXOS', true));
     S.anexos.filter(function (a) { return a.nombre.trim(); }).forEach(function (a) {

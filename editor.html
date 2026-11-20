@@ -88,12 +88,35 @@ footer.cred { padding:14px 18px 26px; font-size:.84rem; color:#3b4658; max-width
 footer.cred p { margin:4px 0; }
 footer.cred .apa { background:#fff; border:1px solid var(--borde); border-radius:8px; padding:8px 12px; text-indent:-.5in; margin-left:.5in; }
 @media print { header.barra, #form, #revision, .zoom, footer.cred { display:none !important; } main { display:block; padding:0; } #hojas { background:#fff; padding:0; max-height:none; } .hoja { box-shadow:none; margin:0; page-break-after:always; zoom:1 !important; } }
+.aprende { background:#eef5ff; border-color:#bcd2f2; }
+.aprende p, .aprende li { font-size:.84rem; line-height:1.45; margin:4px 0; }
+.aprende ol, .aprende ul { margin:4px 0 4px 18px; padding:0; }
+.aprende .fuentes { border-top:1px solid #cfe0f7; margin-top:6px; padding-top:4px; }
+.ref { font-size:.78rem; padding-left:1.2em; text-indent:-1.2em; margin:3px 0; }
+.why { font-size:.74rem; margin-left:6px; color:var(--azul); }
+.why-box { background:#f5f8fd; border-radius:6px; padding:2px 8px 6px; margin-top:4px; }
+.why-box p { margin:4px 0; font-size:.78rem; }
+.salida { background:#f5f8fd; border:1px dashed #b9c4d6; border-radius:6px; padding:6px 8px; margin:6px 0; min-height:36px; }
+#modal { position:fixed; inset:0; background:rgba(10,20,40,.62); z-index:50; display:none; padding:16px; }
+#modal.abierto { display:block; }
+#modal .caja { background:#fff; border-radius:12px; max-width:980px; height:100%; margin:0 auto; display:flex; flex-direction:column; }
+#modal .cab { display:flex; gap:10px; align-items:center; padding:10px 14px; border-bottom:1px solid var(--borde); flex-wrap:wrap; }
+#modal .pestanas { display:flex; gap:6px; flex-wrap:wrap; flex:1; }
+#modal .pestanas button { border:1px solid var(--borde); background:#f5f8fd; border-radius:7px; padding:6px 10px; cursor:pointer; font-weight:600; font-size:.84rem; color:var(--azul); }
+#modal .pestanas button.on { background:var(--azul); color:#fff; }
+#modal .contenido { overflow:auto; padding:10px 20px 24px; font-size:.92rem; line-height:1.5; }
+#modal .contenido h3 { color:var(--azul); margin:14px 0 6px; }
+#modal .contenido details { margin:6px 0; }
+#modal table.ap { border-collapse:collapse; width:100%; font-size:.84rem; }
+#modal table.ap td, #modal table.ap th { border:1px solid var(--borde); padding:5px 7px; text-align:left; vertical-align:top; }
+#modal code { background:#f1f4f9; padding:1px 4px; border-radius:4px; font-size:.82rem; }
 </style>
 </head>
 <body>
 <header class="barra">
   <h1>Constructor del TFG · Universidad Dominicana O&amp;M</h1>
   <div class="progreso"><div class="pista"><div class="relleno" id="relleno"></div></div><small id="pct">0 % de los puntos del jurado</small></div>
+  <button class="btn" id="btn-biblio" type="button">Biblioteca: metodología, reglas, APA y Zotero</button>
   <button class="btn oro" id="btn-word" type="button">Descargar Word (.docx)</button>
   <button class="btn" id="btn-guardar" type="button">Guardar copia</button>
   <label class="btn" style="margin:0">Cargar copia<input type="file" id="archivo" accept=".json,application/json" hidden></label>
@@ -111,6 +134,10 @@ footer.cred .apa { background:#fff; border:1px solid var(--borde); border-radius
   <aside class="panel" id="revision" aria-label="Revisión del jurado"></aside>
 </main>
 
+<div id="modal" role="dialog" aria-modal="true" aria-label="Biblioteca de aprendizaje"><div class="caja">
+  <div class="cab"><strong>Biblioteca de aprendizaje</strong><div class="pestanas" id="pestanas"></div><input type="search" id="bq" placeholder="Buscar en esta pestaña…" style="max-width:230px"><button class="btn chico peligro" id="cerrar-modal" type="button">Cerrar</button></div>
+  <div class="contenido" id="contenido-modal"></div></div></div>
+
 <footer class="cred">
   <p><strong>Créditos de desarrollo.</strong> Diseño y desarrollo: Johan Manuel Tapia Bueno, PhD., Universidad Dominicana O&amp;M.</p>
   <p>Cómo citar esta herramienta (APA 7.ª edición):</p>
@@ -120,10 +147,11 @@ footer.cred .apa { background:#fff; border:1px solid var(--borde); border-radius
 
 <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js"></script>
 <script src="tfg-core.js"></script>
+<script src="tfg-aprender.js"></script>
 <script>
 (function () {
   'use strict';
-  var C = window.TFGCore, KEY = 'tfg_oym_constructor_v1';
+  var C = window.TFGCore, A = window.TFGAprender, KEY = 'tfg_oym_constructor_v1';
   var S = cargar() || C.estadoInicial();
   var tempo = null;
 
@@ -181,8 +209,52 @@ footer.cred .apa { background:#fff; border:1px solid var(--borde); border-radius
   }
   function abiertos() { var a = []; document.querySelectorAll('#form details[open]').forEach(function (d) { a.push(d.id); }); return a; }
 
+  // ---------- Enseñanza ----------
+  function cur(t) { return esc(t).replace(/\*([^*]+)\*/g, '<em>$1</em>'); }
+  function aprende(clave) {
+    var l = clave && A.LECCIONES[clave]; if (!l) return null;
+    var d = el('details', { class: 'aprende' }); d.appendChild(el('summary', { text: 'Aprende: ' + l.titulo }));
+    var c = el('div', { class: 'cuerpo lec' }); c.innerHTML = A.htmlLeccion(l, false); d.appendChild(c); return d;
+  }
+  function ins(c, clave) { var l = aprende(clave); if (l) c.insertBefore(l, c.firstChild); }
+  var TABS = { metodologia: ['Metodología', function () { return A.htmlMetodologia(); }], reglas: ['Reglas y su porqué', function () { return A.htmlReglas(); }], apa: ['APA 7', function () { return A.htmlApa(); }], gestores: ['Zotero y Mendeley', function () { return A.htmlGestores(); }], fuentes: ['Fuentes', function () { return A.htmlFuentes(); }] };
+  var tabActual = 'metodologia';
+  function pintarTab(tab, lec) {
+    tabActual = tab; $('#bq').value = '';
+    $('#pestanas').innerHTML = Object.keys(TABS).map(function (k) { return '<button type="button" data-tab="' + k + '" class="' + (k === tab ? 'on' : '') + '">' + TABS[k][0] + '</button>'; }).join('');
+    $('#contenido-modal').innerHTML = TABS[tab][1]();
+    document.querySelectorAll('#pestanas button').forEach(function (b) { b.addEventListener('click', function () { pintarTab(b.getAttribute('data-tab')); }); });
+    if (lec && A.LECCIONES[lec]) { document.querySelectorAll('#contenido-modal summary').forEach(function (s) { if (s.textContent === A.LECCIONES[lec].titulo) { s.parentNode.open = true; s.scrollIntoView(); } }); }
+  }
+  function abrirBiblioteca(tab, lec) { $('#modal').classList.add('abierto'); pintarTab(tab || 'metodologia', lec); }
+  function generadorReferencias() {
+    var cont = el('div', { class: 'campo' }), valores = {};
+    cont.appendChild(el('div', { class: 'rotulo', text: 'Generador de referencias APA 7' }));
+    cont.appendChild(el('p', { class: 'ayuda', text: 'Llena los datos y obtén la referencia ya formateada, con cursivas. Si usas Zotero o Mendeley, pega aquí lo que ellos generen (una por línea).' }));
+    var sel = el('select'); Object.keys(A.GENERADOR).forEach(function (k) { sel.appendChild(el('option', { value: k, text: A.GENERADOR[k].nombre })); });
+    var campos = el('div'), salida = el('div', { class: 'salida' }), btn = el('button', { class: 'btn chico oro', type: 'button', text: 'Agregar a mis referencias' }); btn.style.background = '#c8982b';
+    function actualizar() {
+      var r = A.generarReferencia(sel.value, valores), ct = A.apellidoCita(valores.autores), an = (valores.anio || 's. f.');
+      salida._r = r;
+      salida.innerHTML = valores.titulo || valores.autores ? '<p class="ref">' + cur(r) + '</p><p class="ayuda">Cítala en el texto así: (' + esc(ct.par) + ', ' + esc(an) + ') o ' + esc(ct.nar) + ' (' + esc(an) + ').</p>' : '<p class="ayuda">Aquí aparece la referencia.</p>';
+    }
+    function dibujar() {
+      campos.innerHTML = ''; valores = {};
+      A.GENERADOR[sel.value].campos.forEach(function (c) {
+        var i = c[2] === 'area' ? el('textarea', { rows: 2 }) : el('input', { type: 'text' }); i.placeholder = c[1]; i.style.marginTop = '4px';
+        i.addEventListener('input', function () { valores[c[0]] = i.value; actualizar(); }); campos.appendChild(i);
+      });
+      actualizar();
+    }
+    sel.addEventListener('change', dibujar);
+    btn.addEventListener('click', function () { if (!salida._r || !(valores.titulo || '').trim()) { alert('Completa al menos el autor y el título.'); return; } S.referencias = (S.referencias.trim() ? S.referencias.replace(/\s+$/, '') + '\n' : '') + salida._r; guardar(); reconstruir(['f-referencias']); pintarHojas(); pintarRevision(); });
+    cont.appendChild(sel); cont.appendChild(campos); cont.appendChild(salida); cont.appendChild(btn);
+    var g = el('button', { class: 'btn chico', type: 'button', text: 'Cómo usar Zotero o Mendeley' }); g.style.marginLeft = '6px'; g.addEventListener('click', function () { abrirBiblioteca('gestores'); }); cont.appendChild(g);
+    dibujar(); return cont;
+  }
+
   function formPortada() {
-    var d = det('portada', '1. Portada y hoja de título', true), P = S.portada, c = d._c;
+    var d = det('portada', '1. Portada y hoja de título', true), P = S.portada, c = d._c; ins(c, 'titulo');
     c.appendChild(campo('Tema del trabajo (el título)', 'Fórmula: [ACCIÓN] de [SISTEMA/SOLUCIÓN] [TÉCNICA] para [EMPRESA/INSTITUCIÓN] en [UBICACIÓN], durante [PERÍODO]. De 15 a 25 palabras; empieza con un sustantivo (evaluación, diseño, análisis…), no con un verbo.', texto(function () { return P.titulo; }, function (v) { P.titulo = v; }, { filas: 4 })));
     c.appendChild(campo('Título que se obtiene', 'Solo se escribe «ESCUELA DE INGENIERÍA» en la portada.', linea(function () { return P.carrera; }, function (v) { P.carrera = v; })));
     var cajaI = el('div');
@@ -199,13 +271,13 @@ footer.cred .apa { background:#fff; border:1px solid var(--borde); border-radius
     return d;
   }
   function formPrelim() {
-    var d = det('prelim', '2. Agradecimientos y dedicatorias'), c = d._c;
+    var d = det('prelim', '2. Agradecimientos y dedicatorias'), c = d._c; ins(c, 'agradecimientos');
     c.appendChild(campo('Agradecimientos', 'Orden: Dios, la universidad, el asesor, los profesores, la empresa, su personal y los compañeros. El título va en plural y una sola vez.', texto(function () { return S.agradecimientos; }, function (v) { S.agradecimientos = v; })));
     c.appendChild(campo('Dedicatorias', 'Personal y breve, no más de una página.', texto(function () { return S.dedicatorias; }, function (v) { S.dedicatorias = v; })));
     return d;
   }
   function formIntro() {
-    var d = det('intro', '3. Introducción'), c = d._c;
+    var d = det('intro', '3. Introducción'), c = d._c; ins(c, 'introduccion');
     c.appendChild(campo('Introducción (2 a 3 páginas)', 'Presenta el tema y el título, el contexto, el propósito y un párrafo por capítulo («El Capítulo I, denominado…, expone…»). No resume resultados ni usa primera persona.', texto(function () { return S.intro; }, function (v) { S.intro = v; }, { min: 550, max: 1150, filas: 8 })));
     return d;
   }
@@ -243,7 +315,7 @@ footer.cred .apa { background:#fff; border:1px solid var(--borde); border-radius
       sc.subs.forEach(function (sb, bi) { c.appendChild(campo(num + '.' + (bi + 1) + ' ' + sb.t, sb.ayuda, texto(function () { return sb.body; }, function (v) { sb.body = v; }, { filas: bi ? 5 : 3 }))); });
     } else {
       c.appendChild(campo('Texto de ' + num, '', texto(function () { return sc.body; }, function (v) { sc.body = v; }, { filas: 6 })));
-      (sc.subs || []).forEach(function (sb, bi) { c.appendChild(campo(num + '.' + (bi + 1) + ' ' + sb.t, sb.ayuda, texto(function () { return sb.body; }, function (v) { sb.body = v; }, { filas: 5 }))); });
+      (sc.subs || []).forEach(function (sb, bi) { var ks = A.claveSub(sb.t); if (ks) { var lc = aprende(ks); if (lc) c.appendChild(lc); } c.appendChild(campo(num + '.' + (bi + 1) + ' ' + sb.t, sb.ayuda, texto(function () { return sb.body; }, function (v) { sb.body = v; }, { filas: 5 }))); });
     }
     if (sc.kind === 'tecnicas') {
       var e = S.encuesta, caja = el('div');
@@ -258,6 +330,7 @@ footer.cred .apa { background:#fff; border:1px solid var(--borde); border-radius
     if (sc.kind === 'presupuesto') c.appendChild(campo('Tabla del presupuesto', 'Incluye una fila con el costo de tu propio trabajo (horas y honorarios). La Tabla, el total y la mención al anexo de cotizaciones se generan solos.', tablaEditable(sc, 'presupuesto')));
     if (sc.kind === 'matriz') c.appendChild(campo('Matriz del antes y después', 'Mínimo 3 criterios con datos concretos.', tablaEditable(sc, 'matriz')));
     if (sc.extra) { var q = el('button', { class: 'btn chico peligro', type: 'button', text: 'Quitar este subcapítulo' }); q.addEventListener('click', function () { cap.secs.splice(si, 1); reconstruir(); cambio(); }); c.appendChild(q); }
+    ins(c, A.claveSeccion(sc));
     return d;
   }
   function formCap(ci) {
@@ -286,7 +359,12 @@ footer.cred .apa { background:#fff; border:1px solid var(--borde); border-radius
     });
     var b = el('button', { class: 'btn chico', type: 'button', text: '＋ Agregar anexo' });
     b.addEventListener('click', function () { var sig = String.fromCharCode(65 + Math.min(S.anexos.length, 25)); S.anexos.push({ letra: sig, nombre: '' }); reconstruir(['f-anexos']); cambio(); }); c.appendChild(b);
-    f.appendChild(d); return f;
+    f.appendChild(d);
+    [['conclusiones', 'conclusiones'], ['recomendaciones', 'recomendaciones'], ['glosario', 'glosario'], ['referencias', 'referencias'], ['anexos', 'anexos']].forEach(function (p) {
+      var dd = f.querySelector('#f-' + p[0]); if (dd) ins(dd._c, p[1]);
+    });
+    var rf = f.querySelector('#f-referencias'); if (rf) rf._c.appendChild(generadorReferencias());
+    return f;
   }
   function reconstruir(extraAbiertos) {
     var ab = abiertos().concat(extraAbiertos || []), f = $('#form'), y = f.scrollTop;
@@ -398,7 +476,7 @@ footer.cred .apa { background:#fff; border:1px solid var(--borde); border-radius
     out.push(hoja('<h1>RECOMENDACIONES</h1>' + vinetas(S.recomendaciones, '[Una recomendación por línea.]'), String(pg), 'h-recomendaciones')); pg++;
     out.push(hoja('<h1>GLOSARIO DE TÉRMINOS</h1>' + (C.lineas(S.glosario).length ? C.lineas(S.glosario).map(function (l) { var i = l.indexOf(':'); return '<p>' + (i > 0 ? '<strong>' + esc(l.slice(0, i + 1)) + '</strong>' + esc(C.punto(l.slice(i + 1))) : esc(C.punto(l))) + '</p>'; }).join('') : '<p class="vacio">[Término: definición, uno por línea.]</p>'), String(pg), 'h-glosario')); pg++;
     var refs = C.lineas(S.referencias).sort(function (a, b) { return a.localeCompare(b, 'es'); });
-    out.push(hoja('<h1>REFERENCIAS BIBLIOGRÁFICAS</h1>' + (refs.length ? refs.map(function (r) { return '<p class="ref">' + esc(r) + '</p>'; }).join('') : '<p class="vacio">[Una referencia por línea, en APA 7.]</p>'), String(pg), 'h-referencias')); pg += Math.max(1, Math.ceil(refs.length / 14));
+    out.push(hoja('<h1>REFERENCIAS BIBLIOGRÁFICAS</h1>' + (refs.length ? refs.map(function (r) { return '<p class="ref">' + cur(r) + '</p>'; }).join('') : '<p class="vacio">[Una referencia por línea, en APA 7.]</p>'), String(pg), 'h-referencias')); pg += Math.max(1, Math.ceil(refs.length / 14));
     out.push(hoja('<h1>ANEXOS</h1>' + S.anexos.filter(function (a) { return a.nombre.trim(); }).map(function (a) { return '<h2>ANEXO ' + esc(a.letra) + '. ' + esc(a.nombre) + '</h2><p class="vacio">[Coloca aquí el contenido del Anexo ' + esc(a.letra) + '.]</p>'; }).join(''), String(pg), 'h-anexos'));
     out.push(hoja('<img class="logo" src="assets/logo-oym.png" alt="Escudo"><p class="sin"><strong>UNIVERSIDAD DOMINICANA O&amp;M</strong></p><p class="sin"><strong>FUNDADA EL 12 DE ENERO DE 1966</strong></p><p class="sin"><strong>DIRECCIÓN DE TRABAJO FINAL DE GRADO</strong></p><div class="firmas"><div>Director de trabajo final de grado</div><div>Asesor</div></div>', null, 'h-firmas'));
     return out.join('');
@@ -423,11 +501,14 @@ footer.cred .apa { background:#fff; border:1px solid var(--borde); border-radius
     R.forEach(function (r) {
       var cl = r.estado.replace(' ', '-');
       h += '<div class="regla ' + cl + '" data-ir="' + (IR[r.id] || '') + '"><span class="marca">' + (r.estado === 'CUMPLE' ? '✓' : (r.estado === 'EN PROCESO' ? '…' : '!')) + '</span><div><div class="t">' + esc(r.titulo) + (r.bloqueante && r.estado !== 'CUMPLE' ? '<span class="etq">obligatorio</span>' : '') + '</div>' +
-        (r.estado !== 'CUMPLE' ? '<div class="d">' + esc(r.detalle) + ' ' + esc(r.accion) + '</div>' : '') + '</div></div>';
+        (r.estado !== 'CUMPLE' ? '<div class="d">' + esc(r.detalle) + ' ' + esc(r.accion) + '</div>' : '') +
+        '<a href="#" class="why" data-why="' + r.id + '">¿Por qué?</a><div class="why-box" hidden>' + A.htmlRegla(r.id) + '<a href="#" class="why-lec" data-lec="' + (A.REGLAS[r.id] ? A.REGLAS[r.id].leccion : '') + '">Ver la lección completa</a></div></div></div>';
     });
     h += '<p class="ayuda" style="margin-top:10px">El formato (márgenes de 2,54 cm, interlineado 1,5, Times New Roman 12, títulos, viñetas con punto, numeración, hoja de firmas, tablas con fuente) se aplica solo al descargar el Word.</p>';
     $('#revision').innerHTML = h;
-    document.querySelectorAll('.regla').forEach(function (n) { n.addEventListener('click', function () { var id = n.getAttribute('data-ir'); if (!id) return; var d = document.getElementById(id); if (d) { d.open = true; d.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }); });
+    document.querySelectorAll('.why').forEach(function (a) { a.addEventListener('click', function (ev) { ev.preventDefault(); var b = a.nextElementSibling; b.hidden = !b.hidden; }); });
+    document.querySelectorAll('.why-lec').forEach(function (a) { a.addEventListener('click', function (ev) { ev.preventDefault(); abrirBiblioteca('metodologia', a.getAttribute('data-lec')); }); });
+    document.querySelectorAll('.regla').forEach(function (n) { n.addEventListener('click', function (ev) { if (ev.target.closest('.why, .why-box')) return; var id = n.getAttribute('data-ir'); if (!id) return; var d = document.getElementById(id); if (d) { d.open = true; d.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }); });
   }
 
   // ---------- Acciones ----------
@@ -452,6 +533,14 @@ footer.cred .apa { background:#fff; border:1px solid var(--borde); border-radius
   $('#btn-nuevo').addEventListener('click', function () { if (confirm('Se borrará todo lo que has escrito en este navegador. ¿Empezar de nuevo?')) { S = C.estadoInicial(); guardar(); reconstruir(); pintarHojas(); pintarRevision(); } });
   $('#zoom').addEventListener('input', function (e) { var z = e.target.value; $('#hojas').style.zoom = z / 100; $('#zoom-v').textContent = z + ' %'; });
   $('#hojas').style.zoom = 0.62;
+
+  $('#btn-biblio').addEventListener('click', function () { abrirBiblioteca('metodologia'); });
+  $('#cerrar-modal').addEventListener('click', function () { $('#modal').classList.remove('abierto'); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') $('#modal').classList.remove('abierto'); });
+  $('#bq').addEventListener('input', function () {
+    var q = $('#bq').value.trim().toLowerCase();
+    document.querySelectorAll('#contenido-modal details').forEach(function (d) { var ok = !q || d.textContent.toLowerCase().indexOf(q) !== -1; d.style.display = ok ? '' : 'none'; if (q && ok) d.open = true; });
+  });
 
   reconstruir(); pintarHojas(); pintarRevision();
 })();
