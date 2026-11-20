@@ -1126,6 +1126,7 @@ input:focus-visible,
           <li><a href="#cap5">Capítulo V: Propuesta Técnica <span class="tfg-nav-check" aria-hidden="true">✓</span></a></li>
           <li><a href="#conclusiones">Conclusiones y Recomendaciones <span class="tfg-nav-check" aria-hidden="true">✓</span></a></li>
           <li><a href="#anexos">Anexos, Glosario y Referencias <span class="tfg-nav-check" aria-hidden="true">✓</span></a></li>
+          <li><a href="#formato">Formato del instructivo (lo que revisa el jurado) <span class="tfg-nav-check" aria-hidden="true">✓</span></a></li>
           <li><a href="#calidad">Criterios de Calidad (Checklist) <span class="tfg-nav-check" aria-hidden="true">✓</span></a></li>
           <li><a href="#plagio-ia">Guía Anti-Plagio e IA Ética <span class="tfg-nav-check" aria-hidden="true">✓</span></a></li>
           <li><a href="#cronograma">Cronograma y Evaluación <span class="tfg-nav-check" aria-hidden="true">✓</span></a></li>
@@ -1149,9 +1150,9 @@ input:focus-visible,
       <div class="tfg-cover-subtitle">FUNDADA EL 12 DE ENERO DE 1966</div>
 
       <div class="tfg-cover-department">
+        DIRECCIÓN DE TRABAJO FINAL DE GRADO<br>
         ÁREA DE INGENIERÍA Y TECNOLOGÍA<br>
-        ESCUELA DE INGENIERÍA<br>
-        DIRECCIÓN DE TRABAJO FINAL DE GRADO
+        ESCUELA DE INGENIERÍA
       </div>
 
       <div class="tfg-cover-title">
@@ -1215,6 +1216,12 @@ input:focus-visible,
       </div>
 
       <p style="color: var(--muted); font-size: 0.95rem; letter-spacing: 0.5px; text-transform: uppercase;">EN [CIUDAD/PROVINCIA], REPÚBLICA DOMINICANA, DURANTE [CUATRIMESTRE/PERÍODO Y AÑO].</p>
+
+      <h2>La portada según el instructivo</h2>
+      <div class="callout warning">
+        <strong>Una sola portada: la que lleva nombres y matrículas</strong>
+        <p style="margin: 0;">Después de la portada va la hoja de título (repite solo el título), luego los agradecimientos y dedicatorias, el índice, la introducción y los capítulos. Orden de la portada: logo; UNIVERSIDAD DOMINICANA O&amp;M; FUNDADA EL 12 DE ENERO DE 1966; DIRECCIÓN DE TRABAJO FINAL DE GRADO; ÁREA; <strong>ESCUELA DE INGENIERÍA solamente</strong> (sin agregar la carrera ni «Departamento» ni «Sede»); título para optar; TEMA; PRESENTADO POR con los <strong>NOMBRES EN MAYÚSCULA</strong> y las matrículas; ASESOR; lugar; fecha (mes y año) y el recuadro «Los conceptos expuestos en este trabajo final de grado son de la exclusiva responsabilidad del o los sustentantes». Todo dentro de los márgenes de 2,54 cm y con las tildes en mayúsculas (REPÚBLICA, INGENIERÍA).</p>
+      </div>
     </section>
 
     <!-- DEDICATORIA Y AGRADECIMIENTOS -->
@@ -1244,15 +1251,21 @@ input:focus-visible,
         <p style="margin: 0;">Formal, específico y agradecido. Menciona contribuciones concretas de cada persona o institución en lugar de agradecimientos genéricos.</p>
       </div>
 
+      <div class="callout info">
+        <strong>Formato de esta parte</strong>
+        <p style="margin: 0;">El título va <strong>en plural y una sola vez</strong>: «Agradecimientos» y «Dedicatorias» (no repitas el título por cada integrante). Estas páginas se numeran en romano minúsculo (i, ii, iii…) abajo a la derecha, y la numeración natural (página 1) empieza en la introducción. Todo el texto va justificado.</p>
+      </div>
+
       <div class="tfg-check-panel" data-section="dedicatoria">
         <div class="tfg-check-header">
           <span class="tfg-check-title">📋 Autoevaluación de esta sección</span>
-          <span class="tfg-check-status">0 / 3</span>
+          <span class="tfg-check-status">0 / 4</span>
         </div>
         <ul class="tfg-check-list">
           <li><label><input type="checkbox" data-criterion="dedicatoria-1"> Mi dedicatoria no excede 1 página y menciona personas específicas.</label></li>
           <li><label><input type="checkbox" data-criterion="dedicatoria-2"> Mis agradecimientos siguen el orden obligatorio (Dios/Fe, Universidad, Asesor, Profesores, Empresa, Personal, Compañeros).</label></li>
           <li><label><input type="checkbox" data-criterion="dedicatoria-3"> Usé un tono formal y agradecí contribuciones concretas, no frases genéricas.</label></li>
+          <li><label><input type="checkbox" data-criterion="dedicatoria-4"> El título está en plural, aparece una sola vez y las páginas llevan numeración romana minúscula abajo a la derecha.</label></li>
         </ul>
         <div class="tfg-check-result"></div>
       </div>
@@ -1269,6 +1282,11 @@ input:focus-visible,
         <p><strong>Párrafo 2: Problema específico.</strong> "El presente trabajo surge como respuesta a las necesidades detectadas en [empresa], donde se evidencian [problemas]. Esta situación afecta [impacto operativo y estratégico]..."</p>
         <p><strong>Párrafo 3: Propuesta académica.</strong> "A través de este estudio se propone[tu solución] que incluye [componentes]. Este proyecto tiene como objetivo aplicar los conocimientos adquiridos en la carrera..."</p>
         <p><strong>Párrafo 4: Palabras clave.</strong> Incluir una lista de 5 a 7 términos técnicos centrales de tu proyecto.</p>
+      </div>
+
+      <div class="callout info">
+        <strong>Extensión y formato de la introducción</strong>
+        <p style="margin: 0;">Debe ocupar de <strong>2 a 3 páginas</strong>. El título INTRODUCCIÓN va centrado, en mayúscula, en 14 pt y sin número; empieza en la primera línea del margen y en la <strong>página 1</strong>. Es un mapa de lectura: tema y título, contexto, propósito y un párrafo por capítulo («El Capítulo I, denominado…, expone…»). No resume los resultados ni se escribe en primera persona del singular.</p>
       </div>
 
       <div class="tfg-check-panel" data-section="intro">
@@ -1633,15 +1651,54 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
       </div>
       <p style="font-size: 0.85rem; color: var(--muted); margin-top: -1.5rem;"><em>Incluye la tasa de cambio de referencia usada y su fecha de consulta.</em></p>
 
+      <div class="callout warning">
+        <strong>El presupuesto debe estar completo</strong>
+        <ul class="checklist" style="margin-top: 0;">
+          <li><strong>Todo lo que conlleva el proyecto:</strong> equipos, licencias, instalación y también el <strong>costo de realizar tu propio trabajo</strong> (horas y honorarios del equipo de desarrollo).</li>
+          <li><strong>Descripción de cada equipo o mejora</strong> (marca, modelo, capacidad, cantidad) para que no quede duda a la hora de comprarlo.</li>
+          <li><strong>Soporte o cotización</strong> de cada elemento, con proveedor y fecha, adjuntos como anexo y mencionados en este subcapítulo.</li>
+        </ul>
+      </div>
+
+      <h2>5.7 Matriz comparativa del antes y después</h2>
+      <p>Muestra con criterios concretos qué cambia al implementar tu propuesta. Compara con datos, no con frases generales:</p>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr><th>Criterio</th><th>Antes del proyecto</th><th>Después de implementarlo</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Tiempo de atención por caso</td><td>[dato medido en el diagnóstico]</td><td>[meta o resultado esperado]</td></tr>
+            <tr><td>Errores o pérdidas registradas</td><td>[dato]</td><td>[dato esperado]</td></tr>
+            <tr><td>Control y trazabilidad de la información</td><td>[cómo se hacía]</td><td>[cómo se hará]</td></tr>
+            <tr><td>Costo operativo</td><td>[dato]</td><td>[dato esperado]</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>5.8 Áreas impactadas</h2>
+      <p>Identifica cuáles áreas de la institución serían impactadas por el proyecto y <strong>de qué manera</strong> (por ejemplo: «Compras: registra las órdenes en el sistema y elimina la doble digitación»).</p>
+
+      <h2>5.9 Beneficios de la implementación</h2>
+      <p>Detalla los beneficios para la institución y para los usuarios finales (personal, clientes, estudiantes o niños, según tu caso), ligados a los problemas que describiste en el Capítulo I.</p>
+
+      <div class="callout info">
+        <strong>Pantallas del sistema</strong>
+        <p style="margin: 0;">Si tu proyecto es un sistema, las pantallas van en el Capítulo IV junto a las demás figuras, no en los anexos. En el subcapítulo de pantallas basta una nota que diga que las imágenes pertenecen a la herramienta de tu proyecto, en lugar de poner la fuente a cada captura.</p>
+      </div>
+
       <div class="tfg-check-panel" data-section="cap5">
         <div class="tfg-check-header">
           <span class="tfg-check-title">📋 Autoevaluación de esta sección</span>
-          <span class="tfg-check-status">0 / 3</span>
+          <span class="tfg-check-status">0 / 6</span>
         </div>
         <ul class="tfg-check-list">
           <li><label><input type="checkbox" data-criterion="cap5-1"> Incluí planos, diagramas o mockups propios de mi solución.</label></li>
           <li><label><input type="checkbox" data-criterion="cap5-2"> Cada componente tiene tabla de especificaciones + párrafo de Justificativa.</label></li>
-          <li><label><input type="checkbox" data-criterion="cap5-3"> Incluí un presupuesto detallado con el total de inversión.</label></li>
+          <li><label><input type="checkbox" data-criterion="cap5-3"> Incluí un presupuesto detallado con el total de inversión, el costo de mi propio trabajo y la descripción de cada equipo.</label></li>
+          <li><label><input type="checkbox" data-criterion="cap5-4"> Adjunté el soporte o la cotización de cada elemento del presupuesto y los mencioné en el texto.</label></li>
+          <li><label><input type="checkbox" data-criterion="cap5-5"> Incluí la matriz comparativa del antes y después con datos concretos.</label></li>
+          <li><label><input type="checkbox" data-criterion="cap5-6"> Identifiqué las áreas impactadas, de qué manera, y los beneficios para la institución y los usuarios.</label></li>
         </ul>
         <div class="tfg-check-result"></div>
       </div>
@@ -1679,6 +1736,11 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
         </div>
       </div>
 
+      <div class="callout warning">
+        <strong>Extensión y formato</strong>
+        <p style="margin: 0;">La conclusión lleva de <strong>3 a 5 páginas</strong>: desarrolla cada uno de los 8 párrafos con datos del estudio, y verifica que <strong>cada objetivo específico tenga su conclusión</strong>. No agregues datos ni autores nuevos. Los títulos CONCLUSIONES, RECOMENDACIONES, ANEXOS y REFERENCIAS BIBLIOGRÁFICAS van en mayúscula, 14 pt, negrita y centrados; <strong>las recomendaciones van en viñetas, y toda viñeta termina en punto</strong>.</p>
+      </div>
+
       <h2>Recomendaciones por Stakeholder</h2>
       <p>Un ingeniero propone soluciones accionables. Divide tus recomendaciones de forma jerárquica:</p>
       <ul class="feature-list">
@@ -1690,11 +1752,12 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
       <div class="tfg-check-panel" data-section="conclusiones">
         <div class="tfg-check-header">
           <span class="tfg-check-title">📋 Autoevaluación de esta sección</span>
-          <span class="tfg-check-status">0 / 2</span>
+          <span class="tfg-check-status">0 / 3</span>
         </div>
         <ul class="tfg-check-list">
           <li><label><input type="checkbox" data-criterion="conclusiones-1"> Mi conclusión tiene 8 párrafos siguiendo la estructura obligatoria.</label></li>
-          <li><label><input type="checkbox" data-criterion="conclusiones-2"> Escribí recomendaciones para los 3 niveles de stakeholders.</label></li>
+          <li><label><input type="checkbox" data-criterion="conclusiones-2"> Escribí recomendaciones para los 3 niveles de stakeholders, en viñetas que terminan en punto.</label></li>
+          <li><label><input type="checkbox" data-criterion="conclusiones-3"> Mi conclusión ocupa de 3 a 5 páginas y responde a cada objetivo específico.</label></li>
         </ul>
         <div class="tfg-check-result"></div>
       </div>
@@ -1761,16 +1824,106 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
       </div>
       <p style="font-size: 0.9rem; color: var(--muted);"><em>Regla general: usa cursiva para títulos de libros y revistas, y escribe los títulos de artículos/páginas en minúscula sostenida (solo la primera palabra y los nombres propios en mayúscula).</em></p>
 
+      <div class="callout warning">
+        <strong>Reglas de los anexos y del cierre</strong>
+        <ul class="checklist" style="margin-top: 0;">
+          <li><strong>Todo anexo debe mencionarse</strong> en algún capítulo («ver Anexo C»); si no se menciona, no tiene validez.</li>
+          <li><strong>Encuesta o cuestionario:</strong> en el texto di si fue presencial o virtual (si fue virtual, la URL completa). En los anexos coloca <strong>un formulario vacío, dos llenos y la URL</strong> de acceso.</li>
+          <li>Los títulos se llaman <strong>«Glosario de términos»</strong> y <strong>«Referencias bibliográficas»</strong> (esta última, en mayúscula, 14 pt y centrada).</li>
+          <li><strong>El reporte antiplagio no va en el trabajo:</strong> se entrega en un archivo aparte.</li>
+          <li>La <strong>hoja de firmas</strong> (Director de trabajo final de grado y Asesor) es la <strong>última página</strong>, sin número, con el logo correcto y dentro de los márgenes reales.</li>
+        </ul>
+      </div>
+
       <div class="tfg-check-panel" data-section="anexos">
         <div class="tfg-check-header">
           <span class="tfg-check-title">📋 Autoevaluación de esta sección</span>
-          <span class="tfg-check-status">0 / 4</span>
+          <span class="tfg-check-status">0 / 7</span>
         </div>
         <ul class="tfg-check-list">
           <li><label><input type="checkbox" data-criterion="anexos-1"> Incluí el instrumento de encuesta completo.</label></li>
           <li><label><input type="checkbox" data-criterion="anexos-2"> Incluí el guion de entrevista y evidencia fotográfica.</label></li>
           <li><label><input type="checkbox" data-criterion="anexos-3"> Mi glosario está en orden alfabético con definiciones breves.</label></li>
           <li><label><input type="checkbox" data-criterion="anexos-4"> Mis referencias están en formato APA 7ma edición y ordenadas alfabéticamente.</label></li>
+          <li><label><input type="checkbox" data-criterion="anexos-5"> Cada anexo está mencionado en algún capítulo.</label></li>
+          <li><label><input type="checkbox" data-criterion="anexos-6"> La encuesta dice si fue presencial o virtual (con URL) y los anexos traen un formulario vacío y dos llenos.</label></li>
+          <li><label><input type="checkbox" data-criterion="anexos-7"> El reporte antiplagio va en un archivo aparte y la hoja de firmas es la última página, sin número.</label></li>
+        </ul>
+        <div class="tfg-check-result"></div>
+      </div>
+    </section>
+
+    <!-- FORMATO DEL INSTRUCTIVO -->
+    <section id="formato" class="tfg-section">
+      <h1>Formato del instructivo (lo que revisa el jurado)</h1>
+      <p>El jurado revisa primero lo que se ve. Estos puntos se repiten en las correcciones de casi todos los trabajos y descuentan puntos de <strong>presentación escrita (20 %)</strong> antes de llegar al contenido. Corrígelos antes de entregar.</p>
+
+      <h2>Orden del documento</h2>
+      <div class="process-timeline">
+        <div class="timeline-step"><strong>1.</strong> Portada (una sola, con nombres y matrículas).</div>
+        <div class="timeline-step"><strong>2.</strong> Hoja de título (repite solo el título).</div>
+        <div class="timeline-step"><strong>3.</strong> Agradecimientos y dedicatorias (romano minúsculo).</div>
+        <div class="timeline-step"><strong>4.</strong> Índice (sin numerar, interlineado 1, el texto no llega a la columna de números).</div>
+        <div class="timeline-step"><strong>5.</strong> Introducción (página 1, de 2 a 3 páginas).</div>
+        <div class="timeline-step"><strong>6.</strong> Capítulos I a V, cada uno en página nueva.</div>
+        <div class="timeline-step"><strong>7.</strong> Conclusiones, Recomendaciones, Glosario de términos, Referencias bibliográficas y Anexos.</div>
+        <div class="timeline-step"><strong>8.</strong> Hoja de firmas (última página, sin número).</div>
+      </div>
+
+      <h2>Medidas y tipografía</h2>
+      <div class="table-container">
+        <table>
+          <thead><tr><th>Elemento</th><th>Especificación</th></tr></thead>
+          <tbody>
+            <tr><td>Letra del texto</td><td>Times New Roman 12 pt (o Arial/Calibri 11 pt), en negro</td></tr>
+            <tr><td>Citas y referencias</td><td>10 pt</td></tr>
+            <tr><td>Márgenes</td><td>2,54 cm en los cuatro lados, en todo el documento; el texto empieza en la primera línea del margen</td></tr>
+            <tr><td>Interlineado</td><td>1,5 en el texto; sencillo (1,0) en el índice, las referencias y las citas</td></tr>
+            <tr><td>Párrafos</td><td>Justificados, con el espacio entre párrafos siempre igual</td></tr>
+            <tr><td>Páginas en blanco</td><td>No dejes espacios al final de una página, salvo cuando cambia el capítulo</td></tr>
+            <tr><td>Papel</td><td>Carta (8½ × 11), blanco</td></tr>
+            <tr><td>Numeración</td><td>Romano minúsculo en las páginas preliminares; arábiga desde la introducción; siempre abajo a la derecha</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Títulos y subtítulos</h2>
+      <ul class="feature-list">
+        <li><strong>Capítulos:</strong> mayúscula, negrita, 14 pt y con dos puntos: «CAPÍTULO I: ASPECTOS INTRODUCTORIOS».</li>
+        <li><strong>Subcapítulos (1.1):</strong> 14 pt y <strong>tipo oración</strong>: solo la primera palabra en mayúscula, salvo nombres propios y siglas. Correcto: «1.2 Planteamiento del problema».</li>
+        <li><strong>Sub-subcapítulos (1.1.1):</strong> 12 pt, también tipo oración.</li>
+        <li><strong>Objetivos:</strong> el subcapítulo se llama «Objetivos de la investigación»; los específicos van en viñetas, no con números.</li>
+        <li><strong>Toda viñeta termina en punto.</strong></li>
+      </ul>
+
+      <h2>Tablas, figuras y fuentes</h2>
+      <ul class="feature-list">
+        <li>Toda imagen o cuadro lleva su fuente, por ejemplo: «Fuente: Realización propia.».</li>
+        <li><strong>Menciona en el texto cada tabla o figura</strong> («como muestra la Tabla 3…»). Si un rótulo no se menciona en ningún párrafo, quítalo.</li>
+        <li>Las pantallas del sistema van en el Capítulo IV; en su subcapítulo basta una nota general de que pertenecen a tu herramienta.</li>
+      </ul>
+
+      <div class="callout success">
+        <strong>Citas y referencias (APA 7)</strong>
+        <p style="margin: 0;">Une dos autores con «&amp;» entre paréntesis (Pérez &amp; Gómez, 2024) y con «y» en la cita narrativa (Pérez y Gómez, 2024); con tres o más autores usa «et al.» desde la primera cita. Toda cita del texto debe estar en las referencias y toda referencia debe citarse en el texto. Las referencias van en orden alfabético, con sangría francesa, sin números ni viñetas, y con DOI o enlace.</p>
+      </div>
+
+      <div class="tfg-check-panel" data-section="formato">
+        <div class="tfg-check-header">
+          <span class="tfg-check-title">📋 Autoevaluación de esta sección</span>
+          <span class="tfg-check-status">0 / 10</span>
+        </div>
+        <ul class="tfg-check-list">
+          <li><label><input type="checkbox" data-criterion="formato-1"> Mi documento tiene una sola portada, con «ESCUELA DE INGENIERÍA» solamente y los nombres en mayúscula.</label></li>
+          <li><label><input type="checkbox" data-criterion="formato-2"> El orden es: portada, hoja de título, agradecimientos y dedicatorias, índice, introducción, capítulos, cierre y hoja de firmas.</label></li>
+          <li><label><input type="checkbox" data-criterion="formato-3"> Márgenes de 2,54 cm en los cuatro lados, texto justificado y espacio entre párrafos constante.</label></li>
+          <li><label><input type="checkbox" data-criterion="formato-4"> Interlineado 1,5 en el texto y 1,0 en el índice, las referencias y las citas.</label></li>
+          <li><label><input type="checkbox" data-criterion="formato-5"> Letra Times New Roman 12 (o Arial/Calibri 11) y citas y referencias en 10 pt.</label></li>
+          <li><label><input type="checkbox" data-criterion="formato-6"> Capítulos en mayúscula, negrita, 14 pt y con dos puntos; subcapítulos en 14 pt tipo oración; sub-subcapítulos en 12 pt.</label></li>
+          <li><label><input type="checkbox" data-criterion="formato-7"> Toda viñeta termina en punto y los objetivos específicos van en viñetas.</label></li>
+          <li><label><input type="checkbox" data-criterion="formato-8"> Toda tabla o figura tiene su fuente y está mencionada en el texto; no dejé rótulos sueltos.</label></li>
+          <li><label><input type="checkbox" data-criterion="formato-9"> La numeración es romana minúscula en las páginas preliminares y arábiga desde la introducción, abajo a la derecha.</label></li>
+          <li><label><input type="checkbox" data-criterion="formato-10"> No hay espacios en blanco al final de las páginas, salvo en el cambio de capítulo.</label></li>
         </ul>
         <div class="tfg-check-result"></div>
       </div>
@@ -1790,7 +1943,7 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
           <li style="background: transparent; border: none; padding-top: 0.2rem; padding-bottom: 0.2rem; box-shadow: none;"><strong>Capítulo IV:</strong> Mínimo 10 tablas y gráficos tabulados + Discusión robusta contrastada con el marco teórico.</li>
           <li style="background: transparent; border: none; padding-top: 0.2rem; padding-bottom: 0.2rem; box-shadow: none;"><strong>Capítulo V:</strong> Planos o diagramas técnicos propios, componentes estrictamente justificados y presupuesto total.</li>
           <li style="background: transparent; border: none; padding-top: 0.2rem; padding-bottom: 0.2rem; box-shadow: none;"><strong>Cierre:</strong> Conclusión (8 párrafos), Recomendaciones por stakeholder, Anexos completos, Glosario y Referencias en formato APA.</li>
-          <li style="background: transparent; border: none; padding-top: 0.2rem; padding-bottom: 0.2rem; box-shadow: none;"><strong>Formato General:</strong> Mínimo 45 páginas de contenido, Normas APA 7ma Edición, tipografía Arial/Times 12pt, interlineado 1.5, márgenes de 2.54 cm.</li>
+          <li style="background: transparent; border: none; padding-top: 0.2rem; padding-bottom: 0.2rem; box-shadow: none;"><strong>Formato General:</strong> Mínimo 45 páginas de contenido, Normas APA 7ma Edición, tipografía Times New Roman 12 pt (o Arial/Calibri 11 pt), interlineado 1.5, márgenes de 2.54 cm.</li>
         </ul>
       </div>
 
@@ -1801,7 +1954,7 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
         </div>
         <ul class="tfg-check-list">
           <li><label><input type="checkbox" data-criterion="calidad-1"> Mi documento tiene mínimo 45 páginas de contenido.</label></li>
-          <li><label><input type="checkbox" data-criterion="calidad-2"> Usé Arial/Times 12pt, interlineado 1.5 y márgenes de 2.54 cm.</label></li>
+          <li><label><input type="checkbox" data-criterion="calidad-2"> Usé Times New Roman 12 pt (o Arial/Calibri 11), interlineado 1,5 y márgenes de 2,54 cm en todo el documento.</label></li>
           <li><label><input type="checkbox" data-criterion="calidad-3"> Verifiqué que mi índice automático está actualizado.</label></li>
         </ul>
         <div class="tfg-check-result"></div>
@@ -2544,8 +2697,36 @@ Justificativa: [Párrafo explicando por qué elegiste este componente específic
       a: 'Debes enviar UN solo correo con 3 archivos adjuntos en PDF: 1) tu trabajo final completo, 2) el reporte antiplagio, y 3) el reporte de detección de IA. Nombra cada archivo con tu apellido (ej. "Pérez_TrabajoFinal.pdf") y confirma con tu asesor la dirección exacta y el formato adicional requerido (impreso/USB).' },
     { keywords: ['cuantas paginas minimo', 'minimo de paginas', '45 paginas', 'paginas debe tener mi trabajo', 'cuantas paginas debe tener'], section: 'calidad',
       a: 'El TFG debe tener un mínimo de 45 páginas de contenido, sin contar las páginas preliminares.' },
-    { keywords: ['tipografia', 'fuente arial', 'interlineado', 'margenes', 'formato del documento'], section: 'calidad',
-      a: 'Usa Arial o Times New Roman 12pt, interlineado 1.5 en el texto (sencillo en la bibliografía) y márgenes de 2.54 cm en todos los lados.' },
+    { keywords: ['portada', 'una sola portada', 'cuantas portadas', 'hoja de titulo', 'escuela de ingenieria', 'nombres en mayuscula'], section: 'portada',
+      a: 'Va una sola portada: la que lleva nombres y matrículas, con el orden del instructivo (logo, universidad, fundación, Dirección de Trabajo Final de Grado, área, ESCUELA DE INGENIERÍA solamente, título, presentado por con los nombres en MAYÚSCULA y las matrículas, asesor, lugar y fecha). Después va la hoja de título, que repite solo el título. Todo dentro de los márgenes de 2,54 cm.' },
+    { keywords: ['orden del documento', 'orden de las paginas', 'que va primero', 'estructura del documento'], section: 'formato',
+      a: 'El orden es: portada, hoja de título, agradecimientos y dedicatorias, índice, introducción, capítulos, conclusiones, recomendaciones, glosario de términos, referencias bibliográficas, anexos y hoja de firmas (última página, sin número).' },
+    { keywords: ['hoja de firmas', 'ultima pagina', 'pagina de firmas', 'firma director'], section: 'formato',
+      a: 'La hoja de firmas (Director de trabajo final de grado y Asesor) es la última página del trabajo, no lleva número, debe tener el logo correcto y quedar dentro de los márgenes reales.' },
+    { keywords: ['titulos de capitulos', 'subcapitulos', 'tipo oracion', 'tamano de titulos', 'mayusculas en titulos'], section: 'formato',
+      a: 'Los capítulos van en mayúscula, negrita, 14 pt y con dos puntos (CAPÍTULO I: …). Los subcapítulos (1.1) van en 14 pt tipo oración: solo la primera palabra en mayúscula, salvo nombres propios y siglas (1.2 Planteamiento del problema). Los sub-subcapítulos (1.1.1) van en 12 pt, también tipo oración.' },
+    { keywords: ['vinetas', 'viñetas', 'punto en las vinetas', 'recomendaciones en vinetas'], section: 'formato',
+      a: 'Toda viñeta termina en punto. Las recomendaciones y los objetivos específicos van en viñetas.' },
+    { keywords: ['numeracion de paginas', 'numero de pagina', 'paginas romanas', 'donde va el numero de pagina'], section: 'formato',
+      a: 'Las páginas preliminares (agradecimientos y dedicatorias) llevan numeración romana en minúscula; la página 1 es la de la introducción. Los números van abajo a la derecha y las páginas del índice no se numeran.' },
+    { keywords: ['extension de la introduccion', 'cuantas paginas la introduccion', 'introduccion paginas'], section: 'intro',
+      a: 'La introducción ocupa de 2 a 3 páginas. Su título va centrado, en mayúscula y 14 pt. Presenta el tema, el contexto, el propósito y un párrafo por capítulo; no resume resultados.' },
+    { keywords: ['extension de la conclusion', 'cuantas paginas la conclusion', 'conclusion paginas'], section: 'conclusiones',
+      a: 'La conclusión lleva de 3 a 5 páginas, con una conclusión por cada objetivo específico y sin datos ni autores nuevos. Las recomendaciones van en viñetas terminadas en punto.' },
+    { keywords: ['anexos', 'que anexos debo poner', 'anexos validos', 'mencionar anexos'], section: 'anexos',
+      a: 'Todo anexo debe mencionarse en algún capítulo; si no, no tiene validez. Para la encuesta incluye un formulario vacío, dos llenos y la URL de acceso. El reporte antiplagio no va en el trabajo: se entrega en un archivo aparte.' },
+    { keywords: ['encuesta presencial o virtual', 'url de la encuesta', 'formulario de la encuesta', 'cuestionario virtual'], section: 'anexos',
+      a: 'Indica en el texto si la encuesta fue presencial o virtual; si fue virtual, escribe la URL completa. En los anexos coloca un formulario vacío, dos llenos y la URL de acceso.' },
+    { keywords: ['fuente de las imagenes', 'fuente de tablas', 'realizacion propia', 'rotulos de tablas', 'tabla sin mencionar'], section: 'formato',
+      a: 'Toda imagen o cuadro lleva su fuente (Fuente: Realización propia.). Cada tabla o figura debe mencionarse en el texto; si un rótulo no se menciona en ningún párrafo, quítalo. En el subcapítulo de pantallas del sistema basta una nota que indique que las imágenes pertenecen a tu herramienta.' },
+    { keywords: ['matriz comparativa', 'antes y despues', 'matriz antes y despues'], section: 'cap5',
+      a: 'Incluye una matriz comparativa del antes y después del proyecto, con criterios concretos (tiempo, errores, costos, control) y datos del diagnóstico, no frases generales.' },
+    { keywords: ['areas impactadas', 'beneficios de la implementacion', 'beneficios para la institucion'], section: 'cap5',
+      a: 'Identifica las áreas de la institución que serían impactadas y de qué manera, y detalla los beneficios para la institución y para los usuarios finales.' },
+    { keywords: ['cotizaciones', 'soportes del presupuesto', 'costo de mi trabajo', 'presupuesto completo'], section: 'cap5',
+      a: 'El presupuesto debe incluir todo lo que conlleva el proyecto, también el costo de realizar tu propio trabajo (horas y honorarios), la descripción de cada equipo o mejora y el soporte o la cotización de cada elemento, adjuntos como anexo y mencionados en el texto.' },
+    { keywords: ['tipografia', 'fuente arial', 'interlineado', 'margenes', 'formato del documento'], section: 'formato',
+      a: 'Usa Times New Roman 12 pt (o Arial/Calibri 11 pt) en negro, con las citas y referencias en 10 pt; interlineado 1,5 en el texto y sencillo en el índice, las referencias y las citas; márgenes de 2,54 cm en los cuatro lados; párrafos justificados y con el mismo espacio entre ellos.' },
     { keywords: ['nota minima para aprobar', 'cuanto necesito para aprobar', 'criterios de aprobacion'], section: 'cronograma',
       a: 'La nota mínima de aprobación es 70 puntos, combinando evaluación continua (60%) y trabajo final (40%): presentación, formulación teórica, desarrollo de ideas y soluciones propuestas.' },
     { keywords: ['primera entrega', 'que debo entregar primero', 'entrega critica 1'], section: 'cronograma',
